@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Andada+Pro:ital,wght@0,400..840;1,400..840&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    font-family: "Poppins", sans-serif;
+    color: #1f2937;
+    font-size: 14px;
+}
+
+/* Background	Soft White	#F8FAFC
+Card Background	Pure White	#FFFFFF
+Primary Color	Modern Blue	#2563EB
+Accent / Sale	Orange	#F59E0B
+Text Primary	Dark Gray	#1f2937
+Text Secondary	Gray	#64748B
+Border	Light Gray	#E5E7EB */
+/* Orange #EB6325 */
+/* Grey #e4e4f56c */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Poppins", sans-serif;
+}
+
+p {
+    font-family: "Inter", sans-serif;
+    color: #505c6d;
+}
+
+@media screen and (max-width: 640px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media screen and (max-width: 435px) {
+    .product_card h3 {
+        font-size: 13px;
+    }
+    .product_card img {
+        padding: 0;
+    }
+    .product_card .price {
+        display: none;
+    }
+    .product_card .rating {
+        margin-top: 0px;
+    }
+    .blogs img {
+        height: 100%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .contact {
+        gap: 16px;
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .logo {
+        font-size: 22px;
+    }
+    .header_icons {
+        gap: 8px;
+    }
+}
+
+@media screen and (max-width: 357px) {
+    .blog_card_title {
+        font-size: 12px;
+    }
+    .blog_card_content {
+        font-size: 11.8px
+    }
+}
+
+@import "tailwindcss";
