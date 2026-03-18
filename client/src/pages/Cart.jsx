@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
-import cross_icon from '../assets/cross_icon.SVG'
-import product_image from '../assets/banner1.png'
+import cross_icon from '../assets/cross_icon.svg'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useEffect } from 'react';
