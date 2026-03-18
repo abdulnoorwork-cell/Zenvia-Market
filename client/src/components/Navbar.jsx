@@ -71,7 +71,7 @@ const Navbar = () => {
                                     <small className='absolute -top-1.5 -right-1 bg-blue-500 text-white sm:text-[10px] text-[9px] rounded-full px-1 py-[2.6px] min-w-[15px] text-center leading-none' style={{ fontFamily: 'Montserrat' }}>{totalCartItems > 0 ? totalCartItems : "0"}</small>
                                 </span>
                             </Link> :
-                            <Link to={'/user/login'} onClick={() => scrollTo(0, 0)} classrelative Name='flex items- text-blue-950/80cente1 gap-2 cursor-pointer'>
+                            <Link to={'/user/login'} onClick={() => scrollTo(0, 0)} className='relative flex items- text-blue-950/80cente1 gap-2 cursor-pointer'>
                                 <span className='sm:text-2xl text-[22px] text-blue-950/80'>
                                     <HiOutlineShoppingBag />
                                     <small className='absolute -top-1.5 -right-1 bg-blue-500 text-white sm:text-[10px] text-[9px] rounded-full px-1 py-[2.6px] min-w-[15px] text-center leading-none' style={{ fontFamily: 'Montserrat' }}>{totalCartItems > 0 ? totalCartItems : "0"}</small>
