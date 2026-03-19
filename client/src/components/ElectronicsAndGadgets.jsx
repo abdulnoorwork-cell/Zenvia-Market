@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import ProductCard from './ProductCard'
-
+import loading_animation from '../../public/loading_animation.svg'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
@@ -12,6 +12,7 @@ const ElectronicsAndGadgets = () => {
         <div className='container mx-auto px-4 mt-10'>
             <h6 className='text-[22px] tracking-[0.1px] mb-5 font-semibold'>Electroics & Gadgets</h6>
             <div className='md:block hidden'>
+                {products.length>0 ? 
                 <Swiper
                     modules={[Autoplay]}
                     spaceBetween={18}
@@ -36,12 +37,12 @@ const ElectronicsAndGadgets = () => {
                             </div>
                         </SwiperSlide>
                     ))}
-                </Swiper>
+                </Swiper> : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
             <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
-                {products.filter(product => product.category === "Electronics & Gadgets").slice(length - 4).reverse().map((product, index) => (
+                {products.length>0 ? products.filter(product => product.category === "Electronics & Gadgets").slice(length - 4).reverse().map((product, index) => (
                     <ProductCard key={index} product={product} />
-                ))}
+                )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
         </div>
     )
