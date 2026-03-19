@@ -141,7 +141,7 @@ export const getSearchProducts = (req, res) => {
 }
 
 export const getLatestProducts = (req, res) => {
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 8;
     const sql = 'SELECT * FROM products ORDER BY created_at DESC LIMIT ?'
     db.query(sql, [limit], async (err, data) => {
         if (err) {
