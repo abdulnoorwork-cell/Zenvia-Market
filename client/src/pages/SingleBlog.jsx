@@ -3,9 +3,10 @@ import React from 'react'
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Suspense } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext';
-import BlogCard from '../components/BlogCard';
+const BlogCard = React.lazy(()=>import('../components/BlogCard'))
 import loading_animation from '../../public/loading_animation.svg'
 
 const SingleBlog = () => {
@@ -92,7 +93,9 @@ const SingleBlog = () => {
                     <div className="blogs grid md:grid-cols-3 grid-cols-2 sm:gap-[18px] gap-4">
 
                         {blogs.length>0 ? blogs?.slice(length - 3).map((blog,index) => (
-                            <BlogCard key={index} blog={blog} />
+                            <Suspense fallback={<p>Loading...</p>}>
+                                <BlogCard key={index} blog={blog} />
+                            </Suspense>
                         )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
                     </div>

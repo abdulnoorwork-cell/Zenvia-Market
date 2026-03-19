@@ -49,4 +49,4 @@ const Clothing = () => {
     )
 }
 
-export default Clothing
+export default React.memo(Clothing)

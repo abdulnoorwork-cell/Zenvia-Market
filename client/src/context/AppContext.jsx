@@ -16,7 +16,7 @@ const AppContextProvider = ({ children }) => {
     const [blogs, setBlogs] = useState([]);
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([])
-    const [totalCartItems,setTotalCartItems]=useState([])
+    const [totalCartItems, setTotalCartItems] = useState([])
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [search, setSearch] = useState([])
     const navigate = useNavigate()
@@ -77,8 +77,8 @@ const AppContextProvider = ({ children }) => {
     }
     const getTotalCartItems = async () => {
         try {
-            let response=await axios.get(`${backendUrl}/api/cart/totalitems/${userId}`,{withCredentials:true});
-            if(response.data){
+            let response = await axios.get(`${backendUrl}/api/cart/totalitems/${userId}`, { withCredentials: true });
+            if (response.data) {
                 setTotalCartItems(response.data[0].total_items)
             }
         } catch (error) {
@@ -96,7 +96,7 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, isAdmin, products,setProducts, currency, handleSearchProducts, search, setSearch, cartItems, getCartItems,totalCartItems,getTotalCartItems,handleClearSearch }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, isAdmin, products, setProducts, currency, handleSearchProducts, search, setSearch, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch }}>{children}</AppContext.Provider>
     )
 }
 

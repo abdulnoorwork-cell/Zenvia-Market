@@ -48,4 +48,4 @@ const ElectronicsAndGadgets = () => {
     )
 }
 
-export default ElectronicsAndGadgets
+export default React.memo(ElectronicsAndGadgets)

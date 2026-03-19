@@ -49,4 +49,4 @@ const HomeDecor = () => {
     )
 }
 
-export default HomeDecor
+export default React.memo(HomeDecor)

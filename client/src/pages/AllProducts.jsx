@@ -1,9 +1,10 @@
 import React from 'react'
-import ProductCard from '../components/ProductCard'
+const ProductCard = React.lazy(()=>import('../components/ProductCard'))
 import { useState } from 'react'
 import { AppContext } from '../context/AppContext';
 import { useContext } from 'react';
 import { useEffect } from 'react';
+import { Suspense } from 'react';
 import { Star } from "lucide-react";
 import loading_animation from '../../public/loading_animation.svg'
 
@@ -136,7 +137,9 @@ const AllProducts = () => {
                     <div className={`grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
 
                         {currentProducts.length > 0 ? currentProducts.map((product, index) => (
-                            <ProductCard key={index} product={product} />
+                            <Suspense fallback={<p>Loading...</p>}>
+                                <ProductCard key={index} product={product} />
+                            </Suspense>
                         )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
                     </div>

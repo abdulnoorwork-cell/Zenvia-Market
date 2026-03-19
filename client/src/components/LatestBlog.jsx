@@ -18,4 +18,4 @@ const LatestBlog = () => {
   )
 }
 
-export default LatestBlog
+export default React.memo(LatestBlog)

@@ -1,7 +1,8 @@
 import React from 'react'
-import BlogCard from '../components/BlogCard'
+const BlogCard = React.lazy(()=>import('../components/BlogCard'))
 import { FiSearch } from 'react-icons/fi'
 import { useContext } from 'react'
+import { Suspense } from 'react'
 import { AppContext } from '../context/AppContext'
 import loading_animation from '../../public/loading_animation.svg'
 
@@ -31,7 +32,9 @@ const Blogs = () => {
                 <div className="blogs grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 sm:gap-[18px] gap-4">
 
                     {blogs.length>0 ? blogs.map((blog,index) => (
-                        <BlogCard key={index} blog={blog} />
+                        <Suspense fallback={<p>Loading...</p>}>
+                            <BlogCard key={index} blog={blog} />
+                        </Suspense>
                     )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
                 </div>

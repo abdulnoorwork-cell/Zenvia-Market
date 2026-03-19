@@ -49,4 +49,4 @@ const BagsAndAccessories = () => {
     )
 }
 
-export default BagsAndAccessories
+export default React.memo(BagsAndAccessories)

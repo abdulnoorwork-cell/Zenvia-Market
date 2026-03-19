@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react'
-import ProductCard from '../components/ProductCard';
+import React, { useContext, useEffect,Suspense } from 'react'
+const ProductCard = React.lazy(()=>import('../components/ProductCard'))
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
@@ -259,7 +259,9 @@ const SingleProduct = () => {
                     </div>
                     <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
                         {products.length > 0 ? products?.filter(prod => prod.subCategory === product.subCategory).reverse().map((product, index) => (
-                            <ProductCard key={index} product={product} />
+                            <Suspense fallback={<p>Loading...</p>}>
+                                <ProductCard key={index} product={product} />
+                            </Suspense>
                         )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
                     </div>
 

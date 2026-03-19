@@ -4,10 +4,10 @@ import { AppContext } from '../context/AppContext'
 import { ShoppingCart } from "lucide-react";
 import { Star } from "lucide-react";
 
-const ProductCard = ({ product }) => {
+const ProductCard = React.memo(({ product }) => {
   const { currency, navigate } = useContext(AppContext);
   return (
-    <div onClick={()=>{navigate(`/shop/product/${product?._id}`);scrollTo(0,0)}} className="product_card group relative bg-white rounded-xl border border-gray-200 hover:shadow-xl transition duration-300 overflow-hidden">
+    <div onClick={() => { navigate(`/shop/product/${product?._id}`); scrollTo(0, 0) }} className="product_card group relative bg-white rounded-xl border border-gray-200 hover:shadow-xl transition duration-300 overflow-hidden">
 
       <span className="absolute top-3 left-3 bg-[#EB6325] font-medium text-white text-xs px-2 py-1 rounded-md z-10">
         {Math.round(((product?.price - product?.offerPrice) / product?.price) * 100)}% OFF
@@ -23,18 +23,18 @@ const ProductCard = ({ product }) => {
 
         {/* Hover Image */}
         {product.images[1] && <img
-            src={product?.images?.[1]}
-            alt="hover"
-            className="cursor-pointer absolute top-0 left-0 max-h-54 sm:h-54 w-full object-contain p-3 opacity-0 group-hover:opacity-100 transition duration-300"
-          />}
+          src={product?.images?.[1]}
+          alt="hover"
+          className="cursor-pointer absolute top-0 left-0 max-h-54 sm:h-54 w-full object-contain p-3 opacity-0 group-hover:opacity-100 transition duration-300"
+        />}
       </div>
 
       {/* Product Info */}
       <div className="sm:px-4 px-3 sm:pb-4 pb-3">
 
         {/* Category */}
-        {product.subCategory ? 
-        <h6 className='text-xs text-[#EB6325] leading-[1.1em] mb-1.5'>{product?.subCategory}</h6> : <span className='text-xs text-orange-500 leading-none'>{product?.category}</span> }
+        {product.subCategory ?
+          <h6 className='text-xs text-[#EB6325] leading-[1.1em] mb-1.5'>{product?.subCategory}</h6> : <span className='text-xs text-orange-500 leading-none'>{product?.category}</span>}
 
         {/* Title */}
         <h3 className="text-sm font-medium text-gray-800 line-clamp-2 h-10">
@@ -68,6 +68,6 @@ const ProductCard = ({ product }) => {
       </div>
     </div>
   )
-}
+})
 
-export default ProductCard
+export default React.memo(ProductCard)

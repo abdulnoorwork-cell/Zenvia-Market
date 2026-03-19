@@ -52,4 +52,4 @@ const BeautyProducts = () => {
     )
 }
 
-export default BeautyProducts
+export default React.memo(BeautyProducts)

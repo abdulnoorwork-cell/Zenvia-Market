@@ -50,4 +50,4 @@ const LatestProducts = () => {
     )
 }
 
-export default LatestProducts
+export default React.memo(LatestProducts)
