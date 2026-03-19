@@ -147,3 +147,16 @@ export const updateBlog = async (req, res) => {
         }
     })
 }
+
+export const getLatestBlogs = (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
+    const sql = 'SELECT * FROM blogs ORDER BY created_at DESC LIMIT ?'
+    db.query(sql, [limit], async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            res.status(200).json(data);
+        }
+    });
+}

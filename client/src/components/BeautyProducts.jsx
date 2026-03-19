@@ -1,7 +1,6 @@
-import React, { useRef, useState } from 'react'
-import ProductCard from './ProductCard'
+import React, { useRef, useState, Suspense } from 'react'
+const ProductCard = React.lazy(() => import('./ProductCard'))
 import loading_animation from '../../public/loading_animation.svg'
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
@@ -35,7 +34,9 @@ const BeautyProducts = () => {
                         {products.filter(product => product.category === "Beauty & Wellness").slice(length - 10).reverse().map((product, index) => (
                             <SwiperSlide key={product.id}>
                                 <div className="card">
-                                    <ProductCard key={index} product={product} />
+                                    <Suspense key={index} fallback={<p>Loading...</p>}>
+                                        <ProductCard product={product} />
+                                    </Suspense>
                                 </div>
                             </SwiperSlide>
                         ))}
@@ -45,7 +46,9 @@ const BeautyProducts = () => {
             </div>
             <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
                 {products.length > 0 ? products.filter(product => product.category === "Beauty & Wellness").slice(length - 4).reverse().map((product, index) => (
-                    <ProductCard key={index} product={product} />
+                    <Suspense key={index} fallback={<p>Loading...</p>}>
+                        <ProductCard product={product} />
+                    </Suspense>
                 )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
         </div>

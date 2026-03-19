@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react'
-import ProductCard from './ProductCard'
+const ProductCard = React.lazy(() => import('./ProductCard'))
 import loading_animation from '../../public/loading_animation.svg'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import { Suspense } from 'react';
 
 const Clothing = () => {
     const { products } = useContext(AppContext);
@@ -34,15 +35,19 @@ const Clothing = () => {
                         {products.filter(product => product.category === "Clothing & Style").slice(length - 10).reverse().map((product, index) => (
                             <SwiperSlide key={product.id}>
                                 <div className="card">
-                                    <ProductCard key={index} product={product} />
+                                    <Suspense key={index} fallback={<p>Loading...</p>}>
+                                        <ProductCard product={product} />
+                                    </Suspense>
                                 </div>
                             </SwiperSlide>
                         ))}
                     </Swiper> : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
             <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
-                {products.length>0 ? products.filter(product => product.category === "Clothing & Style").slice(length - 4).reverse().map((product, index) => (
-                    <ProductCard key={index} product={product} />
+                {products.length > 0 ? products.filter(product => product.category === "Clothing & Style").slice(length - 4).reverse().map((product, index) => (
+                    <Suspense key={index} fallback={<p>Loading...</p>}>
+                        <ProductCard product={product} />
+                    </Suspense>
                 )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
         </div>

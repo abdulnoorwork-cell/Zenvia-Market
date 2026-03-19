@@ -139,3 +139,26 @@ export const getSearchProducts = (req, res) => {
         res.status(200).json(data);
     })
 }
+
+export const getLatestProducts = (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
+    const sql = 'SELECT * FROM products ORDER BY created_at DESC LIMIT ?'
+    db.query(sql, [limit], async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product._id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
+            res.status(200).json(data);
+        }
+    });
+}
