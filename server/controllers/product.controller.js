@@ -60,7 +60,7 @@ export const addProduct = async (req, res) => {
 }
 
 export const getProducts = (req, res) => {
-    const sql = 'SELECT * FROM products';
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products';
     db.query(sql, async (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, messege: 'Error in getting products: ' + err });
@@ -82,7 +82,7 @@ export const getProducts = (req, res) => {
 
 export const getSingleProduct = (req, res) => {
     const { productId } = req.params;
-    const sql = 'SELECT * FROM products WHERE _id = ?';
+    const sql = 'SELECT _id, name, about, description, category, subCategory, price, offerPrice, sizes, colors, footwear_sizes FROM products WHERE _id = ?';
     db.query(sql, [productId], async (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, messege: 'Error in getting single product: ' + err });
@@ -142,7 +142,7 @@ export const getSearchProducts = (req, res) => {
 
 export const getLatestProducts = (req, res) => {
     const limit = parseInt(req.query.limit) || 8;
-    const sql = 'SELECT * FROM products ORDER BY created_at DESC LIMIT ?'
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products ORDER BY created_at DESC LIMIT ?'
     db.query(sql, [limit], async (err, data) => {
         if (err) {
             console.log(err);
