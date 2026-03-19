@@ -1,5 +1,5 @@
-import React, { useContext, useEffect,Suspense } from 'react'
-const ProductCard = React.lazy(()=>import('../components/ProductCard'))
+import React, { useContext, useEffect, Suspense } from 'react'
+const ProductCard = React.lazy(() => import('../components/ProductCard'))
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
@@ -250,7 +250,9 @@ const SingleProduct = () => {
                                 {products?.filter(prod => prod.subCategory === product.subCategory).reverse().map((product, index) => (
                                     <SwiperSlide key={product.id}>
                                         <div className="card">
-                                            <ProductCard key={index} product={product} />
+                                            <Suspense key={index} fallback={<p>Loading...</p>}>
+                                                <ProductCard product={product} />
+                                            </Suspense>
                                         </div>
                                     </SwiperSlide>
                                 ))}
@@ -259,8 +261,8 @@ const SingleProduct = () => {
                     </div>
                     <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
                         {products.length > 0 ? products?.filter(prod => prod.subCategory === product.subCategory).reverse().map((product, index) => (
-                            <Suspense fallback={<p>Loading...</p>}>
-                                <ProductCard key={index} product={product} />
+                            <Suspense key={index} fallback={<p>Loading...</p>}>
+                                <ProductCard product={product} />
                             </Suspense>
                         )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
                     </div>

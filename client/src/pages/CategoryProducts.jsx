@@ -1,5 +1,5 @@
 import React from 'react'
-const ProductCard = React.lazy(()=>import('../components/ProductCard'))
+const ProductCard = React.lazy(() => import('../components/ProductCard'))
 import { useState } from 'react'
 import { AppContext } from '../context/AppContext';
 import { useContext } from 'react';
@@ -7,11 +7,29 @@ import { useEffect } from 'react';
 import { Suspense } from 'react';
 import { Star } from "lucide-react";
 import loading_animation from '../../public/loading_animation.svg'
+import axios from 'axios';
+import { useCallback } from 'react';
 
 const CategoryProducts = ({ category }) => {
+  const [products, setProducts] = useState([])
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState('latest');
-  const { products, setProducts } = useContext(AppContext);
+  const { backendUrl } = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchCategoryProducts = async () => {
+      try {
+        let response = await axios.get(`${backendUrl}/api/product/category-products/${category}`, { withCredentials: true })
+        if (response.data) {
+          setProducts(response.data)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchCategoryProducts()
+  }, [])
+
   const filteredProducts = subCategory.length === 0 ? products.filter(prod => prod.category === category) : products.filter((product) => subCategory.includes(product.subCategory))
   const [itemsPerPage, setItemsPerPage] = useState(15)
   const [currentPage, setCurrentPage] = useState(1);
@@ -183,8 +201,8 @@ const CategoryProducts = ({ category }) => {
           <div className={`grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
 
             {currentProducts.length > 0 ? currentProducts.map((product, index) => (
-              <Suspense fallback={<p>Loading...</p>}>
-                <ProductCard key={index} product={product} />
+              <Suspense key={index} fallback={<p>Loading...</p>}>
+                <ProductCard product={product} />
               </Suspense>
             )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 

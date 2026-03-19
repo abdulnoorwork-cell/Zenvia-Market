@@ -6,9 +6,25 @@ import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const BagsAndAccessories = () => {
-    const { products } = useContext(AppContext)
+    const [products, setProducts] = useState([])
+    const { backendUrl } = useContext(AppContext);
+    useEffect(() => {
+        const fetchCategoryProducts = async () => {
+            try {
+                let response = await axios.get(`${backendUrl}/api/product/latest-category-products/${'Bags & Accessories'}`, { withCredentials: true })
+                if (response.data) {
+                    setProducts(response.data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchCategoryProducts()
+    }, [])
     return (
         <div className='container mx-auto px-4 mt-10'>
             <h6 className='text-[22px] tracking-[0.1px] mb-5 font-semibold'>Bags & Accessories</h6>
@@ -31,7 +47,7 @@ const BagsAndAccessories = () => {
                             1536: { slidesPerView: 6 },
                         }}
                     >
-                        {products.filter(product => product.category === "Bags & Accessories").slice(length - 10).reverse().map((product, index) => (
+                        {products.reverse().map((product, index) => (
                             <SwiperSlide key={product.id}>
                                 <div className="card">
                                     <Suspense key={index} fallback={<p>Loading...</p>}>
@@ -43,7 +59,7 @@ const BagsAndAccessories = () => {
                     </Swiper> : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
             <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
-                {products.length > 0 ? products.filter(product => product.category === "Bags & Accessories").slice(length - 4).reverse().map((product, index) => (
+                {products.length > 0 ? products.reverse().map((product, index) => (
                     <Suspense key={index} fallback={<p>Loading...</p>}>
                         <ProductCard product={product} />
                     </Suspense>

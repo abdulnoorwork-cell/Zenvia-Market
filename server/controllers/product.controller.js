@@ -141,9 +141,81 @@ export const getSearchProducts = (req, res) => {
 }
 
 export const getLatestProducts = (req, res) => {
-    const limit = parseInt(req.query.limit) || 8;
+    const limit = parseInt(req.query.limit) || 10;
     const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products ORDER BY created_at DESC LIMIT ?'
     db.query(sql, [limit], async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product._id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
+            res.status(200).json(data);
+        }
+    });
+}
+
+export const getCategoryProducts = (req, res) => {
+    // const limit = parseInt(req.query.limit) || 10;
+    const {category} = req.params;
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products WHERE category = ?'
+    db.query(sql,[category], async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product._id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
+            res.status(200).json(data);
+        }
+    });
+}
+
+export const getLatestCategoryProducts = (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
+    const {category} = req.params;
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products WHERE category = ? ORDER BY created_at DESC LIMIT ?'
+    db.query(sql,[category,limit], async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product._id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
+            res.status(200).json(data);
+        }
+    });
+}
+
+export const getSubCategoryProducts = (req, res) => {
+    // const limit = parseInt(req.query.limit) || 10;
+    const {subCategory} = req.params;
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products WHERE subCategory = ?'
+    db.query(sql,[subCategory], async (err, data) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: "Server error" });

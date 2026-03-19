@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-const ProductCard = React.lazy(()=>import('../components/ProductCard'))
-import { useContext,Suspense } from 'react'
+const ProductCard = React.lazy(() => import('../components/ProductCard'))
+import { useContext, Suspense } from 'react'
 import { AppContext } from '../context/AppContext'
 import loading_animation from '../../public/loading_animation.svg'
+import axios from 'axios'
 
 const ProductType = ({ type }) => {
-  const { products } = useContext(AppContext);
+  const [products, setProducts] = useState([])
+  const { backendUrl } = useContext(AppContext);
+  useEffect(() => {
+    const fetchSubCategoryProducts = async () => {
+      try {
+        let response = await axios.get(`${backendUrl}/api/product/subcategory-products/${type}`, { withCredentials: true })
+        if (response.data) {
+          setProducts(response.data)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchSubCategoryProducts()
+  }, [])
   const [itemsPerPage, setItemsPerPage] = useState(12)
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
@@ -33,16 +48,17 @@ const ProductType = ({ type }) => {
   }, [])
   const lastIndex = currentPage * itemsPerPage;
   const firstIndex = lastIndex - itemsPerPage;
-  const currentProducts = products.filter(prod => prod.subCategory === type).slice(firstIndex, lastIndex);
-  const totalPages = Math.ceil(products?.filter(prod => prod.subCategory === type).length / itemsPerPage);
+  const currentProducts = products.slice(firstIndex, lastIndex);
+  const totalPages = Math.ceil(products?.length / itemsPerPage);
+
   return (
     <div>
       <div className="container mx-auto px-4 mt-10 min-h-screen">
-        <h6 className='mb-3'>Showing {itemsPerPage} of {products.filter(prod => prod.subCategory === type).length} from {type}</h6>
+        <h6 className='mb-3'>Showing {itemsPerPage} of {products.length} from {type}</h6>
         <div className='products grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 sm:gap-[18px] gap-4'>
-          {currentProducts.length>0 ? currentProducts.map((product, index) => (
-            <Suspense fallback={<p>Loading...</p>}>
-              <ProductCard key={index} product={product} />
+          {currentProducts.length > 0 ? currentProducts.map((product, index) => (
+            <Suspense key={index} fallback={<p>Loading...</p>}>
+              <ProductCard product={product} />
             </Suspense>
           )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
         </div>
