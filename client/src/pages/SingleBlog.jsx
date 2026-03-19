@@ -93,7 +93,7 @@ const SingleBlog = () => {
                     <div className="blogs grid md:grid-cols-3 grid-cols-2 sm:gap-[18px] gap-4">
 
                         {blogs.length>0 ? blogs?.slice(length - 3).map((blog,index) => (
-                            <Suspense fallback={<p>Loading...</p>}>
+                            <Suspense>
                                 <BlogCard key={index} blog={blog} />
                             </Suspense>
                         )) : <img src={loading_animation} alt='loader' className='mx-auto' />}

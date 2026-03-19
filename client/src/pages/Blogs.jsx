@@ -32,7 +32,7 @@ const Blogs = () => {
                 <div className="blogs grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 sm:gap-[18px] gap-4">
 
                     {blogs.length>0 ? blogs.map((blog,index) => (
-                        <Suspense fallback={<p>Loading...</p>}>
+                        <Suspense>
                             <BlogCard key={index} blog={blog} />
                         </Suspense>
                     )) : <img src={loading_animation} alt='loader' className='mx-auto' />}

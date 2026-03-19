@@ -201,7 +201,7 @@ const CategoryProducts = ({ category }) => {
           <div className={`grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
 
             {currentProducts.length > 0 ? currentProducts.map((product, index) => (
-              <Suspense key={index} fallback={<p>Loading...</p>}>
+              <Suspense key={index}>
                 <ProductCard product={product} />
               </Suspense>
             )) : <img src={loading_animation} alt='loader' className='mx-auto' />}

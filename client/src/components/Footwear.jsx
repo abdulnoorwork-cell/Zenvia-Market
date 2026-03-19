@@ -51,7 +51,7 @@ const Footwear = () => {
                         {products.reverse().map((product, index) => (
                             <SwiperSlide key={product.id}>
                                 <div className="card">
-                                    <Suspense key={index} fallback={<p>Loading...</p>}>
+                                    <Suspense key={index}>
                                         <ProductCard product={product} />
                                     </Suspense>
                                 </div>
@@ -61,7 +61,7 @@ const Footwear = () => {
             </div>
             <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
                 {products.length > 0 ? products.reverse().map((product, index) => (
-                    <Suspense key={index} fallback={<p>Loading...</p>}>
+                    <Suspense key={index}>
                         <ProductCard product={product} />
                     </Suspense>
                 )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
