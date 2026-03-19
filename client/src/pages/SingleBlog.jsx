@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext';
 import BlogCard from '../components/BlogCard';
+import loading_animation from '../../public/loading_animation.svg'
 
 const SingleBlog = () => {
     const [blog, setBlog] = useState([]);
@@ -33,7 +34,7 @@ const SingleBlog = () => {
 
             <div className="max-w-[1080px] mx-auto px-4">
 
-                {/* Blog Header */}
+                {blog.length>0 ? 
                 <div className="bg-white rounded-xl shadow overflow-hidden">
 
                     <img
@@ -79,7 +80,7 @@ const SingleBlog = () => {
 
                     </div>
 
-                </div>
+                </div> : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
                 {/* Related Posts */}
                 <div className="mt-10">
@@ -90,9 +91,9 @@ const SingleBlog = () => {
 
                     <div className="blogs grid md:grid-cols-3 grid-cols-2 sm:gap-[18px] gap-4">
 
-                        {blogs?.slice(length - 3).map((blog,index) => (
+                        {blogs.length>0 ? blogs?.slice(length - 3).map((blog,index) => (
                             <BlogCard key={index} blog={blog} />
-                        ))}
+                        )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
                     </div>
 

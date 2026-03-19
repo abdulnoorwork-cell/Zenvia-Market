@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
+import loading_animation from '../../public/loading_animation.svg'
 
 const ProductType = ({ type }) => {
   const { products } = useContext(AppContext);
@@ -39,9 +40,9 @@ const ProductType = ({ type }) => {
       <div className="container mx-auto px-4 mt-10 min-h-screen">
         <h6 className='mb-3'>Showing {itemsPerPage} of {products.filter(prod => prod.subCategory === type).length} from {type}</h6>
         <div className='products grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 sm:gap-[18px] gap-4'>
-          {currentProducts.map((product, index) => (
+          {currentProducts.length>0 ? currentProducts.map((product, index) => (
             <ProductCard key={index} product={product} />
-          ))}
+          )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
         </div>
         {/* Pagination Buttons */}
         {totalPages > 1 && <div className='flex items-center justify-center gap-2 mt-6'>

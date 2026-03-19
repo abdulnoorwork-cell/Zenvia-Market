@@ -5,6 +5,7 @@ import { AppContext } from '../context/AppContext';
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { Star } from "lucide-react";
+import loading_animation from '../../public/loading_animation.svg'
 
 const CategoryProducts = ({ category }) => {
   const [subCategory, setSubCategory] = useState([]);
@@ -66,77 +67,77 @@ const CategoryProducts = ({ category }) => {
 
           <h2 className="text-lg font-semibold mb-4">Filters</h2>
 
-          {category !== "Home Decor" ? 
-          <div className="mb-6 flex flex-col gap-2">
-            <h3 className="font-medium mb-2">Sub Categories</h3>
+          {category !== "Home Decor" ?
+            <div className="mb-6 flex flex-col gap-2">
+              <h3 className="font-medium mb-2">Sub Categories</h3>
 
-            {category === "Clothing & Style" ?
-              <div className='flex flex-col gap-2 sm:text-sm text-[13px] font-normal'>
-                <p className='flex gap-2'>
-                  <input type='checkbox' className='w-3' value={'Men'} onChange={handleCategoryChange} />Men
-                </p>
-                <p className='flex gap-2'>
-                  <input type='checkbox' className='w-3' value={'Women'} onChange={handleCategoryChange} />Women
-                </p>
-                <p className='flex gap-2'>
-                  <input type='checkbox' className='w-3' value={'Kids'} onChange={handleCategoryChange} />Kids
-                </p>
-              </div> :
-              category === "Footwear" ?
+              {category === "Clothing & Style" ?
                 <div className='flex flex-col gap-2 sm:text-sm text-[13px] font-normal'>
                   <p className='flex gap-2'>
-                    <input type='checkbox' className='w-3' value={'Formal Shoes'} onChange={handleCategoryChange} />Formal Shoes
+                    <input type='checkbox' className='w-3' value={'Men'} onChange={handleCategoryChange} />Men
                   </p>
                   <p className='flex gap-2'>
-                    <input type='checkbox' className='w-3' value={'Casual Shoes'} onChange={handleCategoryChange} />Casual Shoes
+                    <input type='checkbox' className='w-3' value={'Women'} onChange={handleCategoryChange} />Women
                   </p>
                   <p className='flex gap-2'>
-                    <input type='checkbox' className='w-3' value={'Sneakers'} onChange={handleCategoryChange} />Sneakers
+                    <input type='checkbox' className='w-3' value={'Kids'} onChange={handleCategoryChange} />Kids
                   </p>
-                  <p className='flex gap-2'>
-                    <input type='checkbox' className='w-3' value={'Boots'} onChange={handleCategoryChange} />Boots
-                  </p>
-                </div> : category === "Bags & Accessories" ?
+                </div> :
+                category === "Footwear" ?
                   <div className='flex flex-col gap-2 sm:text-sm text-[13px] font-normal'>
                     <p className='flex gap-2'>
-                      <input type='checkbox' className='w-3' value={'Handbags'} onChange={handleCategoryChange} />Handbags
+                      <input type='checkbox' className='w-3' value={'Formal Shoes'} onChange={handleCategoryChange} />Formal Shoes
                     </p>
                     <p className='flex gap-2'>
-                      <input type='checkbox' className='w-3' value={'Crossbody Bags'} onChange={handleCategoryChange} />Crossbody Bags
+                      <input type='checkbox' className='w-3' value={'Casual Shoes'} onChange={handleCategoryChange} />Casual Shoes
                     </p>
                     <p className='flex gap-2'>
-                      <input type='checkbox' className='w-3' value={'Wallets'} onChange={handleCategoryChange} />Wallets
+                      <input type='checkbox' className='w-3' value={'Sneakers'} onChange={handleCategoryChange} />Sneakers
                     </p>
-                  </div> : category === "Beauty & Wellness" ?
+                    <p className='flex gap-2'>
+                      <input type='checkbox' className='w-3' value={'Boots'} onChange={handleCategoryChange} />Boots
+                    </p>
+                  </div> : category === "Bags & Accessories" ?
                     <div className='flex flex-col gap-2 sm:text-sm text-[13px] font-normal'>
                       <p className='flex gap-2'>
-                        <input type='checkbox' className='w-3' value={'Shampoo & Facewashes'} onChange={handleCategoryChange} />Shampoo & Facewashes
+                        <input type='checkbox' className='w-3' value={'Handbags'} onChange={handleCategoryChange} />Handbags
                       </p>
                       <p className='flex gap-2'>
-                        <input type='checkbox' className='w-3' value={'Skin Treatments'} onChange={handleCategoryChange} />Skin Treatments
+                        <input type='checkbox' className='w-3' value={'Crossbody Bags'} onChange={handleCategoryChange} />Crossbody Bags
                       </p>
                       <p className='flex gap-2'>
-                        <input type='checkbox' className='w-3' value={'Oil & Treatments'} onChange={handleCategoryChange} />Sneakers
+                        <input type='checkbox' className='w-3' value={'Wallets'} onChange={handleCategoryChange} />Wallets
                       </p>
-                      <p className='flex gap-2'>
-                        <input type='checkbox' className='w-3' value={'Hair Color & Treatments'} onChange={handleCategoryChange} />Hair Color & Treatments
-                      </p>
-                    </div> : category === "Electronics & Gadgets" ?
+                    </div> : category === "Beauty & Wellness" ?
                       <div className='flex flex-col gap-2 sm:text-sm text-[13px] font-normal'>
                         <p className='flex gap-2'>
-                          <input type='checkbox' className='w-3' value={'Mobiles & Computers'} onChange={handleCategoryChange} />Mobiles & Computers
+                          <input type='checkbox' className='w-3' value={'Shampoo & Facewashes'} onChange={handleCategoryChange} />Shampoo & Facewashes
                         </p>
                         <p className='flex gap-2'>
-                          <input type='checkbox' className='w-3' value={'Smart Watch & Smart TV'} onChange={handleCategoryChange} />Smart Watch & Smart TV
+                          <input type='checkbox' className='w-3' value={'Skin Treatments'} onChange={handleCategoryChange} />Skin Treatments
                         </p>
                         <p className='flex gap-2'>
-                          <input type='checkbox' className='w-3' value={'Audio & Accessories'} onChange={handleCategoryChange} />Audio & Accessories
+                          <input type='checkbox' className='w-3' value={'Oil & Treatments'} onChange={handleCategoryChange} />Sneakers
                         </p>
                         <p className='flex gap-2'>
-                          <input type='checkbox' className='w-3' value={'Refrigerator & Cooling'} onChange={handleCategoryChange} />Refrigerator & Cooling
+                          <input type='checkbox' className='w-3' value={'Hair Color & Treatments'} onChange={handleCategoryChange} />Hair Color & Treatments
                         </p>
-                      </div> : null}
-          </div> : null}
+                      </div> : category === "Electronics & Gadgets" ?
+                        <div className='flex flex-col gap-2 sm:text-sm text-[13px] font-normal'>
+                          <p className='flex gap-2'>
+                            <input type='checkbox' className='w-3' value={'Mobiles & Computers'} onChange={handleCategoryChange} />Mobiles & Computers
+                          </p>
+                          <p className='flex gap-2'>
+                            <input type='checkbox' className='w-3' value={'Smart Watch & Smart TV'} onChange={handleCategoryChange} />Smart Watch & Smart TV
+                          </p>
+                          <p className='flex gap-2'>
+                            <input type='checkbox' className='w-3' value={'Audio & Accessories'} onChange={handleCategoryChange} />Audio & Accessories
+                          </p>
+                          <p className='flex gap-2'>
+                            <input type='checkbox' className='w-3' value={'Refrigerator & Cooling'} onChange={handleCategoryChange} />Refrigerator & Cooling
+                          </p>
+                        </div> : null}
+            </div> : null}
 
           <div className="mb-6">
             <h3 className="font-medium mb-2">Price</h3>
@@ -180,9 +181,9 @@ const CategoryProducts = ({ category }) => {
           {/* Product Grid */}
           <div className={`grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
 
-            {currentProducts.map((product, index) => (
+            {currentProducts.length > 0 ? currentProducts.map((product, index) => (
               <ProductCard key={index} product={product} />
-            ))}
+            )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
           </div>
 

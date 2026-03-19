@@ -5,6 +5,7 @@ import { AppContext } from '../context/AppContext';
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { Star } from "lucide-react";
+import loading_animation from '../../public/loading_animation.svg'
 
 const AllProducts = () => {
     const [category, setCategory] = useState([]);
@@ -33,7 +34,7 @@ const AllProducts = () => {
 
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         if (sortType === "latest") {
-             return new Date(b.created_at) - new Date(a.created_at);
+            return new Date(b.created_at) - new Date(a.created_at);
         }
         if (sortType === "low-high") {
             return a.offerPrice - b.offerPrice;
@@ -134,9 +135,9 @@ const AllProducts = () => {
                     {/* Product Grid */}
                     <div className={`grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
 
-                        {currentProducts.map((product, index) => (
+                        {currentProducts.length > 0 ? currentProducts.map((product, index) => (
                             <ProductCard key={index} product={product} />
-                        ))}
+                        )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
 
                     </div>
 
