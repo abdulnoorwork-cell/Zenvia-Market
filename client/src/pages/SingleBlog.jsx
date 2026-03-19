@@ -34,7 +34,7 @@ const SingleBlog = () => {
 
             <div className="max-w-[1080px] mx-auto px-4">
 
-                {blog.length>0 ? 
+                {blog ? 
                 <div className="bg-white rounded-xl shadow overflow-hidden">
 
                     <img

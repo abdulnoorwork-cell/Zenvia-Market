@@ -86,30 +86,31 @@ const SingleProduct = () => {
     return product && (
         <div className='container mx-auto'>
             <div className="max-w-7xl mx-auto px-4 pt-12">
-                {product.length > 0 ?
-                    <div className="w-full mx-auto">
+                {product ?
+                    <div>
+                        <div className="w-full mx-auto">
 
-                        <div className="mx-auto flex flex-col md:flex-row lg:gap-10 sm:gap-8 gap-6 bg-white sm:p-8 px-5.5 pt-6 pb-8 rounded-2xl">
+                            <div className="mx-auto flex flex-col md:flex-row lg:gap-10 sm:gap-8 gap-6 bg-white sm:p-8 px-5.5 pt-6 pb-8 rounded-2xl">
 
-                            <div className="md:w-[45%] w-full flex flex-col gap-3">
-                                <div className="flex items-center justify-center">
-                                    {thumbnail && <img src={thumbnail} alt="Selected product" className="rounded-xl w-full h-full object-contain max-h-[550px] border border-gray-200 bg-gray-50" />}
+                                <div className="md:w-[45%] w-full flex flex-col gap-3">
+                                    <div className="flex items-center justify-center">
+                                        {thumbnail && <img src={thumbnail} alt="Selected product" className="rounded-xl w-full h-full object-contain max-h-[550px] border border-gray-200 bg-gray-50" />}
+                                    </div>
+                                    <div className="flex lg:gap-4 gap-3">
+                                        {product?.images?.map((image, index) => (
+                                            <div key={index} onClick={() => setThumbnail(image)} className="rounded overflow-hidden cursor-pointer" >
+                                                <img src={image} className='lg:w-20 lg:h-20 max-h-[80px] object-fill bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:scale-105 transition' alt={`Thumbnail ${index + 1}`} />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="flex lg:gap-4 gap-3">
-                                    {product?.images?.map((image, index) => (
-                                        <div key={index} onClick={() => setThumbnail(image)} className="rounded overflow-hidden cursor-pointer" >
-                                            <img src={image} className='lg:w-20 lg:h-20 max-h-[80px] object-fill bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:scale-105 transition' alt={`Thumbnail ${index + 1}`} />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
 
-                            <div className="md:w-[55%] w-full flex flex-col gap-2.5">
-                                <h1 className="lg:text-3xl sm:text-2xl text-xl font-bold tracking-[-0.2px]">{product.name}</h1>
-                                {/* Rating */}
-                                <div className="text-yellow-500">★★★★☆ <span className="text-gray-500 text-sm">(128 Reviews)</span></div>
+                                <div className="md:w-[55%] w-full flex flex-col gap-2.5">
+                                    <h1 className="lg:text-3xl sm:text-2xl text-xl font-bold tracking-[-0.2px]">{product.name}</h1>
+                                    {/* Rating */}
+                                    <div className="text-yellow-500">★★★★☆ <span className="text-gray-500 text-sm">(128 Reviews)</span></div>
 
-                                {/* <div className="flex items-center gap-0.5 mt-1">
+                                    {/* <div className="flex items-center gap-0.5 mt-1">
                             {Array(5).fill('').map((_, i) => (
                                 product.rating > i ? (
                                     <svg key={i} width="14" height="13" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,107 +125,107 @@ const SingleProduct = () => {
                             <p className="text-base ml-2">({product.rating})</p>
                         </div> */}
 
-                                <div className="flex items-center gap-3">
-                                    <h6 className="lg:text-3xl sm:text-2xl text-xl font-bold" style={{ fontFamily: 'Outfit' }}>{currency}.{(product.offerPrice)?.toLocaleString()}</h6>
-                                    <h6 className="line-through text-gray-500 lg:text-base text-sm" style={{ fontFamily: 'Outfit' }}>{currency}.{(product.price)?.toLocaleString()}</h6>
-                                    <span className='text-green-600 font-semibold lg:text-[13px] text-xs'>Save {Math.round(((product?.price - product?.offerPrice) / product?.price) * 100)}%</span>
-                                    {/* <span className="">(inclusive of all taxes)</span> */}
-                                </div>
+                                    <div className="flex items-center gap-3">
+                                        <h6 className="lg:text-3xl sm:text-2xl text-xl font-bold" style={{ fontFamily: 'Outfit' }}>{currency}.{(product.offerPrice)?.toLocaleString()}</h6>
+                                        <h6 className="line-through text-gray-500 lg:text-base text-sm" style={{ fontFamily: 'Outfit' }}>{currency}.{(product.price)?.toLocaleString()}</h6>
+                                        <span className='text-green-600 font-semibold lg:text-[13px] text-xs'>Save {Math.round(((product?.price - product?.offerPrice) / product?.price) * 100)}%</span>
+                                        {/* <span className="">(inclusive of all taxes)</span> */}
+                                    </div>
 
-                                <p className=' mt-3 text-[#64748B] sm:text-sm text-xs' dangerouslySetInnerHTML={{ __html: cleanHTML }}>
-                                </p>
-                                {product.sizes !== "[]" ?
-                                    <div className="mt-3">
-                                        <h3 className="font-semibold mb-2">Select Size</h3>
+                                    <p className=' mt-3 text-[#64748B] sm:text-sm text-xs' dangerouslySetInnerHTML={{ __html: cleanHTML }}>
+                                    </p>
+                                    {product.sizes !== "[]" ?
+                                        <div className="mt-3">
+                                            <h3 className="font-semibold mb-2">Select Size</h3>
 
-                                        <div className="flex gap-3 flex-wrap">
-                                            {product?.sizes ? JSON.parse(product.sizes).map((size, index) => (
-                                                JSON.parse(size).map((v, i) => (
+                                            <div className="flex gap-3 flex-wrap">
+                                                {product?.sizes ? JSON.parse(product.sizes).map((size, index) => (
+                                                    JSON.parse(size).map((v, i) => (
+                                                        <button
+                                                            key={i}
+                                                            onClick={() => setSelectedSize(v)}
+                                                            className={`w-10 h-10 border border-gray-200 rounded-md flex items-center justify-center font-medium cursor-pointer
+                    ${selectedSize === v
+                                                                    ? "bg-blue-600 text-white"
+                                                                    : "bg-gray-200 hover:border-blue-500"
+                                                                }`}
+                                                        >
+                                                            {v}
+                                                        </button>
+                                                    ))
+                                                )) : []}
+                                            </div>
+                                        </div> : null
+                                    }
+                                    {product.colors !== "[]" ?
+                                        <div className="mt-3">
+                                            <h3 className="font-semibold mb-2">Select Color</h3>
+
+                                            <div className="flex gap-3">
+
+                                                {product?.colors ? JSON.parse(product?.colors).map((color, i) => (
                                                     <button
                                                         key={i}
-                                                        onClick={() => setSelectedSize(v)}
-                                                        className={`w-10 h-10 border border-gray-200 rounded-md flex items-center justify-center font-medium cursor-pointer
-                    ${selectedSize === v
-                                                                ? "bg-blue-600 text-white"
-                                                                : "bg-gray-200 hover:border-blue-500"
-                                                            }`}
-                                                    >
-                                                        {v}
-                                                    </button>
-                                                ))
-                                            )) : []}
-                                        </div>
-                                    </div> : null
-                                }
-                                {product.colors !== "[]" ?
-                                    <div className="mt-3">
-                                        <h3 className="font-semibold mb-2">Select Color</h3>
+                                                        onClick={() => setSelectedColor(color)}
+                                                        className={`w-8 h-8 rounded-full border cursor-pointer ${color === "Blue" ? "bg-blue-600" : color === "Black" ? "bg-black" : color === "Pink" ? "bg-pink-600" : color === "Red" ? "bg-red-600" : color === "Green" ? "bg-green-600" : color === "White" ? "bg-white" : color === "Grey" ? "bg-gray-600" : color === "Orange" ? "bg-orange-500" : color === "Brown" ? "bg-amber-700" : color === " Pink" ? "bg-pink-600" : color === "Yellow" ? "bg-yellow-500" : ""} ${selectedColor === color ? "border-2 border-blue-600" : ""}`}
+                                                    />
+                                                )) : []}
 
-                                        <div className="flex gap-3">
-
-                                            {product?.colors ? JSON.parse(product?.colors).map((color, i) => (
-                                                <button
-                                                    key={i}
-                                                    onClick={() => setSelectedColor(color)}
-                                                    className={`w-8 h-8 rounded-full border cursor-pointer ${color === "Blue" ? "bg-blue-600" : color === "Black" ? "bg-black" : color === "Pink" ? "bg-pink-600" : color === "Red" ? "bg-red-600" : color === "Green" ? "bg-green-600" : color === "White" ? "bg-white" : color === "Grey" ? "bg-gray-600" : color === "Orange" ? "bg-orange-500" : color === "Brown" ? "bg-amber-700" : color === " Pink" ? "bg-pink-600" : color === "Yellow" ? "bg-yellow-500" : ""} ${selectedColor === color ? "border-2 border-blue-600" : ""}`}
-                                                />
-                                            )) : []}
-
+                                            </div>
+                                        </div> : null
+                                    }
+                                    {product.footwear_sizes !== "[]" ?
+                                        <div className='mt-3'>
+                                            <h3 className="font-semibold mb-2">Select Size</h3>
+                                            <div className="flex gap-3 flex-wrap">
+                                                {product?.footwear_sizes ? JSON.parse(product?.footwear_sizes).map((item, index) => (
+                                                    <button key={index} onClick={() => setSelectedFootwearSize(item)} className={`py-1.5 px-4 border border-gray-200 rounded-md flex items-center justify-center font-medium cursor-pointer text-[12.8px] text-gray-700 ${selectedFootwearSize === item ? "bg-blue-600 text-white" : "bg-gray-200"}`} style={{ fontFamily: 'Inter' }}>{item}</button>
+                                                )) : []}
+                                            </div>
+                                        </div> : null}
+                                    <div className="flex items-center gap-4 my-3">
+                                        <h6 className="font-semibold">Quantity</h6>
+                                        <div className="flex items-center bg-gray-100 border border-gray-200 rounded-lg">
+                                            <button
+                                                onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
+                                                className="px-3 py-1"
+                                            >
+                                                -
+                                            </button>
+                                            <span className="px-4">{qty}</span>
+                                            <button
+                                                onClick={() => setQty(qty + 1)}
+                                                className="px-3 py-1"
+                                            >
+                                                +
+                                            </button>
                                         </div>
-                                    </div> : null
-                                }
-                                {product.footwear_sizes !== "[]" ?
-                                    <div className='mt-3'>
-                                        <h3 className="font-semibold mb-2">Select Size</h3>
-                                        <div className="flex gap-3 flex-wrap">
-                                            {product?.footwear_sizes ? JSON.parse(product?.footwear_sizes).map((item, index) => (
-                                                <button key={index} onClick={() => setSelectedFootwearSize(item)} className={`py-1.5 px-4 border border-gray-200 rounded-md flex items-center justify-center font-medium cursor-pointer text-[12.8px] text-gray-700 ${selectedFootwearSize === item ? "bg-blue-600 text-white" : "bg-gray-200"}`} style={{ fontFamily: 'Inter' }}>{item}</button>
-                                            )) : []}
-                                        </div>
-                                    </div> : null}
-                                <div className="flex items-center gap-4 my-3">
-                                    <h6 className="font-semibold">Quantity</h6>
-                                    <div className="flex items-center bg-gray-100 border border-gray-200 rounded-lg">
-                                        <button
-                                            onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
-                                            className="px-3 py-1"
-                                        >
-                                            -
+                                    </div>
+
+                                    {/* Buttons */}
+                                    <div className="flex gap-4 mt-2 sm:text-sm text-xs">
+                                        <button onClick={() => addToCart(product?._id, qty, selectedSize, selectedColor, selectedFootwearSize)} className="flex-1 cursor-pointer bg-gray-100 border border-gray-200 rounded-lg py-3 font-semibold hover:bg-gray-100 transition">
+                                            Add to Cart
                                         </button>
-                                        <span className="px-4">{qty}</span>
-                                        <button
-                                            onClick={() => setQty(qty + 1)}
-                                            className="px-3 py-1"
-                                        >
-                                            +
+
+                                        <button className="flex-1 cursor-pointer bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition">
+                                            Buy Now
                                         </button>
                                     </div>
+
                                 </div>
-
-                                {/* Buttons */}
-                                <div className="flex gap-4 mt-2 sm:text-sm text-xs">
-                                    <button onClick={() => addToCart(product?._id, qty, selectedSize, selectedColor, selectedFootwearSize)} className="flex-1 cursor-pointer bg-gray-100 border border-gray-200 rounded-lg py-3 font-semibold hover:bg-gray-100 transition">
-                                        Add to Cart
-                                    </button>
-
-                                    <button className="flex-1 cursor-pointer bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition">
-                                        Buy Now
-                                    </button>
-                                </div>
-
                             </div>
                         </div>
-                    </div> : <img src={loading_animation} alt='loader' className='mx-auto' />}
-                {/* Tabs Section */}
-                <div className="mt-12 bg-white p-8 rounded-2xl">
-                    <div className="border-b border-gray-300 flex gap-8 pb-3 font-semibold">
-                        <button>Description</button>
-                        <button>Reviews</button>
-                    </div>
+                        <div className="mt-12 bg-white p-8 rounded-2xl">
+                            <div className="border-b border-gray-300 flex gap-8 pb-3 font-semibold">
+                                <button>Description</button>
+                                <button>Reviews</button>
+                            </div>
 
-                    <p className="mt-5 sm:text-sm text-xs" dangerouslySetInnerHTML={{ __html: cleanDescription }}>
-                    </p>
-                </div>
+                            <p className="mt-5 sm:text-sm text-xs" dangerouslySetInnerHTML={{ __html: cleanDescription }}>
+                            </p>
+                        </div>
+                    </div> : <img src={loading_animation} alt='loader' className='mx-auto' />}
                 <div className="mt-10 flex flex-col mx-auto">
                     <h6 className='text-[22px] tracking-[0.1px] mb-5 font-semibold'>Related Products</h6>
                     <div className='md:block hidden'>
