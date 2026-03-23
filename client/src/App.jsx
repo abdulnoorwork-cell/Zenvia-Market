@@ -29,6 +29,9 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import OrderSuccessfull from './pages/OrderSuccessfull';
 
 const App = () => {
   const { isAdmin,token,navigate } = useContext(AppContext);
@@ -69,6 +72,9 @@ const App = () => {
           <Route path='/shop/electronics-&-gadgets/audio-&-accessories' element={<ProductType type="Audio & Accessories" />} />
         </Route>
         <Route path='/user/login' element={!token ? <Login /> : undefined} />
+        <Route path='/success' element={<OrderSuccessfull />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
         {isAdmin ? <Route path='/admin' element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path='addblog' element={<AddBlog />} />

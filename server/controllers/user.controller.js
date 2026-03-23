@@ -189,3 +189,61 @@ export const adminLogin = (req, res) => {
         return res.status(500).json({ success: false, messege: "Error in Login: " + error })
     }
 }
+
+export const forgotPassword = (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({ success: false, messege: "Email is required" })
+    }
+    const sql = 'SELECT * FROM users WHERE email = ?';
+    db.query(sql, [email], async (err, data) => {
+        if (err) {
+            console.log({ success: false, messege: err })
+            return res.status(500).json({ success: false, messege: "Error: " + err })
+        } else {
+            const resetToken = jwt.sign({ id: data[0]?._id, email: data[0]?.email }, process.env.RESET_TOKEN, { expiresIn: '10m' });
+            const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.ADMIN_EMAIL,
+                    pass: process.env.ADMIN_PASSWORD
+                }
+            })
+            const mailOptions = {
+                from: process.env.ADMIN_EMAIL,
+                to: data[0]?.email,
+                subject: 'Reset Password',
+                text: `Click the link to reset your password ${resetLink}`
+            }
+            await transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error)
+                    return res.status(500).json({ success: false, messege: error.message })
+                } else {
+                    return res.status(200).json({ success: true, messege: "Reset Password link sent successfully", resetLink })
+                }
+            });
+        }
+    })
+}
+
+export const resetPassword = async (req, res) => {
+    const { token, password } = req.body;
+    if (!token || !password) {
+        return res.status(400).json({ success: false, messege: "Password is required" })
+    }
+    const decoded = jwt.verify(token, process.env.RESET_TOKEN);
+    const hashPassword = await bcrypt.hash(password, 10)
+    const sql = 'Update users SET password=? WHERE _id = ?';
+    const values = [hashPassword, decoded.id]
+    db.query(sql, [...values], (err, data) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, messege: "Error in reset password: " + err })
+        } else {
+            console.log({ success: true, messege: "Password Reset Successfully" })
+            return res.status(200).json({ success: true, messege: "Password Reset Successfully" })
+        }
+    })
+}

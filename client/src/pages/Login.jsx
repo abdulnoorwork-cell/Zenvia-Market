@@ -137,7 +137,7 @@ const Login = () => {
                                     type="email"
                                     placeholder="Enter your email"
                                     value={email} onChange={(e)=>setEmail(e.target.value)}
-                                    className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
 
@@ -150,7 +150,7 @@ const Login = () => {
                                     type="password"
                                     placeholder="Enter your password"
                                     value={password} onChange={(e)=>setPassword(e.target.value)}
-                                    className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
 
@@ -261,7 +261,7 @@ const Login = () => {
                                     value={name}
                                     onChange={(e)=>setName(e.target.value)}
                                     placeholder="Enter your name"
-                                    className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
 
@@ -275,7 +275,7 @@ const Login = () => {
                                     value={email}
                                     onChange={(e)=>setEmail(e.target.value)}
                                     placeholder="Enter your email"
-                                    className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
 
@@ -289,7 +289,7 @@ const Login = () => {
                                     value={password}
                                     onChange={(e)=>setPassword(e.target.value)}
                                     placeholder="Enter password"
-                                    className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
 
@@ -301,7 +301,7 @@ const Login = () => {
                                 <input
                                     type="number"
                                     placeholder="Phone"
-                                    className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
 

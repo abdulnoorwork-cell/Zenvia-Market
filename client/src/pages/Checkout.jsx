@@ -5,14 +5,14 @@ import toast from 'react-hot-toast';
 
 const Checkout = () => {
     const [loading, setLoading] = useState(false)
-    const { cartItems, backendUrl, userId, token, getCartItems, shippingFee, currency, discount,getTotalCartItems } = useContext(AppContext)
+    const { cartItems, backendUrl, userId, token, getCartItems, shippingFee, currency, discount, getTotalCartItems } = useContext(AppContext)
     const subtotal = cartItems.reduce(
         (total, item) => total + item.offerPrice * item.quantity,
         0
     );
     const total = (subtotal + shippingFee) - discount;
 
-    const [payment, setPayment] = useState("COD");
+    const [payment, setPayment] = useState("ONLINE");
     const [deliveryInfo, setDeliveryInfo] = useState({
         firstName: "",
         lastName: "",
@@ -27,35 +27,46 @@ const Checkout = () => {
     }
     const onSubmitHandler = async (event) => {
         event.preventDefault();
-        try {
-            setLoading(true)
-            let response = await axios.post(`${backendUrl}/api/order/place-order`, {
-                user_id: userId,
-                items: cartItems,
-                total_amount: total,
-                payment_method: payment,
-                address: deliveryInfo,
-            }, {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true
-            })
-            console.log(response)
-            if (response.data) {
-                setLoading(false)
-                getCartItems()
-                getTotalCartItems()
-                if (payment === "COD") {
-                    toast.success("Order placed successfully!")
-                } else {
-                    window.location.href = response.data.url
+        if (token) {
+            try {
+                if (!cartItems || cartItems.length === 0) {
+                    return toast.error("You didn,t have any cart items")
                 }
+                setLoading(true)
+                let response = await axios.post(`${backendUrl}/api/order/place-order`, {
+                    user_id: userId,
+                    items: cartItems,
+                    total_amount: total,
+                    payment_method: payment,
+                    address: deliveryInfo,
+                }, {
+                    headers: {
+                        Authorization: `${token}`
+                    },
+                    withCredentials: true
+                })
+                if (response.data) {
+                    setLoading(false)
+                    getCartItems()
+                    getTotalCartItems()
+                    if (payment === "COD") {
+                        toast.success("Order placed successfully!")
+                    } else {
+                        window.location.href = response.data.url
+                    }
+                }
+                setLoading(false)
+            } catch (error) {
+                setLoading(false)
+                console.log(error)
             }
-            setLoading(false)
-        } catch (error) {
-            setLoading(false)
-            console.log(error)
+        } else {
+            localStorage.removeItem('User')
+            window.location.href ="/user/login";
+            window.location.reload()
         }
     }
+    console.log(total)
     return (
         <div className="min-h-screen py-12">
 
@@ -223,16 +234,16 @@ const Checkout = () => {
 
                         <div className="flex justify-between font-medium">
                             <span style={{ fontFamily: 'Outfit' }}>Shipping</span>
-                            <span className="text-green-700/90" style={{ fontFamily: 'Outfit' }}>{currency}.{shippingFee}</span>
+                            <span style={{ fontFamily: 'Outfit' }}>{currency}.{subtotal ? shippingFee : "0"}</span>
                         </div>
                         <div className="flex justify-between font-medium">
                             <span style={{ fontFamily: 'Outfit' }}>Discount</span>
-                            <span className="text-red-800/70" style={{ fontFamily: 'Outfit' }}>-{currency}.{discount}</span>
+                            <span className="text-green-700/90" style={{ fontFamily: 'Outfit' }}>-{currency}.{subtotal ? discount : "0"}</span>
                         </div>
 
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
-                            <span>{currency}. {total ? total.toLocaleString() : '0'}</span>
+                            <span>{currency}. {subtotal>0 ? total.toLocaleString() : '0'}</span>
                         </div>
 
                     </div>

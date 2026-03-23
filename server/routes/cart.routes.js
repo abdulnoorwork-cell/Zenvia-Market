@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/addtocart/:user_id',isAuthenticated, addToCart);
 router.get('/getcartitems/:user_id',getCart);
-router.get('/totalamount/:user_id',isAuthenticated,totalPrice);
+router.get('/totalamount/:user_id',totalPrice);
 router.get('/totalitems/:user_id', totalItems);
 router.post('/removefromcart/:user_id',isAuthenticated,removeFromCart);
 router.put('/update-quantity/:user_id',isAuthenticated,quantityUpdated);

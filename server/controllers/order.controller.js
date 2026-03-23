@@ -5,7 +5,6 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const placeOrder = async (req, res) => {
     const { user_id, items, total_amount, payment_method, address } = req.body;
-
     try {
         if (!address || !address.firstName) {
             return res.status(400).json({ message: "Invalid address" });
@@ -20,9 +19,9 @@ export const placeOrder = async (req, res) => {
                 // 2. Save items
                 for (let item of items) {
                     db.query(
-                        `INSERT INTO order_items (order_id, product_id, quantity, price)
-         VALUES (?, ?, ?, ?)`,
-                        [order_id, item._id, item.quantity, item.offerPrice], async (err, data) => {
+                        `INSERT INTO order_items (order_id, product_id,size, color, footwear_size, quantity, price)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                        [order_id, item._id, item.size || null, item.color || null, item.footwear_size || null, item.quantity, item.offerPrice], async (err, data) => {
                             if (err) return res.status(500).json({ success: false, message: err })
                             // 🟢 COD Flow
                             if (payment_method === "COD") {
@@ -57,12 +56,15 @@ export const placeOrder = async (req, res) => {
                                         order_id: order_id.toString(),
                                     },
                                 });
+                                res.json({ url: session.url });
 
-                                const deleteQuery = 'DELETE FROM cart_items WHERE user_id = ?'
-                                db.query(deleteQuery, [user_id], (err, result) => {
-                                    if (err) return res.status(500).json({ success: false, message: err })
-                                    return res.json({ url: session.url });
-                                })
+                                if (payment_method === "ONLINE") {
+                                    const deleteQuery = 'DELETE FROM cart_items WHERE user_id = ?'
+                                    db.query(deleteQuery, [user_id], (err, result) => {
+                                        if (err) return res.status(500).json({ success: false, message: err })
+                                        db.query('UPDATE orders SET payment_status = ? WHERE _id = ?', ["PAID", order_id])
+                                    })
+                                }
                             }
                         }
                     );
@@ -89,11 +91,21 @@ export const getUserOrders = (req, res) => {
 }
 
 export const fetchAllOrders = (req, res) => {
-    const sql = 'SELECT * FROM orders JOIN order_items ON orders._id = order_items.order_id JOIN products ON products._id = order_items.product_id';
-    db.query(sql, (err, data) => {
+    const sql = 'SELECT * FROM orders JOIN order_items ON orders._id = order_items.order_id JOIN products ON products._id = order_items.product_id WHERE NOT (payment_method = "ONLINE" AND payment_status = "PENDING")';
+    db.query(sql, async (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, messege: err })
         } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product._id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
             res.status(200).json(data)
         }
     })
@@ -123,17 +135,11 @@ export const updateOrderStatus = (req, res) => {
     if (!order_status) {
         return res.status(400).json({ success: false, messege: "Status can,t be null" })
     }
-    const sql = 'SELECT * FROM orders JOIN order_items ON orders._id = order_items.order_id';
-    db.query(sql, (err, result) => {
+    const values = [order_status]
+    db.query('UPDATE orders SET order_status = ? WHERE _id = ?', [...values, order_id], (err, result) => {
         if (err) {
             return res.status(500).json({ success: false, messege: err })
         }
-        const values = [order_status]
-        db.query('UPDATE orders SET order_status = ? WHERE _id = ?', [...values, order_id], (err, result) => {
-            if (err) {
-                return res.status(500).json({ success: false, messege: err })
-            }
-            res.status(200).json({ success: true, messege: "Order Status updated" })
-        })
+        res.status(200).json({ success: true, messege: "Order Status updated" })
     })
 }

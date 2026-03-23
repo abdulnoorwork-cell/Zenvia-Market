@@ -10,20 +10,15 @@ const Cart = () => {
     const [totalAmount, setTotalAmount] = useState();
 
     const getTotalAmount = async () => {
-        if (token) {
-            try {
-                let response = await axios.get(`${backendUrl}/api/cart/totalamount/${userId}`, {
-                    headers: {
-                        Authorization: `${token}`
-                    },
-                    withCredentials: true
-                })
-                if (response.data) {
-                    setTotalAmount(response.data?.[0]?.total)
-                }
-            } catch (error) {
-                console.log(error)
+        try {
+            let response = await axios.get(`${backendUrl}/api/cart/totalamount/${userId}`, {
+                withCredentials: true
+            })
+            if (response.data) {
+                setTotalAmount(response.data?.[0]?.total)
             }
+        } catch (error) {
+            console.log(error)
         }
     }
 

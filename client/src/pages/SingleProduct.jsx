@@ -14,7 +14,7 @@ const SingleProduct = () => {
     const [product, setProduct] = useState([]);
     const [thumbnail, setThumbnail] = useState("");
     const { product_id } = useParams()
-    const { products, currency, backendUrl, token, userId, getCartItems, getTotalCartItems } = useContext(AppContext);
+    const { products, currency, backendUrl, token, userId, getCartItems, getTotalCartItems, navigate } = useContext(AppContext);
     const [qty, setQty] = useState(1);
 
     const [selectedSize, setSelectedSize] = useState("");
@@ -208,7 +208,7 @@ const SingleProduct = () => {
                                             Add to Cart
                                         </button>
 
-                                        <button className="flex-1 cursor-pointer bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition">
+                                        <button onClick={() => { addToCart(product?._id, qty, selectedSize, selectedColor, selectedFootwearSize); navigate('/checkout', scrollTo(0, 0)) }} className="flex-1 cursor-pointer bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition">
                                             Buy Now
                                         </button>
                                     </div>

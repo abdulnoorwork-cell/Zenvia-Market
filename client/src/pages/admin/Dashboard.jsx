@@ -50,9 +50,9 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.log(error)
-      if(error.response.status === 500){
+      if (error.response.status === 500) {
         localStorage.removeItem('token');
-        window.location.href ="/admin"
+        window.location.href = "/admin"
       }
       toast.error(error.response.data.messege);
     }
@@ -73,18 +73,40 @@ const Dashboard = () => {
     } catch (error) {
       toast.error(error.response.data.messege);
       console.log(error)
-      if(error.response.status === 500){
+      if (error.response.status === 500) {
         localStorage.removeItem('token');
-        window.location.href ="/admin"
+        window.location.href = "/admin"
       }
     }
   }
 
-  const fetchOrders = async () => {
+  const fetchAllOrders = async () => {
     try {
       let response = await axios.get(`${backendUrl}/api/order/get-orders`, { withCredentials: true })
       if (response.data) {
         setOrders(response.data)
+      } else {
+        console.log(error.response.data.messege);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const updateOrderStatus = async (event, order_id) => {
+    try {
+
+      let response = await axios.put(`${backendUrl}/api/order/update-order/${order_id}`, { order_status: event.target.value }, {
+        headers: {
+          Authorization: `${isAdmin}`
+        },
+        withCredentials: true
+      });
+      if (response.data.success) {
+        fetchAllOrders()
+        toast.success(response.data.messege);
+      } else {
+        toast.error(response.data.messege)
       }
     } catch (error) {
       console.log(error)
@@ -94,29 +116,29 @@ const Dashboard = () => {
   useEffect(() => {
     fetchBlogs();
     fetchProducts();
-    fetchOrders();
+    fetchAllOrders();
   }, [])
   return (
     <div className='flex-1 px-4 py-8 lg:px-10'>
       <div className='flex flex-wrap gap-4'>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={dashboard_icon_1} className='w-14' alt="" />
+          <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{products.length}</p>
+            <p className='sm:text-xl text-lg font-semibold text-gray-600'>{products.length}</p>
             <h6 style={{ fontFamily: 'Outfit' }} className='text-gray-500 font-light text-sm'>Products</h6>
           </div>
         </div>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={dashboard_icon_1} className='w-14' alt="" />
+          <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{blogs.length}</p>
+            <p className='sm:text-xl text-lg font-semibold text-gray-600'>{blogs.length}</p>
             <h6 style={{ fontFamily: 'Outfit' }} className='text-gray-500 font-light text-sm'>Blogs</h6>
           </div>
         </div>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={dashboard_icon_1} className='w-14' alt="" />
+          <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{orders?.length}</p>
+            <p className='sm:text-xl text-lg font-semibold text-gray-600'>{orders?.length}</p>
             <h6 style={{ fontFamily: 'Outfit' }} className='text-gray-500 font-light text-sm'>Orders</h6>
           </div>
         </div>
@@ -212,31 +234,39 @@ const Dashboard = () => {
             {orders?.slice(length - 3).reverse().map((order, index) => (
               <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 rounded-md border border-gray-300 text-gray-800">
                 <div className="order_image_parent flex gap-2">
-                  <img className="w-12 h-12 object-cover" src={order?.image ? JSON.parse(order?.image) : null} alt="product_image" />
+                  <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
                   <div className="flex flex-col justify-center">
                     <p className="font-medium text-sm">
-                      {order?.name} <span className={`text-[#994CF5] ${order?.quantity < 2 && "hidden"}`}>x{order?.quantity}</span>
+                      {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
                     </p>
+                    <div className='flex flex-col leading-none gap-1 text-[13.2px] mt-1'>
+                      <p style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</p>
+                      <p style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</p>
+                      <p style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</p>
+                    </div>
                   </div>
                 </div>
 
                 <div className="text-sm">
-                  <p className='font-medium mb-1'>{order?.full_name}</p>
-                  <p className='text-[13px] text-gray-600'>{order?.address}, {order?.city}, {order?.state},{order?.zipcode}, {order?.country}</p>
+                  <p className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</p>
+                  <p className='text-xs'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city},{JSON.parse(order.address).postal_code}</p>
+                  <p className='text-xs'>{JSON.parse(order.address).email}</p>
+                  <p className='text-xs'>{JSON.parse(order.address).phone}</p>
                 </div>
 
-                <p className="font-medium text-sm my-auto text-black/70">${order?.total_amount}</p>
-                <div className="flex flex-col">
+                <p className="font-medium text-[13.2px] my-auto text-black/70">{currency}. {(order?.total_amount).toLocaleString()}</p>
+
+                <div className="flex flex-col text-xs">
                   <p>Method: {order.payment_method}</p>
                   <p>Date: {new Date(order.created_at).toDateString()}</p>
-                  <p>Payment: {order.isPaid ? "Paid" : "Pending"}</p>
+                  <p>Payment: {order.payment_status}</p>
                 </div>
-                <select value={order?.order_status} onChange={(event) => statusHandler(event, order._id)} className='p-2 font-semibold text-xs outline-[#994CF5] w-fit'>
-                  <option value="Order Placed">Order Placed</option>
-                  <option value="Packing">Packing</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Out for delivery">Out for delivery</option>
-                  <option value="Delivered">Delivered</option>
+                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-semibold text-xs bg-gray-50 border border-[#E2E8F0] outline-[#2563EB] w-fit text-gray-600 rounded-sm'>
+                  <option value="PLACED">Order Placed</option>
+                  <option value="PACKING">Packing</option>
+                  <option value="SHIPPED">Shipped</option>
+                  <option value="OUT FOR DELIVERY">Out for delivery</option>
+                  <option value="DELIVERED">Delivered</option>
                 </select>
               </div>
             ))}

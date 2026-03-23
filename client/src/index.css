@@ -49,8 +49,17 @@ p {
     .product_card .rating {
         margin-top: 0px;
     }
+    .products {
+        grid-gap: 14px;
+    }
+    .blogs{
+        gap: 14px;
+    }
     .blogs img {
         height: 100%;
+    }
+    .categories {
+        grid-gap: 14px;
     }
 }
 

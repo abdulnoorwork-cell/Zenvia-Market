@@ -1,6 +1,19 @@
 import React from 'react'
+import toast from 'react-hot-toast';
 
 const MyAccount = () => {
+  const logout = () => {
+    try {
+      localStorage.removeItem('User');
+      toast.success("Logout successfully")
+      setTimeout(()=>{
+        window.location.href('/user/login')
+        window.location.reload()
+      },1000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="min-h-screen">
 
@@ -66,7 +79,7 @@ const MyAccount = () => {
               Account Details
             </button>
 
-            <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg text-red-500">
+            <button onClick={logout} className="cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg text-red-500">
               Logout
             </button>
 

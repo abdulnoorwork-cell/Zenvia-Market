@@ -134,7 +134,7 @@ const AllProducts = () => {
                     </div>
 
                     {/* Product Grid */}
-                    <div className={`grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
+                    <div className={`products grid 2xl:grid-cols-5 xl:grid-cols-4 grid-cols-3 sm:gap-[18px] gap-4`}>
 
                         {currentProducts.length > 0 ? currentProducts.map((product, index) => (
                             <Suspense>

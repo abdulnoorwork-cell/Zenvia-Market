@@ -60,7 +60,7 @@ const Categories = () => {
                         Shop by Category
                     </h2>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 sm:gap-[18px] gap-4">
+                    <div className="categories grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 sm:gap-[18px] gap-4">
                         {categories.map((cat, index) => (
                             <CategoryCard key={index} category={cat} />
                         ))}
