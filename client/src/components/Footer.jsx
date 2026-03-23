@@ -19,12 +19,12 @@ const Footer = () => {
         <div>
           <h5 className='font-medium text-lg text-white'>Shop</h5>
           <div className='text-[13px] flex flex-col gap-2 mt-3 text-[#CBD5F5]'>
-            <Link to={'/category/clothing'} onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Clothing</Link>
-            <Link to={'/category/footwear'} onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Footwear</Link>
-            <Link to={'/category/bags'} onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Bags & Accessories</Link>
-            <Link to={'/category/beauty'} onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Beauty & Wellness</Link>
-            <Link to={'/category/electronics'} onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Electronics</Link>
-            <Link to={'/category/home-decor'} onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Home Decor</Link>
+            <Link onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Clothing</Link>
+            <Link onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Footwear</Link>
+            <Link onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Bags & Accessories</Link>
+            <Link onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Beauty & Wellness</Link>
+            <Link onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Electronics</Link>
+            <Link onClick={() => scrollTo(0, 0)} className='hover:text-[#2563EB] transition' style={{ fontFamily: 'Inter' }}>Home Decor</Link>
           </div>
         </div>
         <div>
