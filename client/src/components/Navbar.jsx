@@ -51,7 +51,6 @@ const Navbar = () => {
                             Zenvia<span className='text-[#2563EB] font-semibold tracking-[-0.2px]' style={{ fontFamily: 'Poppins' }}> Market</span>
                         </div>
                     </div>
-                    {/* <img onClick={() => { navigate('/'); scrollTo(0, 0) }} src="https://scentsnstories.pk/cdn/shop/files/SNS_Logo_For_Web_NEW.webp?v=1765471214&width=240" className='cursor-pointer' alt="" /> */}
                     <div className="search relative hidden lg:flex items-center w-full max-w-[500px] 2l:h-[45px] h-10">
                         <div className='flex items-center justify-between w-full h-full px-3 py-2 rounded-tl-md rounded-bl-md border border-gray-300'>
                             <input type="text" placeholder='Search Products...' value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => {
@@ -72,6 +71,22 @@ const Navbar = () => {
                         <span onClick={handleSearchProducts} className='text-xl cursor-pointer bg-blue-500 text-white h-full w-[50px] flex items-center justify-center rounded-tr-md rounded-br-md'>
                             <ImSearch />
                         </span>
+                        {query && suggestions.length > 0 &&
+                            <div className="suggestions absolute top-[45px] rounded-md shadow left-0 bg-white w-full border border-[#E2E8F0]">
+                                <ul className='px-3 w-full'>
+                                    {suggestions?.map((v, i) => (
+                                        <li key={i} onClick={() => {
+                                            setQuery(v.name);  // select suggestion
+                                            setSearchBox(false)
+                                        }} className='cursor-pointer flex items-center gap-1 w-full border-b border-[#E2E8F0]'>
+                                            <img src={v?.images[0]} className='w-14 h-14 object-contain' alt="" />
+                                            <h6 className='text-[13px]'>{v.name}</h6>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <button onClick={() => { handleSearchProducts(); setSearchBox(false);setQuery('');setSuggestions([]) }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
+                            </div>
+                        }
                     </div>
                     <div className='header_icons flex items-center gap-3 sm:gap-4 font-medium'>
                         {/* Search Icon */}
@@ -239,8 +254,8 @@ const Navbar = () => {
                 </span>Contact us</div></NavLink>
             </div>
             {/* Mobile Search Box */}
-            <div className='relative'>
-                <div className={`search items-center w-[90%] max-w-[500px] h-[50px] fixed top-[30%] left-1/2 -translate-x-1/2 z-50 ${searchBox ? 'flex lg:hidden' : 'hidden'}`}>
+            <div className={`relative ${searchBox ? 'flex lg:hidden' : 'hidden'}`}>
+                <div className={`search flex items-center w-[90%] max-w-[500px] h-[50px] fixed top-[30%] left-1/2 -translate-x-1/2 z-50`}>
                     <div className='flex items-center justify-between w-full h-full px-3 py-2 rounded-tl-md rounded-bl-md border border-gray-300/90 bg-white'>
                         <input type="text" placeholder='Search Products...' value={query} onChange={(e) => setQuery(e.target.value)}
                             onKeyDown={(e) => {
@@ -264,7 +279,7 @@ const Navbar = () => {
                     </span>
                     {query && suggestions.length > 0 &&
                         <div className="suggestions absolute top-[45px] rounded-md shadow left-0 bg-white w-full border border-[#E2E8F0]">
-                            <ul className='px-3 w-full'>
+                            <ul className='px-3 w-full overflow-y-auto'>
                                 {suggestions?.map((v, i) => (
                                     <li key={i} onClick={() => {
                                         setQuery(v.name);  // select suggestion
@@ -275,7 +290,7 @@ const Navbar = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <button onClick={() => { handleSearchProducts(); setSearchBox(false) }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
+                            <button onClick={() => { handleSearchProducts(); setSearchBox(false);setQuery('');setSuggestions('') }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
                         </div>
                     }
                 </div>
