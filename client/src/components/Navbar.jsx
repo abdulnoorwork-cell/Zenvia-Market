@@ -85,7 +85,7 @@ const Navbar = () => {
                                         </li>
                                     ))}
                                 </ul>
-                                <button onClick={() => { handleSearchProducts(); setSearchBox(false);setQuery('');setSuggestions([]) }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
+                                <button onClick={() => { handleSearchProducts(); setSearchBox(false); setQuery(''); setSuggestions([]) }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
                             </div>
                         }
                     </div>
@@ -109,7 +109,7 @@ const Navbar = () => {
                                 <span className='text-[22px] text-blue-950/80'>
                                     <BiSolidUser />
                                 </span>
-                                <h6 className='xl:block hidden leading-none text-sm font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
+                                <h6 className='hidden xl:block leading-none text-sm font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
                             </Link> :
                             <Link to={'/user/login'} onClick={() => scrollTo(0, 0)} className='flex items-center text-blue-950/80 gap-1 cursor-pointer'>
                                 <span className='text-[22px] text-blue-950/80'>
@@ -292,13 +292,17 @@ const Navbar = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <button onClick={() => { handleSearchProducts(); setSearchBox(false);setQuery('');setSuggestions('') }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
+                            <button onClick={() => { handleSearchProducts(); setSearchBox(false); setQuery(''); setSuggestions('') }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
                         </div>
                     }
                 </div>
             </div>
             {/* Overlay */}
-            <div onClick={() => { setMobileMenu(false); setSearchBox(false) }} className={`fixed top-0 left-0 w-full h-screen bg-black/70 z-40 ${mobileMenu || searchBox ? 'block' : 'hidden'}`}></div>
+            <div onClick={() => {
+                setMobileMenu(false); setSearchBox(false); setQuery("")
+                setSuggestions([])
+                handleClearSearch()
+            }} className={`fixed top-0 left-0 w-full h-screen bg-black/70 z-40 ${mobileMenu || searchBox ? 'block' : 'hidden'}`}></div>
         </>
     )
 }

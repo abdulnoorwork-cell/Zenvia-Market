@@ -87,7 +87,7 @@ const Cart = () => {
             <div className="container mx-auto px-4 grid lg:grid-cols-3 gap-8">
 
                 {/* Cart Items */}
-                <div className="lg:col-span-2 bg-white rounded-xl shadow p-6">
+                <div className="lg:col-span-2 bg-white rounded-xl shadow sm:p-6 p-5">
                     {cartItems.length>0&&<h2 className="text-2xl font-bold mb-6">Your Cart</h2>}
                     {cartItems.length<1 && <div className='text-gray-800 font-medium'>
                         <h2 className="text-2xl font-bold mb-4">Cart is Empty</h2>
@@ -95,7 +95,7 @@ const Cart = () => {
                         </div>}
 
                     {cartItems.length > 0 &&
-                        <div className='grid grid-cols-[3fr_1fr_1fr_1fr] items-center bg-gray-100 font-medium py-3 text-sm px-4'>
+                        <div className='cart_items_label grid grid-cols-[3fr_1fr_1fr_1fr] items-center bg-gray-100 font-medium py-3 sm:text-sm text-xs px-4'>
                             <h6>Product</h6>
                             <h6>Quantity</h6>
                             <h6 className='mx-auto'>Price</h6>
@@ -105,17 +105,17 @@ const Cart = () => {
                     {cartItems.map((item, index) => (
                         <div
                             key={index}
-                            className="grid grid-cols-[3fr_1fr_1fr_1fr] items-center border-b border-gray-300 text-gray-800 py-4"
+                            className="cart_items grid grid-cols-[3fr_1fr_1fr_1fr] gap-2 items-center border-y border-gray-300 text-gray-800 py-4"
                         >
-                            <div className="flex items-center gap-4">
+                            <div className="image_container flex items-center sm:gap-4 gap-3">
                                 <img
                                     src={item.images[0]}
                                     alt=""
-                                    className="w-20 h-20 bg-gray-100 object-contain rounded"
+                                    className="sm:w-20 w-16 sm:h-20 h-16 bg-gray-100 object-contain rounded"
                                 />
 
                                 <div className='text-sm'>
-                                    <h3 className="font-semibold text-[15px]" style={{ fontFamily: 'Outfit' }}>{item.name}</h3>
+                                    <h3 className="font-semibold sm:text-sm text-[13px]" style={{ fontFamily: 'Outfit' }}>{item.name}</h3>
                                     <div className='font-medium leading-[1.3em] mt-1'>
                                         {/* <p style={{ fontFamily: 'Outfit' }}>
                                             {currency}. {(item.offerPrice).toLocaleString()}
@@ -151,7 +151,7 @@ const Cart = () => {
                             <div className="font-semibold mx-auto text-sm" style={{ fontFamily: 'Outfit' }}>
                                 {currency}. {(item.offerPrice * item.quantity).toLocaleString()}
                             </div>
-                            <div className='flex justify-end'>
+                            <div className='cross_icon flex justify-end'>
                                 <img src={cross_icon} onClick={() => removeFomCart(item.cart_id)} alt="" className='sm:h-[20px] sm:w-[20px] w-[17px] h-[17px] border border-red-400 rounded-full hover:scale-110 transition-all cursor-pointer mr-6' />
                             </div>
                         </div>
