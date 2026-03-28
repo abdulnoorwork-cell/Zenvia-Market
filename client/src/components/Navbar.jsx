@@ -280,7 +280,7 @@ const Navbar = () => {
                     </span>
                     {query && suggestions.length > 0 &&
                         <div className="suggestions absolute top-[45px] rounded-md shadow left-0 bg-white w-full border border-[#E2E8F0]">
-                            <ul className='px-3 w-full overflow-y-auto'>
+                            <ul className='px-3 w-full overflow-y-auto max-h-[300px]'>
                                 {suggestions?.map((v, i) => (
                                     <li key={i} onClick={() => {
                                         setQuery("");  // select suggestion
