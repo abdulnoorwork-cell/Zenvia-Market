@@ -87,7 +87,7 @@ const Hero = () => {
                                             <HiOutlineArrowRight />
                                         </span>
                                     </button>
-                                    <h1 className="font-bold text-3xl sm:text-4xl 2xl:text-[40px] max-w-[500px]">
+                                    <h1 className="hero_heading font-bold text-3xl sm:text-4xl 2xl:text-[40px] max-w-[500px]">
                                         {banner.heading}
                                         <span className="text-[#2563EB]">
                                             {banner.boldHeading}

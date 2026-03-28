@@ -38,6 +38,9 @@ p {
 }
 
 @media screen and (max-width: 435px) {
+    .hero_heading {
+        font-size: 26px;
+    }
     .product_card h3 {
         font-size: 13px;
     }
