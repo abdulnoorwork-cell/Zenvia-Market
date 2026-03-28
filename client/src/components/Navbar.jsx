@@ -109,7 +109,7 @@ const Navbar = () => {
                                 <span className='text-[22px] text-blue-950/80'>
                                     <BiSolidUser />
                                 </span>
-                                <h6 className='hidden xl:block leading-none text-sm font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
+                                {/* <h6 className='hidden xl:block leading-none text-sm font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6> */}
                             </Link> :
                             <Link to={'/user/login'} onClick={() => scrollTo(0, 0)} className='flex items-center text-blue-950/80 gap-1 cursor-pointer'>
                                 <span className='text-[22px] text-blue-950/80'>
