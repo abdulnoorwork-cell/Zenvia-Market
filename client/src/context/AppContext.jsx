@@ -13,12 +13,15 @@ const AppContextProvider = ({ children }) => {
     const token = authenticated?.token;
     const userId = authenticated?.data?.[0]._id;
     const isAdmin = localStorage.getItem('token');
+    const [orders, setOrders] = useState([])
     const [blogs, setBlogs] = useState([]);
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([])
     const [totalCartItems, setTotalCartItems] = useState([])
+    const [wishlist, setWishlist] = useState([]);
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const [search, setSearch] = useState([])
+    const [query, setQuery] = useState([])
+    const [suggestions, setSuggestions] = useState([]);
     const navigate = useNavigate()
     const currency = "Rs"
     const shippingFee = 150;
@@ -43,23 +46,66 @@ const AppContextProvider = ({ children }) => {
             console.log(error)
         }
     }
+
     const handleSearchProducts = async () => {
+        if (!query) {
+            setSuggestions([]);
+            return;
+        }
         try {
-            let response = await axios.get(`${backendUrl}/api/product/search-products?q=${search}`, { withCredentials: true });
+            let response = await axios.get(`${backendUrl}/api/product/search-products?query=${query}`, { withCredentials: true });
             if (response.data) {
-                setProducts(response.data)
-                scrollTo(0, 0)
+                if (query.length>1) {
+                    setProducts(response.data)
+                    setSuggestions([])
+                    navigate('/shop/all-products')
+                    scrollTo(0, 0)
+                }
             }
         } catch (error) {
             console.log(error)
         }
     }
     const handleClearSearch = () => {
-        setSearch('');
+        setQuery('');
         setProducts([]);
         fetchProducts();
-
     }
+    const handleSuggestions = async () => {
+        try {
+            let response = await axios.get(`${backendUrl}/api/product/get-suggestions?query=${query}`, { withCredentials: true })
+            if (response.data) {
+                setSuggestions(response.data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if (query.length > 1) {
+            const delay = setTimeout(async () => {
+                if (!query) {
+                    setSuggestions([]);
+                    return;
+                }
+
+                try {
+                    // 🔹 fetch suggestions
+                    const sugRes = await axios.get(`${backendUrl}/api/product/get-suggestions`, {
+                        params: { query },
+                    });
+                    setSuggestions(sugRes.data);
+
+                } catch (err) {
+                    console.error(err);
+                }
+            }, 300); // 300ms debounce
+
+            return () => clearTimeout(delay);
+        }
+    }, [query]);
+
     const getCartItems = async () => {
         try {
             let response = await axios.get(`${backendUrl}/api/cart/getcartitems/${userId}`, {
@@ -86,6 +132,71 @@ const AppContextProvider = ({ children }) => {
         }
     }
 
+    const isInWishlist = (productId) => {
+        return Array.isArray(wishlist) && wishlist.some(item => item._id === productId);
+    };
+
+    const fetchWishlist = async () => {
+        try {
+            const res = await axios.get(`${backendUrl}/api/wishlist/get-user-wishlist/${userId}`);
+            setWishlist(res.data);
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const toggleWishlist = async (productId) => {
+        if (isInWishlist(productId)) {
+            try {
+                const response = await axios.delete(`${backendUrl}/api/wishlist/remove`, {
+                    data: { user_id: userId, product_id: productId },
+                    headers: {
+                        Authorization: `${token}`
+                    },
+                    withCredentials: true
+                });
+
+                if (response.data.success) {
+                    setWishlist(prev => prev.filter(item => item._id !== productId));
+                    fetchWishlist()
+                    toast.success(response.data.messege)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            try {
+                let response = await axios.post(`${backendUrl}/api/wishlist/add`, { user_id: userId, product_id: productId }, {
+                    headers: {
+                        Authorization: `${token}`
+                    },
+                    withCredentials: true
+                });
+                if (response.data.success) {
+                    toast.success(response.data.messege)
+                    const product = products.find(p => p._id === productId);
+                    setWishlist(prev => [...prev, product]);
+                    fetchWishlist()
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    };
+
+    const fetchUserOrders = async () => {
+        if (token) {
+            try {
+                let response = await axios.get(`${backendUrl}/api/order/user-orders/${userId}`, { withCredentials: true })
+                if (response.data) {
+                    setOrders(response.data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+
     useEffect(() => {
         fetchBlogs();
         fetchProducts();
@@ -93,10 +204,12 @@ const AppContextProvider = ({ children }) => {
         getCartItems()
         getTotalCartItems()
         handleClearSearch()
+        fetchWishlist();
+        fetchUserOrders()
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, isAdmin, products, setProducts, currency, handleSearchProducts, search, setSearch, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, isAdmin, products, setProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, handleSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders }}>{children}</AppContext.Provider>
     )
 }
 

@@ -5,7 +5,7 @@ import {isAuthenticated} from '../middleware/auth.js'
 const router = express.Router();
 
 router.post('/place-order',isAuthenticated,placeOrder);
-router.get('/user-orders/:user_id',isAuthenticated,getUserOrders);
+router.get('/user-orders/:user_id',getUserOrders);
 router.get('/get-orders',fetchAllOrders);
 router.delete('/delete-order/:order_id',isAuthenticated,deleteUserOrder);
 router.put('/update-order/:order_id', isAdmin, updateOrderStatus);

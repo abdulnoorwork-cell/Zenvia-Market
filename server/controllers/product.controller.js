@@ -122,23 +122,82 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const getSearchProducts = (req, res) => {
-    const search = req.query.q;
-    const sql = 'SELECT * FROM products WHERE name LIKE?';
-    db.query(sql, [`%${search}%`], async (err, data) => {
-        if (err) return res.status(500).json(err)
-        for (let product of data) {
-            const images = await new Promise((resolve, reject) => {
-                const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
-                db.query(imgSql, [product._id], (err, data) => {
-                    if (err) reject(err)
-                    resolve(data)
-                })
-            })
-            product.images = images.map(img => img.image)
+    const { query } = req.query;
+    if (!query) return res.json([]);
+
+    let sql = ''; // ✅ FIXED
+
+    if (query) {
+        sql = `
+      SELECT * FROM products 
+      WHERE name LIKE ? 
+      OR category LIKE ? 
+      OR subCategory LIKE ?
+      OR about LIKE ?
+      OR description LIKE ?
+    `;
+    }
+
+    const values = query
+        ? [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`]
+        : [];
+
+    db.query(sql, values, async (err, data) => {
+        if (err) return res.status(500).json(err);
+
+        try {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql =
+                        "SELECT image FROM product_images WHERE product_id = ?";
+
+                    db.query(imgSql, [product._id], (err, result) => {
+                        if (err) reject(err);
+                        else resolve(result);
+                    });
+                });
+
+                product.images = images.map((img) => img.image);
+            }
+
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(500).json(error);
         }
-        res.status(200).json(data);
-    })
-}
+    });
+};
+
+export const getSuggestions = (req, res) => {
+    const { query } = req.query;
+    if (!query) return res.json([]);
+    const sql = `SELECT _id, name
+FROM products
+WHERE name LIKE ? OR category LIKE ? OR subCategory LIKE ? LIMIT 8`
+    const values = query ?
+        [`%${query}%`, `%${query}%`, `%${query}%`] : [];
+    db.query(sql, values,async (err, data) => {
+        if (err) return res.status(500).json(err);
+        try {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql =
+                        "SELECT image FROM product_images WHERE product_id = ?";
+
+                    db.query(imgSql, [product._id], (err, result) => {
+                        if (err) reject(err);
+                        else resolve(result);
+                    });
+                });
+
+                product.images = images.map((img) => img.image);
+            }
+
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    });
+};
 
 export const getLatestProducts = (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
@@ -165,9 +224,9 @@ export const getLatestProducts = (req, res) => {
 
 export const getCategoryProducts = (req, res) => {
     // const limit = parseInt(req.query.limit) || 10;
-    const {category} = req.params;
+    const { category } = req.params;
     const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products WHERE category = ?'
-    db.query(sql,[category], async (err, data) => {
+    db.query(sql, [category], async (err, data) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: "Server error" });
@@ -189,9 +248,9 @@ export const getCategoryProducts = (req, res) => {
 
 export const getLatestCategoryProducts = (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
-    const {category} = req.params;
+    const { category } = req.params;
     const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products WHERE category = ? ORDER BY created_at DESC LIMIT ?'
-    db.query(sql,[category,limit], async (err, data) => {
+    db.query(sql, [category, limit], async (err, data) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: "Server error" });
@@ -213,9 +272,9 @@ export const getLatestCategoryProducts = (req, res) => {
 
 export const getSubCategoryProducts = (req, res) => {
     // const limit = parseInt(req.query.limit) || 10;
-    const {subCategory} = req.params;
+    const { subCategory } = req.params;
     const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products WHERE subCategory = ?'
-    db.query(sql,[subCategory], async (err, data) => {
+    db.query(sql, [subCategory], async (err, data) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: "Server error" });

@@ -10,6 +10,8 @@ import blogRoutes from '../routes/blog.routes.js'
 import productRoutes from '../routes/product.routes.js'
 import cartRoutes from '../routes/cart.routes.js'
 import orderRoutes from '../routes/order.routes.js'
+import wishlistRoutes from '../routes/wishlist.routes.js'
+import reviewRoutes from '../routes/review.routes.js'
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 import db from '../config/db.js';
@@ -17,8 +19,8 @@ import db from '../config/db.js';
 const app = express();
 const Port = process.env.PORT || 8000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: "10mb"}));
+app.use(express.urlencoded({ limit: "10mb",extended: true }));
 app.use(fileUpload({
     useTempFiles: true,
     tempFileDir: "/tmp/"
@@ -57,6 +59,8 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/review', reviewRoutes);
 
 app.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];

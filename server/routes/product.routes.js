@@ -1,5 +1,5 @@
 import express from 'express'
-import { addProduct, deleteProduct, getCategoryProducts, getLatestCategoryProducts, getLatestProducts, getProducts, getSearchProducts, getSingleProduct, getSubCategoryProducts } from '../controllers/product.controller.js';
+import { addProduct, deleteProduct, getCategoryProducts, getLatestCategoryProducts, getLatestProducts, getProducts, getSearchProducts, getSingleProduct, getSubCategoryProducts, getSuggestions } from '../controllers/product.controller.js';
 import isAdmin from '../middleware/isAdmin.js';
 const router = express.Router();
 
@@ -12,5 +12,6 @@ router.get('/latest-category-products/:category',getLatestCategoryProducts);
 router.get('/product-detail/:productId',getSingleProduct);
 router.delete('/delete/:productId',isAdmin, deleteProduct);
 router.get('/search-products',getSearchProducts);
+router.get('/get-suggestions', getSuggestions);
 
 export default router;

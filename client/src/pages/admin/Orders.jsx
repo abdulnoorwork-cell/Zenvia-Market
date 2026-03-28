@@ -9,8 +9,7 @@ import parcel_icon from '../../assets/parcel_icon.svg'
 
 const Orders = () => {
     const [orders, setOrders] = useState([])
-    const [orderStatus, setOrderStatus] = useState('')
-    const { currency, backendUrl, isAdmin } = useContext(AppContext);
+    const { currency, backendUrl, isAdmin,fetchUserOrders } = useContext(AppContext);
     const fetchAllOrders = async () => {
         try {
             let response = await axios.get(`${backendUrl}/api/order/get-orders`, { withCredentials: true })
@@ -34,7 +33,8 @@ const Orders = () => {
                 withCredentials: true
             });
             if (response.data.success) {
-                fetchAllOrders()
+                await fetchAllOrders()
+                await fetchUserOrders()
                 toast.success(response.data.messege);
             } else {
                 toast.error(response.data.messege)
@@ -46,6 +46,7 @@ const Orders = () => {
 
     useEffect(() => {
         fetchAllOrders()
+        fetchUserOrders()
     }, [])
 
     console.log(orders)
@@ -82,11 +83,11 @@ const Orders = () => {
                                 <p className="font-medium text-[13.2px] my-auto text-black/70">{currency}. {(order?.total_amount).toLocaleString()}</p>
 
                                 <div className="flex flex-col text-xs">
-                                    <p>Method: {order.payment_method}</p>
+                                    <p>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</p>
                                     <p>Date: {new Date(order.created_at).toDateString()}</p>
-                                    <p>Payment: {order.payment_status}</p>
+                                    <p>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</p>
                                 </div>
-                                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-semibold text-xs bg-gray-50 border border-[#E2E8F0] outline-[#2563EB] w-fit text-gray-600 rounded-sm'>
+                                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs bg-gray-50 border border-[#E2E8F0] outline-[#2563EB] w-fit text-gray-600 rounded-sm'>
                                     <option value="PLACED">Order Placed</option>
                                     <option value="PACKING">Packing</option>
                                     <option value="SHIPPED">Shipped</option>

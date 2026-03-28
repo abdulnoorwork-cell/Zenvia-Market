@@ -32,6 +32,7 @@ import About from './pages/About';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import OrderSuccessfull from './pages/OrderSuccessfull';
+import Wishlist from './pages/Wishlist';
 
 const App = () => {
   const { isAdmin,token,navigate } = useContext(AppContext);
@@ -47,7 +48,8 @@ const App = () => {
           <Route path='/blog/:blog_id' element={<SingleBlog />} />
           <Route path='/shop/all-products' element={<AllProducts />} />
           <Route path='/shop/product/:product_id' element={<SingleProduct />} />
-          <Route path='/cart' element={token ? <Cart /> : <Login />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/checkout' element={token ? <Checkout /> : <Login /> } />
           <Route path='/category/clothing' element={<CategoryProducts category="Clothing & Style" />} />
           <Route path='/category/footwear' element={<CategoryProducts category="Footwear" />} />

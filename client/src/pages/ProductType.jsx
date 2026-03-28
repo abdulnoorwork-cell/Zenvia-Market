@@ -63,42 +63,66 @@ const ProductType = ({ type }) => {
           )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
         </div>
         {/* Pagination Buttons */}
-        {totalPages > 1 && <div className='flex items-center justify-center gap-2 mt-6'>
-          <button
-            disabled={currentPage === 1}
-            className='bg-indigo-600 text-white px-6 cursor-pointer py-2 rounded-sm'
-            onClick={() => setCurrentPage(currentPage - 1)}
-            style={{ fontFamily: 'Outfit' }}
-          >
-            Prev
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => (
+        {totalPages > 1 ? (
+          <div className='flex items-center justify-center gap-2 mt-6 flex-wrap'>
+
+            {/* Prev */}
             <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              style={{
-                padding: "8px 12px",
-                background: currentPage === i + 1 ? "black" : "white",
-                color: currentPage === i + 1 ? "white" : "#0F172A",
-                border: "none",
-                fontFamily: 'Outfit',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                minWidth: '35px'
-              }}
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className='bg-indigo-600 text-white px-3 sm:px-6 py-2 rounded-sm disabled:opacity-50'
+              style={{ fontFamily: 'Outfit' }}
             >
-              {i + 1}
+              Prev
             </button>
-          ))}
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(currentPage + 1)}
-            style={{ fontFamily: 'Outfit' }}
-            className='bg-indigo-600 text-white px-6 cursor-pointer py-2 rounded-sm'
-          >
-            Next
-          </button>
-        </div>}
+
+            {/* Pages */}
+            {[
+              1,
+
+              ...(currentPage > 3 ? ["..."] : []),
+
+              ...Array.from({ length: totalPages }, (_, i) => i + 1).slice(
+                Math.max(currentPage - (window.innerWidth < 640 ? 1 : 2), 0),
+                currentPage + (window.innerWidth < 640 ? 2 : 2)
+              ),
+
+              ...(currentPage < totalPages - 2 ? ["..."] : []),
+
+              totalPages
+            ]
+              .filter((item, index, arr) => arr.indexOf(item) === index)
+              .map((page, index) => (
+                <button
+                  key={index}
+                  onClick={() => typeof page === "number" && setCurrentPage(page)}
+                  style={{
+                    padding: "6px 10px",
+                    background: currentPage === page ? "black" : "white",
+                    color: currentPage === page ? "white" : "#0F172A",
+                    border: "none",
+                    fontFamily: "Outfit",
+                    borderRadius: "4px",
+                    cursor: page === "..." ? "default" : "pointer",
+                    minWidth: "32px"
+                  }}
+                >
+                  {page}
+                </button>
+              ))}
+
+            {/* Next */}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className='bg-indigo-600 text-white px-3 sm:px-6 py-2 rounded-sm disabled:opacity-50'
+              style={{ fontFamily: 'Outfit' }}
+            >
+              Next
+            </button>
+
+          </div>
+        ) : null}
       </div>
     </div>
   )

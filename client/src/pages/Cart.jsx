@@ -88,14 +88,19 @@ const Cart = () => {
 
                 {/* Cart Items */}
                 <div className="lg:col-span-2 bg-white rounded-xl shadow p-6">
-                    <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
+                    {cartItems.length>0&&<h2 className="text-2xl font-bold mb-6">Your Cart</h2>}
+                    {cartItems.length<1 && <div className='text-gray-800 font-medium'>
+                        <h2 className="text-2xl font-bold mb-4">Cart is Empty</h2>
+                        <h6>You don,t have any item in cart.</h6>
+                        </div>}
 
-                    <div className='grid grid-cols-[3fr_1fr_1fr_1fr] items-center bg-gray-100 font-medium py-3 text-sm px-4'>
-                        <h6>Product</h6>
-                        <h6>Quantity</h6>
-                        <h6 className='mx-auto'>Price</h6>
-                        <h6 className='text-end'>Action</h6>
-                    </div>
+                    {cartItems.length > 0 &&
+                        <div className='grid grid-cols-[3fr_1fr_1fr_1fr] items-center bg-gray-100 font-medium py-3 text-sm px-4'>
+                            <h6>Product</h6>
+                            <h6>Quantity</h6>
+                            <h6 className='mx-auto'>Price</h6>
+                            <h6 className='text-end'>Action</h6>
+                        </div>}
 
                     {cartItems.map((item, index) => (
                         <div

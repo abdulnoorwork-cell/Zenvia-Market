@@ -13,6 +13,7 @@ Accent / Sale	Orange	#F59E0B
 Text Primary	Dark Gray	#1f2937
 Text Secondary	Gray	#64748B
 Border	Light Gray	#E5E7EB */
+/* Border Color #E2E8F0 */
 /* Orange #EB6325 */
 /* Grey #e4e4f56c */
 
@@ -75,6 +76,20 @@ p {
     }
     .header_icons {
         gap: 8px;
+    }
+    .filter_main_parent {
+        margin-top: 26px;
+    }
+    .filter{
+        display: flex;
+        flex-direction: column; gap: 12px;
+        padding: 20px;
+        width: fit-content;
+        margin: 0px auto 20px auto;
+    }
+    .filter button {
+        width: 100%;
+        justify-content: space-between;
     }
 }
 

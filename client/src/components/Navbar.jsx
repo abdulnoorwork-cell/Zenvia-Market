@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg'
-import { FiSearch } from "react-icons/fi";
+import { FiHeart, FiSearch } from "react-icons/fi";
 import { FaAngleDown } from "react-icons/fa6";
 import { AppContext } from '../context/AppContext'
 import { RiMenu3Fill } from "react-icons/ri";
@@ -31,7 +31,7 @@ const Navbar = () => {
     const [bags, setBags] = useState(false)
     const [beauty, setBeauty] = useState(false)
     const [electronics, setElectronics] = useState(false)
-    const { navigate, token, handleSearchProducts, search, setSearch, totalCartItems, handleClearSearch } = useContext(AppContext)
+    const { navigate, token, handleSearchProducts, query, setQuery, suggestions, setSuggestions, totalCartItems, handleClearSearch, wishlist, handleSuggestions } = useContext(AppContext)
     window.addEventListener('scroll', () => {
         if (window.scrollY > 10) {
             setSticky(true)
@@ -43,19 +43,31 @@ const Navbar = () => {
     return (
         <>
             <div className='bg-blue-800/80 text-white text-center text-[13px] p-2 flex items-center justify-center gap-2 px-4'><span className='text-xl'><TbTruckDelivery /></span> <span>Free Shipping on Orders Over Rs.2000!</span></div>
-            <div className={`sticky top-0 flex items-center justify-between bg-[#FFFFFF] py-2 2xl:py-2.5 border-b z-40 border-[#E2E8F0] ${sticky ? "shadow-[0_10px_30px_rgba(0,0,0,0.1)]" : "bg-[#FFFFFF]"}`}>
+            <div className={`sticky top-0 flex items-center justify-between bg-[#FFFFFF] py-2 border-b z-40 border-[#E2E8F0] ${sticky ? "shadow-[0_10px_30px_rgba(0,0,0,0.1)]" : "bg-[#FFFFFF]"}`}>
                 <nav className='container mx-auto px-4 flex items-center justify-between'>
                     <div onClick={() => { navigate('/'); scrollTo(0, 0) }} className="cursor-pointer flex items-center gap-1.5">
-                        <img src={logo} className='h-14' alt="" />
+                        <img src={logo} className='h-13' alt="" />
                         <div className="logo leading-none sm:text-3xl text-2xl cursor-pointer font-medium text-blue-950/80" style={{ fontFamily: 'Urbanist' }}>
                             Zenvia<span className='text-[#2563EB] font-semibold tracking-[-0.2px]' style={{ fontFamily: 'Poppins' }}> Market</span>
                         </div>
                     </div>
                     {/* <img onClick={() => { navigate('/'); scrollTo(0, 0) }} src="https://scentsnstories.pk/cdn/shop/files/SNS_Logo_For_Web_NEW.webp?v=1765471214&width=240" className='cursor-pointer' alt="" /> */}
-                    <div className="search hidden lg:flex items-center w-full max-w-[500px] 2l:h-[45px] h-10">
+                    <div className="search relative hidden lg:flex items-center w-full max-w-[500px] 2l:h-[45px] h-10">
                         <div className='flex items-center justify-between w-full h-full px-3 py-2 rounded-tl-md rounded-bl-md border border-gray-300'>
-                            <input type="text" placeholder='Search Products...' value={search} onChange={(e) => setSearch(e.target.value)} className='text-xs 2xl:text-[13.2px] outline-none w-full h-full font-medium' style={{ fontFamily: 'Montserrat' }} />
-                            <span onClick={(handleClearSearch)} className={`text-lg cursor-pointer text-green-800/80 ${search !== "" ? 'block' : 'hidden'}`}><IoClose /></span>
+                            <input type="text" placeholder='Search Products...' value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.keyCode === 13) {
+                                    e.preventDefault();
+                                    handleSearchProducts();
+                                    setQuery('')
+                                }
+                                if (e.key === "Backspace") {
+                                    e.preventDefault();
+                                    setQuery("")
+                                    setSuggestions([])
+                                    handleClearSearch()
+                                }
+                            }} className='text-xs 2xl:text-[13.2px] outline-none w-full h-full font-medium' style={{ fontFamily: 'Poppins' }} />
+                            <span onClick={(handleClearSearch)} className={`text-lg cursor-pointer text-green-800/80 ${query !== "" ? 'block' : 'hidden'}`}><IoClose /></span>
                         </div>
                         <span onClick={handleSearchProducts} className='text-xl cursor-pointer bg-blue-500 text-white h-full w-[50px] flex items-center justify-center rounded-tr-md rounded-br-md'>
                             <ImSearch />
@@ -64,31 +76,30 @@ const Navbar = () => {
                     <div className='header_icons flex items-center gap-3 sm:gap-4 font-medium'>
                         {/* Search Icon */}
                         <span onClick={() => setSearchBox(true)} className='text-base cursor-pointer relative bg-gray-100 border border-[#E5E7EB] p-2 sm:p-2.5 flex items-center justify-center rounded-full max-lg:block hidden'><FiSearch /></span>
-                        {token ?
-                            <Link to={'/cart'} onClick={() => scrollTo(0, 0)} className='relative flex items-center text-blue-950/80 gap-1 cursor-pointer'>
-                                <span className='sm:text-2xl text-[22px] text-blue-950/80'>
-                                    <HiOutlineShoppingBag />
-                                    <small className='absolute -top-1.5 -right-1 bg-blue-500 text-white sm:text-[10px] text-[9px] rounded-full px-1 py-[2.6px] min-w-[15px] text-center leading-none' style={{ fontFamily: 'Montserrat' }}>{totalCartItems > 0 ? totalCartItems : "0"}</small>
-                                </span>
-                            </Link> :
-                            <Link to={'/user/login'} onClick={() => scrollTo(0, 0)} className='relative flex items- text-blue-950/80cente1 gap-2 cursor-pointer'>
-                                <span className='sm:text-2xl text-[22px] text-blue-950/80'>
-                                    <HiOutlineShoppingBag />
-                                    <small className='absolute -top-1.5 -right-1 bg-blue-500 text-white sm:text-[10px] text-[9px] rounded-full px-1 py-[2.6px] min-w-[15px] text-center leading-none' style={{ fontFamily: 'Montserrat' }}>{totalCartItems > 0 ? totalCartItems : "0"}</small>
-                                </span>
-                            </Link>}
+                        <Link to={'/wishlist'} onClick={() => scrollTo(0, 0)} className='relative flex items-center text-blue-950/80 gap-1 cursor-pointer'>
+                            <span className='text-[22px] text-blue-950/80'>
+                                <FiHeart />
+                                <small className='absolute top-1.5 -right-1 bg-red-500 text-white sm:text-[10px] text-[9px] rounded-full px-[3px] py-[2px] min-w-[14px] text-center leading-none' style={{ fontFamily: 'Montserrat' }}>{wishlist.length > 0 ? wishlist.length : "0"}</small>
+                            </span>
+                        </Link>
+                        <Link to={'/cart'} onClick={() => scrollTo(0, 0)} className='relative flex items-center text-blue-950/80 gap-1 cursor-pointer'>
+                            <span className='text-[22px] text-blue-950/80'>
+                                <HiOutlineShoppingBag />
+                                <small className='absolute top-1.5 -right-1.5 bg-blue-500 text-white sm:text-[10px] text-[9px] rounded-full px-[3px] py-[2px] min-w-[14px] text-center leading-none' style={{ fontFamily: 'Montserrat' }}>{totalCartItems > 0 ? totalCartItems : "0"}</small>
+                            </span>
+                        </Link>
                         {token ?
                             <Link to={'/my-account'} onClick={() => scrollTo(0, 0)} className='flex items-center text-blue-950/80 gap-1 cursor-pointer'>
-                                <span className='sm:text-2xl text-[22px] text-blue-950/80'>
+                                <span className='text-[22px] text-blue-950/80'>
                                     <BiSolidUser />
                                 </span>
-                                <h6 className='xl:block hidden leading-none text-base font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
+                                <h6 className='xl:block hidden leading-none text-sm font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
                             </Link> :
                             <Link to={'/user/login'} onClick={() => scrollTo(0, 0)} className='flex items-center text-blue-950/80 gap-1 cursor-pointer'>
-                                <span className='sm:text-2xl text-[22px] text-blue-950/80'>
+                                <span className='text-[22px] text-blue-950/80'>
                                     <BiSolidUser />
                                 </span>
-                                <h6 className='leading-none text-base font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
+                                <h6 className='leading-none text-sm font-medium' style={{ fontFamily: 'Montserrat' }}>Account</h6>
                             </Link>}
                         <span onClick={() => setMobileMenu(true)} className='cursor-pointer text-xl xl:hidden block text-blue-950/90'><RiMenu3Fill /></span>
                         <span onClick={() => setMobileMenu(true)} className={`cursor-pointer text-xl text-blue-950/90 ${sticky ? 'xl:block hidden' : 'hidden'}`}><RiMenu3Fill /></span>
@@ -228,17 +239,49 @@ const Navbar = () => {
                 </span>Contact us</div></NavLink>
             </div>
             {/* Mobile Search Box */}
-            <div className={`search items-center w-[90%] max-w-[500px] h-[50px] fixed top-[30%] left-1/2 -translate-x-1/2 z-50 ${searchBox ? 'flex lg:hidden' : 'hidden'}`}>
-                <div className='flex items-center justify-between w-full h-full px-3 py-2 rounded-tl-md rounded-bl-md border border-gray-300/90 bg-white'>
-                    <input type="text" placeholder='Search Products...' value={search} onChange={(e) => setSearch(e.target.value)} className='text-xs 2xl:text-[13.2px] outline-none w-full h-full font-medium' style={{ fontFamily: 'Montserrat' }} />
-                    <span onClick={handleClearSearch} className={`text-lg cursor-pointer text-green-800/80 ${search !== "" ? 'block' : 'hidden'}`}><IoClose /></span>
+            <div className='relative'>
+                <div className={`search items-center w-[90%] max-w-[500px] h-[50px] fixed top-[30%] left-1/2 -translate-x-1/2 z-50 ${searchBox ? 'flex lg:hidden' : 'hidden'}`}>
+                    <div className='flex items-center justify-between w-full h-full px-3 py-2 rounded-tl-md rounded-bl-md border border-gray-300/90 bg-white'>
+                        <input type="text" placeholder='Search Products...' value={query} onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.keyCode === 13) {
+                                    e.preventDefault();
+                                    handleSearchProducts();
+                                    setSearchBox(false);
+                                    setQuery('')
+                                }
+                                if (e.key === "Backspace") {
+                                    e.preventDefault();
+                                    setQuery("")
+                                    setSuggestions([])
+                                    handleClearSearch()
+                                }
+                            }} className='text-xs 2xl:text-[13.2px] outline-none w-full h-full font-medium' style={{ fontFamily: 'Poppins' }} />
+                        <span onClick={handleClearSearch} className={`text-lg cursor-pointer text-green-800/80 ${query !== "" ? 'block' : 'hidden'}`}><IoClose /></span>
+                    </div>
+                    <span onClick={() => { handleSearchProducts(); setSearchBox(false); }} className='text-xl cursor-pointer bg-blue-500 text-white h-full w-[50px] flex items-center justify-center rounded-tr-md rounded-br-md'>
+                        <ImSearch />
+                    </span>
+                    {query && suggestions.length > 0 &&
+                        <div className="suggestions absolute top-[45px] rounded-md shadow left-0 bg-white w-full border border-[#E2E8F0]">
+                            <ul className='px-3 w-full'>
+                                {suggestions?.map((v, i) => (
+                                    <li key={i} onClick={() => {
+                                        setQuery(v.name);  // select suggestion
+                                        setSearchBox(false)
+                                    }} className='cursor-pointer flex items-center gap-1 w-full border-b border-[#E2E8F0]'>
+                                        <img src={v?.images[0]} className='w-14 h-14 object-contain' alt="" />
+                                        <h6 className='text-[13px]'>{v.name}</h6>
+                                    </li>
+                                ))}
+                            </ul>
+                            <button onClick={() => { handleSearchProducts(); setSearchBox(false) }} className='cursor-pointer text-white bg-[#2563EB] px-4 py-2 mx-auto my-2 text-xs rounded ml-2'>View All Result</button>
+                        </div>
+                    }
                 </div>
-                <span onClick={() => { handleSearchProducts(); setSearchBox(false); }} className='text-xl cursor-pointer bg-blue-500 text-white h-full w-[50px] flex items-center justify-center rounded-tr-md rounded-br-md'>
-                    <ImSearch />
-                </span>
             </div>
             {/* Overlay */}
-            <div onClick={() => { setMobileMenu(false); setSearchBox(false) }} className={`fixed top-0 left-0 w-full h-screen bg-black/80 z-40 ${mobileMenu || searchBox ? 'block' : 'hidden'}`}></div>
+            <div onClick={() => { setMobileMenu(false); setSearchBox(false) }} className={`fixed top-0 left-0 w-full h-screen bg-black/70 z-40 ${mobileMenu || searchBox ? 'block' : 'hidden'}`}></div>
         </>
     )
 }
