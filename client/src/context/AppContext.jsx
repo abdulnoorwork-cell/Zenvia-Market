@@ -34,8 +34,8 @@ const AppContextProvider = ({ children }) => {
             setLoading(true)
             let response = await axios.get(`${backendUrl}/api/blog/get-blogs`, { withCredentials: true });
             if (response.data) {
-                setLoading(false)
                 setBlogs(response.data)
+                setLoading(false)
             }
             setLoading(false)
         } catch (error) {
@@ -48,8 +48,8 @@ const AppContextProvider = ({ children }) => {
             setLoading(true)
             let response = await axios.get(`${backendUrl}/api/product/get-products`, { withCredentials: true });
             if (response.data) {
-                setLoading(false)
                 setProducts(response.data)
+                setLoading(false)
             }
             setLoading(false)
         } catch (error) {
@@ -69,11 +69,11 @@ const AppContextProvider = ({ children }) => {
                 let response = await axios.get(`${backendUrl}/api/product/search-products?query=${query}`, { withCredentials: true });
                 if (response.data) {
                     if (query.length > 1) {
-                        setSearchLoading(false)
                         setProducts(response.data)
                         setSuggestions([])
                         navigate('/shop/all-products')
                         scrollTo(0, 0)
+                        setSearchLoading(false)
                     }
                 }
                 setSearchLoading(false)
@@ -104,8 +104,8 @@ const AppContextProvider = ({ children }) => {
                         params: { query },
                     });
                     if(sugRes.data){
-                        setSuggestionLoading(false)
                         setSuggestions(sugRes.data);
+                        setSuggestionLoading(false)
                     }
                     setSuggestionLoading(false)
 
