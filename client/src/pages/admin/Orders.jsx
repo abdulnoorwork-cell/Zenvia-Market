@@ -6,19 +6,29 @@ import { useContext } from 'react'
 import toast from 'react-hot-toast'
 import { AppContext } from '../../context/AppContext'
 import parcel_icon from '../../assets/parcel_icon.svg'
+import loading_animation from '../../../public/loading_animation.svg'
 
 const Orders = () => {
     const [orders, setOrders] = useState([])
-    const { currency, backendUrl, isAdmin, fetchUserOrders } = useContext(AppContext);
+    const { currency, backendUrl, isAdmin, fetchUserOrders, orderLoading, setOrderLoading } = useContext(AppContext);
     const fetchAllOrders = async () => {
         try {
-            let response = await axios.get(`${backendUrl}/api/order/get-orders`, { withCredentials: true })
+            setOrderLoading(true)
+            let response = await axios.get(`${backendUrl}/api/order/get-orders`, {
+                headers: {
+                    Authorization: `${isAdmin}`
+                },
+                withCredentials: true
+            })
             if (response.data) {
                 setOrders(response.data)
+                setOrderLoading(false)
             } else {
+                setOrderLoading(false)
                 console.log(error.response.data.messege);
             }
         } catch (error) {
+            setOrderLoading(false)
             console.log(error)
         }
     }
@@ -62,48 +72,50 @@ const Orders = () => {
                     <label className='max-xl:hidden'>Payment</label>
                     <label className='mx-auto'>Status</label>
                 </div>
-                {orders.length > 0 ?
-                    <div className='relative max-h-[80vh] overflow-x-auto shadow scrollbar-hide bg-white'>
-                        {orders?.map((order, index) => (
-                            <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-gray-800">
-                                <div className="order_image_parent flex gap-2">
-                                    <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
-                                    <div className="flex flex-col justify-center">
-                                        <h6 className="font-medium text-sm">
-                                            {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
-                                        </h6>
-                                        <div className='flex flex-col leading-none gap-1 text-gray-700 text-[13.2px] mt-1'>
-                                            <h6 style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</h6>
-                                            <h6 style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</h6>
-                                            <h6 style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</h6>
+                {orderLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
+                    {orders.length > 0 ?
+                        <div className='relative max-h-[80vh] overflow-x-auto shadow scrollbar-hide bg-white'>
+                            {orders?.map((order, index) => (
+                                <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-gray-800">
+                                    <div className="order_image_parent flex gap-2">
+                                        <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
+                                        <div className="flex flex-col justify-center">
+                                            <h6 className="font-medium text-sm">
+                                                {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
+                                            </h6>
+                                            <div className='flex flex-col leading-none gap-1 text-gray-700 text-[13.2px] mt-1'>
+                                                <h6 style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</h6>
+                                                <h6 style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</h6>
+                                                <h6 style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="text-sm">
-                                    <h6 className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</h6>
-                                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
-                                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).email}</h6>
-                                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
-                                </div>
+                                    <div className="text-sm">
+                                        <h6 className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</h6>
+                                        <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
+                                        <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).email}</h6>
+                                        <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
+                                    </div>
 
-                                <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
+                                    <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
 
-                                <div className="flex flex-col text-xs text-gray-700 font-medium">
-                                    <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
-                                    <h6>Date: {new Date(order.created_at).toDateString()}</h6>
-                                    <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
+                                    <div className="flex flex-col text-xs text-gray-700 font-medium">
+                                        <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
+                                        <h6>Date: {new Date(order.created_at).toDateString()}</h6>
+                                        <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
+                                    </div>
+                                    <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-400/80 outline-[#2563EB] w-fit text-gray-700 rounded-sm'>
+                                        <option value="PLACED">Order Placed</option>
+                                        <option value="PACKING">Packing</option>
+                                        <option value="SHIPPED">Shipped</option>
+                                        <option value="OUT FOR DELIVERY">Out for delivery</option>
+                                        <option value="DELIVERED">Delivered</option>
+                                    </select>
                                 </div>
-                                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-400/80 outline-[#2563EB] w-fit text-gray-700 rounded-sm'>
-                                    <option value="PLACED">Order Placed</option>
-                                    <option value="PACKING">Packing</option>
-                                    <option value="SHIPPED">Shipped</option>
-                                    <option value="OUT FOR DELIVERY">Out for delivery</option>
-                                    <option value="DELIVERED">Delivered</option>
-                                </select>
-                            </div>
-                        ))}
-                    </div> : <div className='font-medium min-h-[100px] w-full text-sm flex items-center justify-center text-center bg-white rounded-md'>You don,t have any customer orders</div>}
+                            ))}
+                        </div> : <div className='font-medium min-h-[100px] w-full text-sm flex items-center justify-center text-center bg-white rounded-md'>You don,t have any customer orders</div>}
+                </div>}
             </div>
         </div>
     )

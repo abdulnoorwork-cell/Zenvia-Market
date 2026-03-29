@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import loading_animation from '../../../public/loading_animation.svg'
 
 const ProductList = () => {
-  const { backendUrl, navigate, currency, isAdmin, products, fetchProducts, loading } = useContext(AppContext);
+  const { backendUrl, currency, isAdmin, products, fetchProducts, loading } = useContext(AppContext);
 
   const deleteProduct = async (productId) => {
     try {

@@ -275,7 +275,7 @@ const Navbar = () => {
                                     handleClearSearch()
                                 }
                             }} className='text-xs 2xl:text-[13.2px] outline-none w-full h-full font-medium' style={{ fontFamily: 'Poppins' }} />
-                        <span onClick={handleClearSearch} className={`text-lg cursor-pointer text-green-800/80 ${query !== "" ? 'block' : 'hidden'}`}><IoClose /></span>
+                        {suggestionLoading ? <span className='text-lg animate-spin'><TbLoader2 /></span> : <span onClick={(handleClearSearch)} className={`text-lg cursor-pointer text-green-800/80 ${query !== "" ? 'block' : 'hidden'}`}><IoClose /></span>}
                     </div>
                     <span onClick={() => { handleSearchProducts(); setSearchBox(false); }} className='text-xl cursor-pointer bg-blue-500 text-white h-full w-[50px] flex items-center justify-center rounded-tr-md rounded-br-md'>
                         <ImSearch />
@@ -307,7 +307,7 @@ const Navbar = () => {
                 setSuggestions([]);
                 handleClearSearch();
                 setSearchLoading(false);
-            }} className={`fixed top-0 left-0 w-full h-screen bg-black/70 z-40 ${mobileMenu || searchBox || searchLoading ? 'block' : 'hidden'}`}></div>
+            }} className={`fixed top-0 left-0 w-full h-screen bg-black/80 z-40 ${mobileMenu || searchBox || searchLoading ? 'block' : 'hidden'}`}></div>
             {/* Loader */}
             <img src={loading_animation} alt='loader' className={`fixed top-2/4 left-2/4 z-50 -translate-y-2/4 -translate-x-2/4 ${searchLoading ? "block" : "hidden"}`} />
         </>

@@ -8,7 +8,7 @@ import { FaEdit } from "react-icons/fa";
 import loading_animation from '../../../public/loading_animation.svg'
 
 const ListBlog = () => {
-  const { backendUrl, navigate, isAdmin, blogs, fetchBlogs, loading } = useContext(AppContext);
+  const { backendUrl, navigate, isAdmin, blogs, fetchBlogs, blogLoading } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -48,7 +48,7 @@ const ListBlog = () => {
               <label className=' max-lg:hidden mx-auto'>Date</label>
               <label className='mx-auto'>Action</label>
             </div>
-            {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
+            {blogLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
               {blogs.length > 0 ?
                 <div>
                   {blogs?.reverse().map((blog, index) => (
