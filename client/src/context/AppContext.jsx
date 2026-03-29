@@ -22,6 +22,7 @@ const AppContextProvider = ({ children }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [query, setQuery] = useState([])
     const [suggestions, setSuggestions] = useState([]);
+    const [searchLoading, setSearchLoading]=useState(false)
     const navigate = useNavigate()
     const currency = "Rs"
     const shippingFee = 150;
@@ -53,16 +54,20 @@ const AppContextProvider = ({ children }) => {
             return;
         }
         try {
+            setSearchLoading(true)
             let response = await axios.get(`${backendUrl}/api/product/search-products?query=${query}`, { withCredentials: true });
             if (response.data) {
                 if (query.length>1) {
+                    setSearchLoading(false)
                     setProducts(response.data)
                     setSuggestions([])
                     navigate('/shop/all-products')
                     scrollTo(0, 0)
                 }
             }
+            setSearchLoading(false)
         } catch (error) {
+            setSearchLoading(false)
             console.log(error)
         }
     }
@@ -209,7 +214,7 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, isAdmin, products, setProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, handleSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs,fetchBlogs, isAdmin, products, setProducts,fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, handleSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders,searchLoading,setSearchLoading }}>{children}</AppContext.Provider>
     )
 }
 

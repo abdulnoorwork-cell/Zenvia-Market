@@ -60,7 +60,7 @@ export const addProduct = async (req, res) => {
 }
 
 export const getProducts = (req, res) => {
-    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products';
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice, created_at FROM products';
     db.query(sql, async (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, messege: 'Error in getting products: ' + err });

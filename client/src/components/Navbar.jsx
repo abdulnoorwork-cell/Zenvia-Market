@@ -31,7 +31,7 @@ const Navbar = () => {
     const [bags, setBags] = useState(false)
     const [beauty, setBeauty] = useState(false)
     const [electronics, setElectronics] = useState(false)
-    const { navigate, token, handleSearchProducts, query, setQuery, suggestions, setSuggestions, totalCartItems, handleClearSearch, wishlist, handleSuggestions } = useContext(AppContext)
+    const { navigate, token, handleSearchProducts, query, setQuery, suggestions, setSuggestions, totalCartItems, handleClearSearch, wishlist, handleSuggestions,searchLoading,setSearchLoading } = useContext(AppContext)
     window.addEventListener('scroll', () => {
         if (window.scrollY > 10) {
             setSticky(true)
@@ -299,10 +299,13 @@ const Navbar = () => {
             </div>
             {/* Overlay */}
             <div onClick={() => {
-                setMobileMenu(false); setSearchBox(false); setQuery("")
-                setSuggestions([])
-                handleClearSearch()
-            }} className={`fixed top-0 left-0 w-full h-screen bg-black/70 z-40 ${mobileMenu || searchBox ? 'block' : 'hidden'}`}></div>
+                setMobileMenu(false);
+                setSearchBox(false);
+                setQuery("");
+                setSuggestions([]);
+                handleClearSearch();
+                setSearchLoading(false);
+            }} className={`fixed top-0 left-0 w-full h-screen bg-black/70 z-40 ${mobileMenu || searchBox || searchLoading ? 'block' : 'hidden'}`}></div>
         </>
     )
 }

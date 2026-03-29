@@ -9,32 +9,8 @@ import { FaEdit } from 'react-icons/fa'
 import cross_icon from '../../assets/cross_icon.svg'
 
 const Dashboard = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
-  const { backendUrl, navigate, isAdmin, currency } = useContext(AppContext);
-
-  const fetchBlogs = async () => {
-    try {
-      let response = await axios.get(`${backendUrl}/api/blog/get-blogs`, { withCredentials: true })
-      if (response.data) {
-        setBlogs(response.data);
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchProducts = async () => {
-    try {
-      let response = await axios.get(`${backendUrl}/api/product/get-products`, { withCredentials: true })
-      if (response.data) {
-        setProducts(response.data);
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, blogs, fetchBlogs } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -124,46 +100,46 @@ const Dashboard = () => {
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
           <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
           <div>
-            <p className='sm:text-xl text-lg font-semibold text-gray-600'>{products.length}</p>
-            <h6 style={{ fontFamily: 'Outfit' }} className='text-gray-500 font-light text-sm'>Products</h6>
+            <p className='sm:text-xl text-lg font-semibold'>{products.length}</p>
+            <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Products</h6>
           </div>
         </div>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
           <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
           <div>
-            <p className='sm:text-xl text-lg font-semibold text-gray-600'>{blogs.length}</p>
-            <h6 style={{ fontFamily: 'Outfit' }} className='text-gray-500 font-light text-sm'>Blogs</h6>
+            <p className='sm:text-xl text-lg font-semibold'>{blogs.length}</p>
+            <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Blogs</h6>
           </div>
         </div>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
           <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
           <div>
-            <p className='sm:text-xl text-lg font-semibold text-gray-600'>{orders?.length}</p>
-            <h6 style={{ fontFamily: 'Outfit' }} className='text-gray-500 font-light text-sm'>Orders</h6>
+            <p className='sm:text-xl text-lg font-semibold'>{orders?.length}</p>
+            <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Orders</h6>
           </div>
         </div>
       </div>
       {/* Products */}
       <div>
-        <div className='flex items-center gap-3 m-4 mt-6 text-gray-600'>
+        <div className='flex items-center gap-3 m-4 mt-6'>
           <img src={dashboard_icon_4} alt="" />
-          <p>Latest Products</p>
+          <h6 className='text-gray-600 font-semibold' style={{ fontFamily: "Montserrat" }}>Latest Products</h6>
         </div>
         {products.length > 0 ?
           <div className='relative w-fulloverflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
             <div className='w-full sm:text-[13px] text-xs'>
-              <div className='md:grid grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] hidden gap-2 py-[14px] px-2 border-b border-[#E5E7EB] text-xs uppercase font-semibold'>
-                <label style={{ fontFamily: 'Inter' }}>Product</label>
-                <label className='mx-auto max-sm:hidden' style={{ fontFamily: 'Inter' }}>Category</label>
-                <label className='mx-auto' style={{ fontFamily: 'Inter' }}>Offer Price</label>
-                <label className='mx-auto max-xl:hidden' style={{ fontFamily: 'Inter' }}>Date</label>
-                <label className='mx-auto' style={{ fontFamily: 'Inter' }}>Action</label>
+              <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+                <label>Product</label>
+                <label className='mx-auto max-sm:hidden'>Category</label>
+                <label className='mx-auto'>Price</label>
+                <label className='mx-auto max-xl:hidden'>Date</label>
+                <label className='mx-auto'>Action</label>
               </div>
               <div>
                 {products?.slice(length - 3).reverse().map((product, index) => (
-                  <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-700'>
-                    <div className='flex items-center sm:gap-4 gap-3'>
-                      <img className='main_img sm:h-14 h-10 w-14' src={product?.images[0]} alt="" />
+                  <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-800 sm:text-sm text-[13px]'>
+                    <div className='main_img flex items-center sm:gap-4 gap-3'>
+                      <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                       <div className='flex flex-col'>
                         <h6 className='leading-[1.3em]' style={{ fontFamily: 'Outfit' }}>{product?.name}</h6>
                       </div>
@@ -183,27 +159,27 @@ const Dashboard = () => {
       {/* blogs */}
       <div className='flex items-center gap-3 m-4 mt-6 text-gray-600'>
         <img src={dashboard_icon_4} alt="" />
-        <p>Latest Blogs</p>
+        <h6 className='text-gray-600 font-semibold' style={{ fontFamily: "Montserrat" }}>Latest Blogs</h6>
       </div>
       {blogs.length > 0 ?
         <div className='w-full'>
           <div className='relative w-full text-sm overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
             <div className='w-full sm:text-sm text-xs'>
-              <div className='blog_list_title text-xs uppercase p-3 border-b border-[#E5E7EB] font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2'>
-                <label className=' l:px-6' style={{ fontFamily: 'Inter' }}>Blog</label>
-                <label className=' l:px-6 hidden sm:block' style={{ fontFamily: 'Inter' }}>Description</label>
-                <label className=' max-lg:hidden mx-auto' style={{ fontFamily: 'Inter' }}>Date</label>
-                <label className='mx-auto' style={{ fontFamily: 'Inter' }}>Action</label>
+              <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 border-b border-[#E5E7EB] font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white'>
+                <label className=' l:px-6'>Blog</label>
+                <label className=' l:px-6 hidden sm:block'>Description</label>
+                <label className=' max-lg:hidden mx-auto'>Date</label>
+                <label className='mx-auto'>Action</label>
               </div>
               <div>
                 {blogs?.slice(length - 3).reverse().map((blog, index) => (
-                  <div key={index} className='blog_list sm:text-sm text-xs border-b text-gray-700 border-[#E5E7EB] px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
+                  <div key={index} className='blog_list text-gray-800 sm:text-sm text-[13px] border-b border-[#E5E7EB] px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
                     <div className='flex items-center sm:gap-4 gap-3'>
                       <img className='main_image h-8 w-14' src={blog.image} alt="" />
-                      <h6 className='leading-[1.3em] xl:text-[13.4px] text-xs' style={{ fontFamily: 'Outfit' }}>{blog.title}</h6>
+                      <h6 style={{ fontFamily: 'Outfit' }}>{blog.title}</h6>
                     </div>
                     <div className='hidden sm:block'>
-                      <h6 style={{ fontFamily: 'Outfit' }} className='line-clamp-3 text-gray-700 text-xs' dangerouslySetInnerHTML={{
+                      <h6 style={{ fontFamily: 'Outfit' }} className='line-clamp-3 text-xs' dangerouslySetInnerHTML={{
                         __html: blog?.description
                           ?.replace(/style="[^"]*color:[^";]+;?[^"]*"/gi, "")
                           ?.replace(/color:[^;"]+;?/gi, "")
@@ -211,7 +187,7 @@ const Dashboard = () => {
                     </div>
                     <h6 className='max-lg:hidden mx-auto text-xs' style={{ fontFamily: 'Outfit' }}>{new Date(blog.created_at).toDateString()}</h6>
                     <div className=' flex text-sm items-center sm:gap-2 gap-1.5 mx-auto'>
-                      <span onClick={() => { navigate(`/admin/updateblog/${blog?._id}`) }} className='lg:text-lg text-[16px] text-[#15173D] hover:scale-105 transition-all cursor-pointer'>
+                      <span onClick={() => { navigate(`/admin/updateblog/${blog?._id}`) }} className='lg:text-lg text-[16px] hover:scale-105 transition-all cursor-pointer'>
                         <FaEdit />
                       </span>
                       {/* <img src={edit_icon} onClick={() => { navigate(`/admin/updateblog/${blog._id}`) }} alt="" className='md:h-[20px] md:w-[20px] h-5 W-5 hover:scale-110 transition-all cursor-pointer' /> */}
@@ -226,42 +202,49 @@ const Dashboard = () => {
       {/* Orders */}
       <div className='flex items-center gap-3 m-4 mt-6 text-gray-600'>
         <img src={dashboard_icon_4} alt="" />
-        <p>Latest Orders</p>
+        <h6 className='text-gray-600 font-semibold mb-3' style={{ fontFamily: "Montserrat" }}>Latest Orders</h6>
+      </div>
+      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+        <label>Order</label>
+        <label className='max-sm:hidden'>Delivery</label>
+        <label className=''>Amount</label>
+        <label className='max-xl:hidden'>Payment</label>
+        <label className='mx-auto'>Status</label>
       </div>
       {orders.length > 0 ?
         <div>
           <div className='w-full overflow-auto'>
             {orders?.slice(length - 3).reverse().map((order, index) => (
-              <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 rounded-md border border-gray-300 text-gray-800">
+              <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-gray-800">
                 <div className="order_image_parent flex gap-2">
                   <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
                   <div className="flex flex-col justify-center">
-                    <p className="font-medium text-sm">
+                    <h6 className="font-medium text-sm">
                       {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
-                    </p>
-                    <div className='flex flex-col leading-none gap-1 text-[13.2px] mt-1'>
-                      <p style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</p>
-                      <p style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</p>
-                      <p style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</p>
+                    </h6>
+                    <div className='flex flex-col leading-none gap-1 text-gray-700 text-[13.2px] mt-1'>
+                      <h6 style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</h6>
+                      <h6 style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</h6>
+                      <h6 style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</h6>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-sm">
-                  <p className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</p>
-                  <p className='text-xs'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city},{JSON.parse(order.address).postal_code}</p>
-                  <p className='text-xs'>{JSON.parse(order.address).email}</p>
-                  <p className='text-xs'>{JSON.parse(order.address).phone}</p>
+                  <h6 className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</h6>
+                  <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
+                  <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).email}</h6>
+                  <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
                 </div>
 
-                <p className="font-medium text-[13.2px] my-auto text-black/70">{currency}. {(order?.total_amount).toLocaleString()}</p>
+                <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
 
-                <div className="flex flex-col text-xs">
-                  <p>Method: {order.payment_method}</p>
-                  <p>Date: {new Date(order.created_at).toDateString()}</p>
-                  <p>Payment: {order.payment_status}</p>
+                <div className="flex flex-col text-xs text-gray-700 font-medium">
+                  <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
+                  <h6>Date: {new Date(order.created_at).toDateString()}</h6>
+                  <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
                 </div>
-                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-semibold text-xs bg-gray-50 border border-[#E2E8F0] outline-[#2563EB] w-fit text-gray-600 rounded-sm'>
+                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-400/80 outline-[#2563EB] w-fit text-gray-700 rounded-sm'>
                   <option value="PLACED">Order Placed</option>
                   <option value="PACKING">Packing</option>
                   <option value="SHIPPED">Shipped</option>

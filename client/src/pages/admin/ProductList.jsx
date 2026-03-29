@@ -6,15 +6,7 @@ import cross_icon from '../../assets/cross_icon.svg'
 import { useContext } from 'react';
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  const { backendUrl, navigate, currency, isAdmin } = useContext(AppContext);
-
-  const fetchProducts = async () => {
-    let response = await axios.get(`${backendUrl}/api/product/get-products`, { withCredentials: true })
-    if (response.data) {
-      setProducts(response.data);
-    }
-  }
+  const { backendUrl, navigate, currency, isAdmin, products, fetchProducts, } = useContext(AppContext);
 
   const deleteProduct = async (productId) => {
     try {
@@ -42,22 +34,22 @@ const ProductList = () => {
   return (
     <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
       <div className='flex flex-col w-full'>
-        <h1 className='text-gray-800 font-medium'>Products List</h1>
-        <div className='mt-4 w-full shadow rounded-lg bg-white'>
+        <h1 className='text-gray-800 font-semibold text-lg' style={{fontFamily: 'Montserrat'}}>Product List</h1>
+        <div className='mt-3 w-full shadow bg-white'>
           <div className='w-full sm:text-sm text-xs'>
-            <div className='md:grid grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] hidden gap-2 py-[14px] px-2 border-b border-[#E5E7EB] text-xs uppercase font-semibold'>
-              <label style={{ fontFamily: 'Inter' }}>Product</label>
-              <label className='mx-auto max-sm:hidden' style={{ fontFamily: 'Inter' }}>Category</label>
-              <label className='mx-auto' style={{ fontFamily: 'Inter' }}>Offer Price</label>
-              <label className='mx-auto max-xl:hidden' style={{ fontFamily: 'Inter' }}>Date</label>
-              <label className='mx-auto' style={{ fontFamily: 'Inter' }}>Action</label>
+            <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+              <label>Product</label>
+              <label className='mx-auto max-sm:hidden'>Category</label>
+              <label className='mx-auto'>Price</label>
+              <label className='mx-auto max-xl:hidden'>Date</label>
+              <label className='mx-auto'>Action</label>
             </div>
             {products.length > 0 ?
-              <div className='overflow-auto h-[75vh] scrollbar-hide relative text-gray-700 sm:text-[13px] text-xs'>
+              <div className='overflow-auto h-[75vh] scrollbar-hide relative text-gray-800 sm:text-sm text-[13px]'>
                 {products?.reverse().map((product, index) => (
                   <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-700'>
-                    <div className='flex items-center sm:gap-4 gap-3'>
-                      <img className='main_img sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
+                    <div className='main_img flex items-center sm:gap-4 gap-3'>
+                      <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                       <div className='flex flex-col'>
                         <h6 className='leading-[1.3em]' style={{ fontFamily: 'Outfit' }}>{product?.name}</h6>
                       </div>

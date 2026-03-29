@@ -222,8 +222,8 @@ const SingleProduct = () => {
                                                 />
                                             ))}
                                         </div>
-                                        {reviews.length > 0 ? 
-                                        <span className="text-gray-600 text-sm" style={{ fontFamily: "Outfit" }}>({getRating.average_rating === 5 || getRating.average_rating === 4 || getRating.average_rating === 3 ||getRating.average_rating === 2 || getRating.average_rating === 1  ? getRating.average_rating + ".0" : ""})</span> : null}
+                                        {reviews.length > 0 ?
+                                            <span className="text-gray-600 text-sm" style={{ fontFamily: "Outfit" }}>({getRating.average_rating === 5 || getRating.average_rating === 4 || getRating.average_rating === 3 || getRating.average_rating === 2 || getRating.average_rating === 1 ? getRating.average_rating + ".0" : ""})</span> : null}
                                     </div>
 
                                     <div className="flex items-center gap-3 mt-2">
@@ -240,20 +240,19 @@ const SingleProduct = () => {
                                             <h3 className="font-semibold mb-2">Select Size</h3>
 
                                             <div className="flex gap-3 flex-wrap">
-                                                {product?.sizes ? JSON.parse(product.sizes).map((size, index) => (
-                                                    JSON.parse(size).map((v, i) => (
-                                                        <button
-                                                            key={i}
-                                                            onClick={() => setSelectedSize(v)}
-                                                            className={`sm:w-10 w-9 sm:h-10 h-9 border border-gray-200 rounded-md flex items-center justify-center font-medium cursor-pointer
+                                                {product?.sizes ? JSON.parse(product.sizes).map((v, i) => (
+                                                    <button
+                                                        key={i}
+                                                        onClick={() => setSelectedSize(v)}
+                                                        className={`sm:w-10 w-9 sm:h-10 h-9 border border-gray-200 rounded-md flex items-center justify-center font-medium cursor-pointer
                     ${selectedSize === v
-                                                                    ? "bg-blue-600 text-white"
-                                                                    : "bg-gray-200 hover:border-blue-500"
-                                                                }`}
-                                                        >
-                                                            {v}
-                                                        </button>
-                                                    ))
+                                                                ? "bg-blue-600 text-white"
+                                                                : "bg-gray-200 hover:border-blue-500"
+                                                            }`}
+                                                    >
+                                                        {v}
+                                                    </button>
+
                                                 )) : []}
                                             </div>
                                         </div> : null
@@ -451,7 +450,7 @@ const SingleProduct = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h6 style={{fontFamily:"Outfit"}} className='my-3 text-gray-700 text-sm'>{v.comment}</h6>
+                                            <h6 style={{ fontFamily: "Outfit" }} className='my-3 text-gray-700 text-sm'>{v.comment}</h6>
                                             <figure className='grid grid-cols-4 gap-3'>
                                                 {JSON.parse(v.images).map((img, i) => {
                                                     return <img src={img} key={i} alt="" className='rounded-md bg-gray-50 border border-[#E2E8F0]' />

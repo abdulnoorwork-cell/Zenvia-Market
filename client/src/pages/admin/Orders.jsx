@@ -9,7 +9,7 @@ import parcel_icon from '../../assets/parcel_icon.svg'
 
 const Orders = () => {
     const [orders, setOrders] = useState([])
-    const { currency, backendUrl, isAdmin,fetchUserOrders } = useContext(AppContext);
+    const { currency, backendUrl, isAdmin, fetchUserOrders } = useContext(AppContext);
     const fetchAllOrders = async () => {
         try {
             let response = await axios.get(`${backendUrl}/api/order/get-orders`, { withCredentials: true })
@@ -54,40 +54,47 @@ const Orders = () => {
     return (
         <div className="flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]">
             <div className='flex flex-col w-full'>
-                <h1 className=' font-medium'>Orders List</h1>
+                <h1 className='text-gray-800 font-semibold text-lg mb-3' style={{ fontFamily: 'Montserrat' }}>Order List</h1>
+                <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+                    <label>Order</label>
+                    <label className='max-sm:hidden'>Delivery</label>
+                    <label className=''>Amount</label>
+                    <label className='max-xl:hidden'>Payment</label>
+                    <label className='mx-auto'>Status</label>
+                </div>
                 {orders.length > 0 ?
-                    <div className='relative max-h-[80vh] mt-4 overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
+                    <div className='relative max-h-[80vh] overflow-x-auto shadow scrollbar-hide bg-white'>
                         {orders?.map((order, index) => (
-                            <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 rounded-md border border-gray-300 text-gray-800">
+                            <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-gray-800">
                                 <div className="order_image_parent flex gap-2">
                                     <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
                                     <div className="flex flex-col justify-center">
-                                        <p className="font-medium text-sm">
+                                        <h6 className="font-medium text-sm">
                                             {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
-                                        </p>
-                                        <div className='flex flex-col leading-none gap-1 text-[13.2px] mt-1'>
-                                            <p style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</p>
-                                            <p style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</p>
-                                            <p style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</p>
+                                        </h6>
+                                        <div className='flex flex-col leading-none gap-1 text-gray-700 text-[13.2px] mt-1'>
+                                            <h6 style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</h6>
+                                            <h6 style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</h6>
+                                            <h6 style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</h6>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="text-sm">
-                                    <p className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</p>
-                                    <p className='text-xs'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city},{JSON.parse(order.address).postal_code}</p>
-                                    <p className='text-xs'>{JSON.parse(order.address).email}</p>
-                                    <p className='text-xs'>{JSON.parse(order.address).phone}</p>
+                                    <h6 className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</h6>
+                                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
+                                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).email}</h6>
+                                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
                                 </div>
 
-                                <p className="font-medium text-[13.2px] my-auto text-black/70">{currency}. {(order?.total_amount).toLocaleString()}</p>
+                                <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
 
-                                <div className="flex flex-col text-xs">
-                                    <p>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</p>
-                                    <p>Date: {new Date(order.created_at).toDateString()}</p>
-                                    <p>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</p>
+                                <div className="flex flex-col text-xs text-gray-700 font-medium">
+                                    <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
+                                    <h6>Date: {new Date(order.created_at).toDateString()}</h6>
+                                    <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
                                 </div>
-                                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs bg-gray-50 border border-[#E2E8F0] outline-[#2563EB] w-fit text-gray-600 rounded-sm'>
+                                <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-400/80 outline-[#2563EB] w-fit text-gray-700 rounded-sm'>
                                     <option value="PLACED">Order Placed</option>
                                     <option value="PACKING">Packing</option>
                                     <option value="SHIPPED">Shipped</option>

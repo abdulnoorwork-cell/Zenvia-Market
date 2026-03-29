@@ -10,7 +10,7 @@ import { TfiWrite } from "react-icons/tfi";
 
 const Sidebar = () => {
     return (
-        <div className='flex flex-col bg-[#FFFFFF] border-r border-gray-200 min-h-full pt-6 text-[15px]'>
+        <div className='flex flex-col bg-[#FFFFFF] border-r border-gray-200 min-h-full pt-6 text-[15px] font-medium'>
             <NavLink end={true} to={'/admin'} className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 sm:px-6 lg:px-9 xl:min-w-60 lg:min-w-52 md:min-w-48 cursor-pointer ${isActive && 'bg-[#2563EB] border-r-4 border-[#2563EB] text-[#FFFFFF]'}`}>
                 <span className='text-xl'><RxDashboard /></span>
                 {/* <img src={home_icon} alt="" className='min-w-4 w-5' /> */}
