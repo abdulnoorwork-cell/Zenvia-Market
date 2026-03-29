@@ -22,7 +22,8 @@ const AppContextProvider = ({ children }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [query, setQuery] = useState([])
     const [suggestions, setSuggestions] = useState([]);
-    const [searchLoading, setSearchLoading]=useState(false)
+    const [searchLoading, setSearchLoading] = useState(false)
+    const [suggestionLoading, setSuggestionLoading] = useState(false)
     const navigate = useNavigate()
     const currency = "Rs"
     const shippingFee = 150;
@@ -53,38 +54,30 @@ const AppContextProvider = ({ children }) => {
             setSuggestions([]);
             return;
         }
-        try {
-            setSearchLoading(true)
-            let response = await axios.get(`${backendUrl}/api/product/search-products?query=${query}`, { withCredentials: true });
-            if (response.data) {
-                if (query.length>1) {
-                    setSearchLoading(false)
-                    setProducts(response.data)
-                    setSuggestions([])
-                    navigate('/shop/all-products')
-                    scrollTo(0, 0)
+        if (query && suggestions.length > 0) {
+            try {
+                setSearchLoading(true)
+                let response = await axios.get(`${backendUrl}/api/product/search-products?query=${query}`, { withCredentials: true });
+                if (response.data) {
+                    if (query.length > 1) {
+                        setSearchLoading(false)
+                        setProducts(response.data)
+                        setSuggestions([])
+                        navigate('/shop/all-products')
+                        scrollTo(0, 0)
+                    }
                 }
+                setSearchLoading(false)
+            } catch (error) {
+                setSearchLoading(false)
+                console.log(error)
             }
-            setSearchLoading(false)
-        } catch (error) {
-            setSearchLoading(false)
-            console.log(error)
         }
     }
     const handleClearSearch = () => {
         setQuery('');
         setProducts([]);
         fetchProducts();
-    }
-    const handleSuggestions = async () => {
-        try {
-            let response = await axios.get(`${backendUrl}/api/product/get-suggestions?query=${query}`, { withCredentials: true })
-            if (response.data) {
-                setSuggestions(response.data)
-            }
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     useEffect(() => {
@@ -96,13 +89,19 @@ const AppContextProvider = ({ children }) => {
                 }
 
                 try {
+                    setSuggestionLoading(true)
                     // 🔹 fetch suggestions
                     const sugRes = await axios.get(`${backendUrl}/api/product/get-suggestions`, {
                         params: { query },
                     });
-                    setSuggestions(sugRes.data);
+                    if(sugRes.data){
+                        setSuggestionLoading(false)
+                        setSuggestions(sugRes.data);
+                    }
+                    setSuggestionLoading(false)
 
                 } catch (err) {
+                    setSuggestionLoading(false)
                     console.error(err);
                 }
             }, 300); // 300ms debounce
@@ -214,7 +213,7 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs,fetchBlogs, isAdmin, products, setProducts,fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, handleSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders,searchLoading,setSearchLoading }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading,suggestionLoading,setSuggestionLoading }}>{children}</AppContext.Provider>
     )
 }
 
