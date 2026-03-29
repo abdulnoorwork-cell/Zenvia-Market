@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import { AppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 import { useContext } from 'react';
+import { BiLogOut } from "react-icons/bi";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Layout = () => {
         <div onClick={() => { navigate('/admin'); scrollTo(0, 0) }} className="logo leading-none sm:text-3xl text-2xl cursor-pointer">
           Admin<span className='text-[#2563EB] font-bold'> Panel</span>
         </div>
-        <button onClick={logout} type='submit' className='sm:text-sm text-xs px-9 w-fit py-[10px] bg-orange-500 text-white rounded-full cursor-pointer font-medium'>Logout</button>
+        <button onClick={logout} type='submit' className='sm:text-sm text-xs px-9 w-fit py-[10px] bg-orange-500 text-white rounded-full cursor-pointer font-medium flex items-center gap-1'><span className='text-lg'><BiLogOut /></span>Logout</button>
       </div>
       <div className='flex min-h-[95vh]'>
         <Sidebar />

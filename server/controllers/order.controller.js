@@ -3,6 +3,7 @@ import 'dotenv/config'
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 export const placeOrder = async (req, res) => {
     const { user_id, items, total_amount, payment_method, address } = req.body;
     try {

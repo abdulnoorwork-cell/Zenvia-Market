@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
+    const [loading,setLoading]=useState(false)
     const initAuthUser = localStorage.getItem('User');
     const [authenticated, setAuthenticated] = useState(initAuthUser ? JSON.parse(initAuthUser) : undefined)
     const token = authenticated?.token;
@@ -30,21 +31,29 @@ const AppContextProvider = ({ children }) => {
     const discount = 28
     const fetchBlogs = async () => {
         try {
+            setLoading(true)
             let response = await axios.get(`${backendUrl}/api/blog/get-blogs`, { withCredentials: true });
             if (response.data) {
+                setLoading(false)
                 setBlogs(response.data)
             }
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.log(error)
         }
     }
     const fetchProducts = async () => {
         try {
+            setLoading(true)
             let response = await axios.get(`${backendUrl}/api/product/get-products`, { withCredentials: true });
             if (response.data) {
+                setLoading(false)
                 setProducts(response.data)
             }
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.log(error)
         }
     }
@@ -213,7 +222,7 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading,suggestionLoading,setSuggestionLoading }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading,suggestionLoading,setSuggestionLoading,loading }}>{children}</AppContext.Provider>
     )
 }
 
