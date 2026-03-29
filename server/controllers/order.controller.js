@@ -124,7 +124,7 @@ export const fetchAllOrders = (req, res) => {
 
 export const getLatestOrders = (req, res) => {
     const limit = parseInt(req.query.limit) || 3;
-    const sql = `SELECT * FROM orders ORDER BY created_at DESC LIMIT ?`;
+    const sql = `SELECT * FROM orders JOIN order_items ON orders._id = order_items.order_id JOIN products ON products._id = order_items.product_id WHERE NOT (payment_method = "ONLINE" AND payment_status = "PENDING") ORDER BY orders.created_at DESC LIMIT ?`;
     db.query(sql, [limit],async (err, data) => {
         if (err) {
             console.log(err);

@@ -60,12 +60,12 @@ const Dashboard = () => {
   const fetchLatestOrders = async () => {
     try {
       setOrderLoading(true)
-      let response = await axios.get(`${backendUrl}/api/order/get-latest-orders`, { 
-        headers:{
+      let response = await axios.get(`${backendUrl}/api/order/get-latest-orders`, {
+        headers: {
           Authorization: `${isAdmin}`
         },
-        withCredentials:true
-       })
+        withCredentials: true
+      })
       if (response.data) {
         setOrders(response.data)
         setOrderLoading(false)
@@ -104,6 +104,8 @@ const Dashboard = () => {
     fetchProducts();
     fetchLatestOrders();
   }, [])
+
+  console.log(orders)
 
   return (
     <div className='flex-1 px-4 py-8 lg:px-10'>
