@@ -55,7 +55,7 @@ const ProductType = ({ type }) => {
     <div>
       <div className="container mx-auto px-4 mt-10 min-h-screen">
         <h6 className='mb-3'>Showing {itemsPerPage} of {products.length} from {type}</h6>
-        <div className='products grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 sm:gap-[18px] gap-4'>
+        <div className='products grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-[18px]'>
           {currentProducts.length > 0 ? currentProducts.map((product, index) => (
             <Suspense key={index}>
               <ProductCard product={product} />

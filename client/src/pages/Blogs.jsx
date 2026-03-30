@@ -29,7 +29,7 @@ const Blogs = () => {
             {/* Blog Grid */}
             <div className="container mx-auto px-4 2xl:pt-15 pt-14 2xl:pb-3 pb-2">
 
-                <div className="blogs grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 sm:gap-[18px] gap-4">
+                <div className="blogs grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-[18px]">
 
                     {blogs.length>0 ? blogs.map((blog,index) => (
                         <Suspense>
