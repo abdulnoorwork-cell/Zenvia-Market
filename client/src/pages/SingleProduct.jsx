@@ -233,8 +233,8 @@ const SingleProduct = () => {
                                         {/* <span className="">(inclusive of all taxes)</span> */}
                                     </div>
 
-                                    <h6 style={{ fontFamily: "Outfit" }} className='mt-3 mb-1.5 sm:text-sm text-xs text-gray-600' dangerouslySetInnerHTML={{ __html: cleanHTML }}>
-                                    </h6>
+                                    <p style={{ fontFamily: "Outfit" }} className='mt-3 mb-1.5 sm:text-sm text-xs' dangerouslySetInnerHTML={{ __html: cleanHTML }}>
+                                    </p>
                                     {product.sizes !== "[]" && product.sizes !== "[\"[]\"]" ?
                                         <div className="mt-3">
                                             <h3 className="font-semibold mb-2">Select Size</h3>
@@ -416,7 +416,7 @@ const SingleProduct = () => {
                                         </div>
                                     </div>
                                 </div> :
-                                <h6 className={`mt-5 sm:text-sm text-xs text-gray-600`} dangerouslySetInnerHTML={{ __html: cleanDescription }}>
+                                <h6 className={`mt-5 sm:text-sm text-xs`} dangerouslySetInnerHTML={{ __html: cleanDescription }}>
                                 </h6>}
                         </div>
                         {label === "Reviews" &&

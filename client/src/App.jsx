@@ -33,6 +33,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import OrderSuccessfull from './pages/OrderSuccessfull';
 import Wishlist from './pages/Wishlist';
+import WishlistProducts from './pages/admin/WishlistProducts';
+import Reviews from './pages/admin/Reviews';
 
 const App = () => {
   const { isAdmin,token,navigate } = useContext(AppContext);
@@ -44,13 +46,13 @@ const App = () => {
           <Route path='/blogs' element={<Blogs />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/about' element={<About />} />
-          <Route path='/my-account' element={token ? <MyAccount /> : <Login />} />
+          <Route path='/my-account' element={token && <MyAccount />} />
           <Route path='/blog/:blog_id' element={<SingleBlog />} />
           <Route path='/shop/all-products' element={<AllProducts />} />
           <Route path='/shop/product/:product_id' element={<SingleProduct />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
-          <Route path='/checkout' element={token ? <Checkout /> : <Login /> } />
+          <Route path='/checkout' element={token && <Checkout /> } />
           <Route path='/category/clothing' element={<CategoryProducts category="Clothing & Style" />} />
           <Route path='/category/footwear' element={<CategoryProducts category="Footwear" />} />
           <Route path='/category/bags' element={<CategoryProducts category="Bags & Accessories" />} />
@@ -85,6 +87,8 @@ const App = () => {
           <Route path='addproduct' element={<AddProduct />} />
           <Route path='updateblog/:blogId' element={<UpdateBlog />} />
           <Route path='listorders' element={<Orders />} />
+          <Route path='wishlist' element={<WishlistProducts />} />
+          <Route path='reviews' element={<Reviews />} />
         </Route> : <Route path='/admin' element={<AdminLogin />} />}
       </Routes>
       <Toaster />

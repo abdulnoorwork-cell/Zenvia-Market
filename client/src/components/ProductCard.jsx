@@ -18,19 +18,19 @@ const ProductCard = React.memo(({ product }) => {
         <img
           src={product?.images?.[0]}
           alt={product?.name}
-          className="cursor-pointer max-h-54 sm:h-54 w-full object-contain p-3 transition duration-300 group-hover:scale-105"
+          className="cursor-pointer sm:h-54 h-50 w-full object-contain transition duration-300 group-hover:scale-105"
         />
 
         {/* Hover Image */}
         {product?.images?.[1] && <img
           src={product?.images?.[1]}
           alt="hover"
-          className="cursor-pointer absolute top-0 left-0 max-h-54 sm:h-54 w-full object-contain p-3 opacity-0 group-hover:opacity-100 transition duration-300"
+          className="cursor-pointer absolute top-0 left-0 max-h-54 sm:h-54 w-full object-contain opacity-0 group-hover:opacity-100 transition duration-300"
         />}
       </div>
 
       {/* Product Info */}
-      <div className="sm:px-4 px-3 sm:pb-4 pb-3">
+      <div className="sm:px-4 px-3 sm:py-4 py-3">
 
         {/* Category */}
         {product.subCategory ?

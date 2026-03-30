@@ -28,8 +28,8 @@ const Clothing = () => {
     }, [])
     return (
         <div className='container mx-auto px-4 mt-10'>
-            <h6 className='text-[22px] tracking-[0.1px] mb-5 font-semibold'>Clothing</h6>
-            <div className='md:block hidden'>
+            <h6 className='text-[22px] tracking-[0.1px] mb-4 font-semibold' style={{fontFamily:"Outfit"}}>Clothing</h6>
+            <div>
                 {products.length > 0 ?
                     <Swiper
                         modules={[Autoplay]}
@@ -40,7 +40,7 @@ const Clothing = () => {
                             disableOnInteraction: false,
                         }}
                         breakpoints={{
-                            320: { slidesPerView: 1 },
+                            260: { slidesPerView: 2 },
                             640: { slidesPerView: 2 },
                             768: { slidesPerView: 3 },
                             1024: { slidesPerView: 4 },
@@ -58,13 +58,6 @@ const Clothing = () => {
                             </SwiperSlide>
                         ))}
                     </Swiper> : <img src={loading_animation} alt='loader' className='mx-auto' />}
-            </div>
-            <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
-                {products.length > 0 ? products.reverse().map((product, index) => (
-                    <Suspense key={index}>
-                        <ProductCard product={product} />
-                    </Suspense>
-                )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
             </div>
         </div>
     )

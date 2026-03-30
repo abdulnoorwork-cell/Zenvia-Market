@@ -105,8 +105,6 @@ const Dashboard = () => {
     fetchLatestOrders();
   }, [])
 
-  console.log(orders)
-
   return (
     <div className='flex-1 px-4 py-8 lg:px-10'>
       <div className='flex flex-wrap gap-4'>
@@ -143,11 +141,11 @@ const Dashboard = () => {
             <div className='relative w-fulloverflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
               <div className='w-full sm:text-[13px] text-xs'>
                 <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
-                  <label>Product</label>
-                  <label className='mx-auto max-sm:hidden'>Category</label>
-                  <label className='mx-auto'>Price</label>
-                  <label className='mx-auto max-xl:hidden'>Date</label>
-                  <label className='mx-auto'>Action</label>
+                  <label style={{fontFamily:"Montserrat"}}>Product</label>
+                  <label className='mx-auto max-sm:hidden' style={{fontFamily:"Montserrat"}}>Category</label>
+                  <label className='mx-auto' style={{fontFamily:"Montserrat"}}>Price</label>
+                  <label className='mx-auto max-xl:hidden' style={{fontFamily:"Montserrat"}}>Date</label>
+                  <label className='mx-auto' style={{fontFamily:"Montserrat"}}>Action</label>
                 </div>
                 <div>
                   {products?.slice(length - 3).reverse().map((product, index) => (
@@ -155,11 +153,11 @@ const Dashboard = () => {
                       <div className='main_img flex items-center sm:gap-4 gap-3'>
                         <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                         <div className='flex flex-col'>
-                          <h6 className='leading-[1.3em]' style={{ fontFamily: 'Outfit' }}>{product?.name}</h6>
+                          <h6 className='leading-[1.3em] font-medium' style={{ fontFamily: 'Outfit' }}>{product?.name}</h6>
                         </div>
                       </div>
                       <h6 className='category mx-auto text-center leading-[1.4em] max-sm:hidden' style={{ fontFamily: 'Outfit' }}>{product?.category}</h6>
-                      <h6 className='category mx-auto text-center leading-[1.4em]' style={{ fontFamily: 'Outfit' }}>{currency}.{product?.offerPrice}</h6>
+                      <h6 className='category mx-auto text-center leading-[1.4em] font-medium' style={{ fontFamily: 'Outfit' }}>{currency}.{product?.offerPrice}</h6>
                       <h6 className='mx-auto max-xl:hidden text-center leading-[1.4em]' style={{ fontFamily: 'Outfit' }}>{new Date(product?.created_at).toDateString()}</h6>
                       <figure className='mx-auto'>
                         <img src={cross_icon} onClick={() => deleteProduct(product._id)} alt="" className='sm:h-[20px] sm:w-[20px] w-[17px] h-[17px] border border-red-400 rounded-full hover:scale-110 transition-all cursor-pointer ' />
@@ -182,10 +180,10 @@ const Dashboard = () => {
             <div className='relative w-full text-sm overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
               <div className='w-full sm:text-sm text-xs'>
                 <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 border-b border-[#E5E7EB] font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white'>
-                  <label className=' l:px-6'>Blog</label>
-                  <label className=' l:px-6 hidden sm:block'>Description</label>
-                  <label className=' max-lg:hidden mx-auto'>Date</label>
-                  <label className='mx-auto'>Action</label>
+                  <label className=' l:px-6' style={{fontFamily:"Montserrat"}}>Blog</label>
+                  <label className=' l:px-6 hidden sm:block' style={{fontFamily:"Montserrat"}}>Description</label>
+                  <label className=' max-lg:hidden mx-auto' style={{fontFamily:"Montserrat"}}>Date</label>
+                  <label className='mx-auto' style={{fontFamily:"Montserrat"}}>Action</label>
                 </div>
                 <div>
                   {blogs?.slice(length - 3).reverse().map((blog, index) => (
@@ -219,14 +217,14 @@ const Dashboard = () => {
       {/* Orders */}
       <div className='flex items-center gap-3 m-4 mt-6 text-gray-600'>
         <img src={dashboard_icon_4} alt="" />
-        <h6 className='text-gray-600 font-semibold mb-3' style={{ fontFamily: "Montserrat" }}>Latest Orders</h6>
+        <h6 className='text-gray-600 font-semibold' style={{ fontFamily: "Montserrat" }}>Latest Orders</h6>
       </div>
       <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
-        <label>Order</label>
-        <label className='max-sm:hidden'>Delivery</label>
-        <label className=''>Amount</label>
-        <label className='max-xl:hidden'>Payment</label>
-        <label className='mx-auto'>Status</label>
+        <label style={{fontFamily:"Montserrat"}}>Order</label>
+        <label className='max-sm:hidden' style={{fontFamily:"Montserrat"}}>Delivery</label>
+        <label className='' style={{fontFamily:"Montserrat"}}>Amount</label>
+        <label className='max-xl:hidden' style={{fontFamily:"Montserrat"}}>Payment</label>
+        <label className='mx-auto' style={{fontFamily:"Montserrat"}}>Status</label>
       </div>
       {orderLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
         {orders.length > 0 ?
@@ -255,7 +253,7 @@ const Dashboard = () => {
                     <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
                   </div>
 
-                  <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
+                  <h6 className="font-medium" style={{fontFamily:"Outfit"}}>{currency}. {(order?.total_amount).toLocaleString()}</h6>
 
                   <div className="flex flex-col text-xs text-gray-700 font-medium">
                     <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>

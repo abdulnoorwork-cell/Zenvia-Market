@@ -39,20 +39,20 @@ const ListBlog = () => {
   return (
     <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
       <div className='flex flex-col w-full'>
-        <h1 className='text-gray-800 font-semibold text-lg' style={{ fontFamily: 'Montserrat' }}>Blog List</h1>
-        <div className='relative max-h-[80vh] mt-3 overflow-x-auto shadow scrollbar-hide bg-white'>
+        <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2' style={{ fontFamily: 'Montserrat' }}>Blog List</h1>
+        <div className='relative max-h-[75vh] mt-4 overflow-x-auto shadow scrollbar-hide bg-white'>
           <div className='w-full sm:text-sm text-xs'>
             <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 border-b border-[#E5E7EB] font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white'>
-              <label className=' l:px-6'>Blog</label>
-              <label className=' l:px-6 hidden sm:block'>Description</label>
-              <label className=' max-lg:hidden mx-auto'>Date</label>
-              <label className='mx-auto'>Action</label>
+              <label className=' l:px-6' style={{fontFamily:"Montserrat"}}>Blog</label>
+              <label className=' l:px-6 hidden sm:block' style={{fontFamily:"Montserrat"}}>Description</label>
+              <label className=' max-lg:hidden mx-auto' style={{fontFamily:"Montserrat"}}>Date</label>
+              <label className='mx-auto' style={{fontFamily:"Montserrat"}}>Action</label>
             </div>
             {blogLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
               {blogs.length > 0 ?
                 <div>
                   {blogs?.reverse().map((blog, index) => (
-                    <div key={index} className='blog_list text-gray-800 sm:text-sm text-[13px] border-b border-[#E5E7EB] px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
+                    <div key={index} className='blog_list sm:text-sm text-[13px] border-b border-[#E5E7EB] px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
                       <div className='flex items-center sm:gap-4 gap-3'>
                         <img className='main_image h-8 w-14' src={blog.image} alt="" />
                         <h6 style={{ fontFamily: 'Outfit' }}>{blog.title}</h6>

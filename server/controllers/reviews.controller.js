@@ -76,3 +76,25 @@ export const productRating = async (req, res) => {
         res.json(data);
     })
 }
+
+export const getAllReviews = (req, res) => {
+    const sql = "SELECT reviews._id, reviews.product_id, reviews.comment, reviews.rating, reviews.created_at, users.name, users.email, users.profile_image, products.name AS product_name, products.price, products.offerPrice FROM reviews JOIN users ON users._id = reviews.user_id JOIN products ON products._id = reviews.product_id";
+    db.query(sql, async (err, data) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, message: err });
+        } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product.product_id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
+            res.status(200).json(data)
+        }
+    })
+}

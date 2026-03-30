@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 import { AppContext } from '../../context/AppContext'
 import parcel_icon from '../../assets/parcel_icon.svg'
 import loading_animation from '../../../public/loading_animation.svg'
+import { RiBox3Line } from 'react-icons/ri'
 
 const Orders = () => {
     const [orders, setOrders] = useState([])
@@ -64,19 +65,19 @@ const Orders = () => {
     return (
         <div className="flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]">
             <div className='flex flex-col w-full'>
-                <h1 className='text-gray-800 font-semibold text-lg mb-3' style={{ fontFamily: 'Montserrat' }}>Order List</h1>
-                <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
-                    <label>Order</label>
-                    <label className='max-sm:hidden'>Delivery</label>
-                    <label className=''>Amount</label>
-                    <label className='max-xl:hidden'>Payment</label>
-                    <label className='mx-auto'>Status</label>
+                <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><RiBox3Line /></span>Orders List</h1>
+                <div className='mt-4 xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+                    <label style={{fontFamily:"Montserrat"}}>Order</label>
+                    <label className='max-sm:hidden' style={{fontFamily:"Montserrat"}}>Delivery</label>
+                    <label className='' style={{fontFamily:"Montserrat"}}>Amount</label>
+                    <label className='max-xl:hidden' style={{fontFamily:"Montserrat"}}>Payment</label>
+                    <label className='mx-auto' style={{fontFamily:"Montserrat"}}>Status</label>
                 </div>
                 {orderLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
                     {orders.length > 0 ?
-                        <div className='relative max-h-[80vh] overflow-x-auto shadow scrollbar-hide bg-white'>
+                        <div className='relative max-h-[75vh] overflow-x-auto shadow scrollbar-hide bg-white'>
                             {orders?.map((order, index) => (
-                                <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-gray-800">
+                                <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 ">
                                     <div className="order_image_parent flex gap-2">
                                         <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
                                         <div className="flex flex-col justify-center">
@@ -98,7 +99,7 @@ const Orders = () => {
                                         <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
                                     </div>
 
-                                    <h6 className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
+                                    <h6 style={{fontFamily:"Outfit"}} className="font-medium">{currency}. {(order?.total_amount).toLocaleString()}</h6>
 
                                     <div className="flex flex-col text-xs text-gray-700 font-medium">
                                         <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>

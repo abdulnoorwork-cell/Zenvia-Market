@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 import cross_icon from '../../assets/cross_icon.svg'
 import { useContext } from 'react';
 import loading_animation from '../../../public/loading_animation.svg'
+import { BsCartCheck } from 'react-icons/bs';
+import { MdDeleteOutline } from 'react-icons/md';
 
 const ProductList = () => {
   const { backendUrl, currency, isAdmin, products, fetchProducts, loading } = useContext(AppContext);
@@ -30,38 +32,38 @@ const ProductList = () => {
   useEffect(() => {
     fetchProducts();
   }, [])
-  console.log(products)
 
   return (
     <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
       <div className='flex flex-col w-full'>
-        <h1 className='text-gray-800 font-semibold text-lg' style={{ fontFamily: 'Montserrat' }}>Product List</h1>
-        <div className='mt-3 w-full shadow bg-white'>
+        <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><BsCartCheck /></span>Product List</h1>
+        <div className='mt-4 w-full shadow bg-white'>
           <div className='w-full sm:text-sm text-xs'>
             <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
-              <label>Product</label>
-              <label className='mx-auto max-sm:hidden'>Category</label>
-              <label className='mx-auto'>Price</label>
-              <label className='mx-auto max-xl:hidden'>Date</label>
-              <label className='mx-auto'>Action</label>
+              <label style={{ fontFamily: "Montserrat" }}>Product</label>
+              <label className='mx-auto max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Category</label>
+              <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Price</label>
+              <label className='mx-auto max-xl:hidden' style={{ fontFamily: "Montserrat" }}>Date</label>
+              <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Action</label>
             </div>
             {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
               {products.length > 0 ?
-                <div className='overflow-auto h-[75vh] scrollbar-hide relative text-gray-800 sm:text-sm text-[13px]'>
+                <div className='overflow-auto max-h-[75vh] scrollbar-hide relative sm:text-sm text-[13px]'>
                   {products?.reverse().map((product, index) => (
-                    <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-700'>
+                    <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center'>
                       <div className='main_img flex items-center sm:gap-4 gap-3'>
                         <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                         <div className='flex flex-col'>
-                          <h6 className='leading-[1.3em]' style={{ fontFamily: 'Outfit' }}>{product?.name}</h6>
+                          <h6 className='leading-[1.3em] font-medium' style={{ fontFamily: 'Outfit' }}>{product?.name}</h6>
                         </div>
                       </div>
                       <h6 className='category mx-auto text-center leading-[1.4em] max-sm:hidden' style={{ fontFamily: 'Outfit' }}>{product?.category}</h6>
-                      <h6 className='category mx-auto text-center leading-[1.4em]' style={{ fontFamily: 'Outfit' }}>{currency}.{product?.offerPrice}</h6>
+                      <h6 className='category_2 mx-auto text-center leading-[1.4em] text-blue-600 hidden' style={{ fontFamily: 'Outfit' }}>{product?.category}</h6>
+                      <h6 className='category mx-auto text-center leading-[1.4em] font-medium' style={{ fontFamily: 'Outfit' }}>{currency}.{product?.offerPrice}</h6>
                       <h6 className='mx-auto max-xl:hidden text-center leading-[1.4em]' style={{ fontFamily: 'Outfit' }}>{new Date(product?.created_at).toDateString()}</h6>
-                      <figure className='mx-auto'>
-                        <img src={cross_icon} onClick={() => deleteProduct(product._id)} alt="" className='sm:h-[20px] sm:w-[20px] w-[17px] h-[17px] border border-red-400 rounded-full hover:scale-110 transition-all cursor-pointer ' />
-                      </figure>
+                      <div className='bg-red-50 text-red-500 text-xl p-1 rounded-md cursor-pointer mx-auto'>
+                        <span onClick={() => deleteProduct(product._id)} className=''><MdDeleteOutline /></span>
+                      </div>
                     </div>
                   ))}
                 </div> :

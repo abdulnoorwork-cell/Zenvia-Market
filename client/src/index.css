@@ -27,8 +27,8 @@ h6 {
 }
 
 p {
-    font-family: "Inter", sans-serif;
-    color: #505c6d;
+    font-family: "Poppins", sans-serif;
+    color: #484a4c;
 }
 
 @media screen and (max-width: 640px) {
@@ -95,6 +95,9 @@ p {
         font-size: 14px;
         font-weight: 600;
     }
+    .product_list .category_2 {
+        display: block;
+    }
     .add_product_color {
         display: grid;
         grid-template-columns: repeat(2,1fr);
@@ -107,9 +110,6 @@ p {
     }
     .product_card h3 {
         font-size: 13px;
-    }
-    .product_card img {
-        padding: 0;
     }
     .product_card .price {
         display: none;

@@ -27,7 +27,7 @@ export const removeFromWishlist = (req, res) => {
 export const getWishlist = (req, res) => {
     const { user_id } = req.params;
     const sql = "SELECT products.* FROM wishlist JOIN products ON products._id = wishlist.product_id WHERE wishlist.user_id = ?";
-    db.query(sql, [user_id],async (err, data) => {
+    db.query(sql, [user_id], async (err, data) => {
         if (err) return res.status(500).json(err);
         for (let product of data) {
             const images = await new Promise((resolve, reject) => {
@@ -40,5 +40,52 @@ export const getWishlist = (req, res) => {
             product.images = images.map(img => img.image)
         }
         res.status(200).json(data);
+    })
+}
+
+export const getWishlistProducts = (req, res) => {
+    const sql = `SELECT 
+  p._id,
+  p.name,
+  p.category,
+  p.offerPrice,
+  COUNT(w.product_id) AS total_wishes
+FROM wishlist w
+JOIN products p ON p._id = w.product_id
+GROUP BY p._id
+ORDER BY total_wishes DESC`;
+    db.query(sql, async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            for (let product of data) {
+                const images = await new Promise((resolve, reject) => {
+                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
+                    db.query(imgSql, [product._id], (err, data) => {
+                        if (err) reject(err)
+                        resolve(data)
+                    })
+                })
+                product.images = images.map(img => img.image)
+            }
+            res.status(200).json(data)
+        }
+    })
+}
+
+export const removeWishlistProduct = (req, res) => {
+    const { product_id } = req.params;
+    const sql = 'DELETE FROM wishlist WHERE product_id = ?'
+    db.query(sql, [product_id], (err, result) => {
+        if (result.affectedRows === 0) {
+            return res.json({ success: false, message: "No product found with this ID" });
+        }
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Server error" });
+        } else {
+            res.json({ success: true, messege: "Product removed from wishlist" })
+        }
     })
 }

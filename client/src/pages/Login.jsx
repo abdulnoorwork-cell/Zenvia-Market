@@ -6,7 +6,6 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { AppContext } from '../context/AppContext'
 import profileImage from '../assets/profile_image.png'
-import Navbar from '../components/Navbar';
 
 const Login = () => {
     const [loginModel, setLoginModel] = useState(true);
@@ -136,7 +135,7 @@ const Login = () => {
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
-                                    value={email} onChange={(e)=>setEmail(e.target.value)}
+                                    value={email} onChange={(e) => setEmail(e.target.value)}
                                     className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
@@ -146,12 +145,17 @@ const Login = () => {
                                 <label className="text-sm text-gray-600">
                                     Password <span className='text-red-600'>*</span>
                                 </label>
-                                <input
-                                    type="password"
-                                    placeholder="Enter your password"
-                                    value={password} onChange={(e)=>setPassword(e.target.value)}
-                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                />
+                                <div className='flex items-center justify-between border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 w-full mt-1 px-4 py-3'>
+                                    <input
+                                        type={passwordShow ? "text" : "password"}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Enter password"
+                                        className="w-full outline-none"
+                                    />
+                                    <span onClick={() => setPasswordShow(true)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "hidden" : "block"}`}><GoEyeClosed /></span>
+                                    <span onClick={() => setPasswordShow(false)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "block" : "hidden"}`}><RxEyeOpen /></span>
+                                </div>
                             </div>
 
                             {/* Remember + Forgot */}
@@ -172,7 +176,7 @@ const Login = () => {
                             </div>
 
                             {/* Login Button */}
-                            <button type='submit' className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+                            <button onClick={onLoginHandler} className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
                                 {loading ? 'loading...' : "Login"}
                             </button>
 
@@ -197,14 +201,14 @@ const Login = () => {
                             </div>
 
                             {/* Signup Link */}
-                            <p className="text-center text-sm text-gray-500 mt-6">
+                            <h6 className="text-center sm:text-sm text-xs text-gray-700 mt-6">
                                 Don't have an account?{" "}
-                                <Link onClick={()=>{setSignupModel(true);setLoginModel(false)}}
-                                    className="text-blue-600 font-semibold"
+                                <Link onClick={() => { setSignupModel(true); setLoginModel(false) }}
+                                    className="text-blue-600 font-font-medium"
                                 >
-                                    Sign Up
+                                    Signup
                                 </Link>
-                            </p>
+                            </h6>
 
                         </form>
                     </div>
@@ -259,7 +263,7 @@ const Login = () => {
                                 <input
                                     type="text"
                                     value={name}
-                                    onChange={(e)=>setName(e.target.value)}
+                                    onChange={(e) => setName(e.target.value)}
                                     placeholder="Enter your name"
                                     className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
@@ -273,7 +277,7 @@ const Login = () => {
                                 <input
                                     type="email"
                                     value={email}
-                                    onChange={(e)=>setEmail(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email"
                                     className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
@@ -284,13 +288,17 @@ const Login = () => {
                                 <label className="text-sm text-gray-600">
                                     Password <span className='text-red-600'>*</span>
                                 </label>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e)=>setPassword(e.target.value)}
-                                    placeholder="Enter password"
-                                    className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                />
+                                <div className='flex items-center justify-between border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 w-full mt-1 px-4 py-3'>
+                                    <input
+                                        type={passwordShow ? "text" : "password"}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Enter password"
+                                        className="w-full outline-none"
+                                    />
+                                    <span onClick={() => setPasswordShow(true)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "hidden" : "block"}`}><GoEyeClosed /></span>
+                                    <span onClick={() => setPasswordShow(false)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "block" : "hidden"}`}><RxEyeOpen /></span>
+                                </div>
                             </div>
 
                             {/* Confirm Password */}
@@ -307,7 +315,7 @@ const Login = () => {
 
                             {/* image */}
                             <div>
-                                <img src={previewImage} onClick={()=>file.current.click()} className='w-18 h-18 rounded-full cursor-pointer' alt="" />
+                                <img src={previewImage} onClick={() => file.current.click()} className='w-18 h-18 rounded-full cursor-pointer' alt="" />
                                 <input type="file" hidden ref={file} onChange={imageHandler} name="" id="" />
                             </div>
 
@@ -323,8 +331,8 @@ const Login = () => {
                             </div>
 
                             {/* Button */}
-                            <button type='submit' className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
-                                Create Account
+                            <button onClick={onSignupHandler} className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+                                {loading ? "Creating..." : "Create Account"}
                             </button>
 
                             {/* Divider */}
@@ -348,15 +356,15 @@ const Login = () => {
                             </div>
 
                             {/* Login Link */}
-                            <p className="text-center text-sm text-gray-500 mt-6">
+                            <h6 className="text-center sm:text-sm text-xs text-gray-700 mt-6">
                                 Already have an account?{" "}
                                 <Link
-                                    onClick={()=>{setSignupModel(false);setLoginModel(true)}}
-                                    className="text-blue-600 font-semibold"
+                                    onClick={() => { setSignupModel(false); setLoginModel(true) }}
+                                    className="text-blue-600 font-medium"
                                 >
                                     Login
                                 </Link>
-                            </p>
+                            </h6>
 
                         </form>
                     </form>

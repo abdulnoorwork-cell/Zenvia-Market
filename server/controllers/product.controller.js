@@ -90,7 +90,7 @@ export const getSingleProduct = (req, res) => {
             if (data.length === 0) {
                 return res.status(404).json({
                     success: false,
-                    message: "Product not found"
+                    messege: "Product not found"
                 });
             }
             const product = data[0]
@@ -99,7 +99,7 @@ export const getSingleProduct = (req, res) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,
-                        message: "Error fetching images"
+                        messege: "Error fetching images"
                     });
                 }
                 product.images = imgData.map(img => img.image)
@@ -111,14 +111,83 @@ export const getSingleProduct = (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     const { productId } = req.params;
-    const sql = 'DELETE FROM products WHERE _id = ?';
-    db.query(sql, productId, (err, data) => {
-        if (err) {
-            return res.status(500).json({ success: false, messege: 'Error in deleting product: ' + err });
-        } else {
-            res.status(200).json({ success: true, messege: "Product deleted successfully" });
+    try {
+        const images = await new Promise((resolve, reject) => {
+            db.query(
+                "SELECT public_id FROM product_images WHERE product_id = ?",
+                [productId],
+                (err, data) => {
+                    if (err) return reject(err);
+                    resolve(data);
+                }
+            );
+        });
+        const getPublicIdFromUrl = (url) => {
+            try {
+                const parts = url.split("/");
+                const file = parts.pop(); // abc123.jpg
+                const folder = parts.slice(parts.indexOf("upload") + 1).join("/");
+
+                const fileName = file.split(".")[0]; // abc123
+                const folderPath = folder.split("/").slice(1).join("/"); // remove version
+
+                return folderPath ? `${folderPath}/${fileName}` : fileName;
+            } catch (err) {
+                return null;
+            }
+        };
+        // 2️⃣ Delete images from Cloudinary
+        for (const img of images) {
+            const public_id = getPublicIdFromUrl(img.image);
+            if (public_id) {
+                await cloudinary.uploader.destroy(public_id);
+            }
         }
-    })
+        // 3️⃣ Delete from product_images table
+        await new Promise((resolve, reject) => {
+            db.query(
+                "DELETE FROM product_images WHERE product_id = ?",
+                [productId],
+                (err) => {
+                    if (err) return reject(err);
+                    resolve();
+                }
+            );
+        });
+        // 4️⃣ Delete from wishlist (important)
+        await new Promise((resolve, reject) => {
+            db.query(
+                "DELETE FROM wishlist WHERE product_id = ?",
+                [productId],
+                (err) => {
+                    if (err) return reject(err);
+                    resolve();
+                }
+            );
+        });
+        // 5️⃣ Delete product
+        await new Promise((resolve, reject) => {
+            db.query(
+                "DELETE FROM products WHERE _id = ?",
+                [productId],
+                (err) => {
+                    if (err) return reject(err);
+                    resolve();
+                }
+            );
+        });
+        res.status(200).json({
+            success: true,
+            messege: "Product deleted successfully"
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            messege: "Delete failed",
+            error
+        });
+    }
 }
 
 export const getSearchProducts = (req, res) => {
@@ -175,7 +244,7 @@ FROM products
 WHERE name LIKE ? OR category LIKE ? OR subCategory LIKE ? LIMIT 8`
     const values = query ?
         [`%${query}%`, `%${query}%`, `%${query}%`] : [];
-    db.query(sql, values,async (err, data) => {
+    db.query(sql, values, async (err, data) => {
         if (err) return res.status(500).json(err);
         try {
             for (let product of data) {
@@ -205,7 +274,7 @@ export const getLatestProducts = (req, res) => {
     db.query(sql, [limit], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ message: "Server error" });
+            return res.status(500).json({ messege: "Server error" });
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
@@ -229,7 +298,7 @@ export const getCategoryProducts = (req, res) => {
     db.query(sql, [category], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ message: "Server error" });
+            return res.status(500).json({ messege: "Server error" });
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
@@ -253,7 +322,7 @@ export const getLatestCategoryProducts = (req, res) => {
     db.query(sql, [category, limit], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ message: "Server error" });
+            return res.status(500).json({ messege: "Server error" });
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
@@ -277,7 +346,7 @@ export const getSubCategoryProducts = (req, res) => {
     db.query(sql, [subCategory], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ message: "Server error" });
+            return res.status(500).json({ messege: "Server error" });
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {

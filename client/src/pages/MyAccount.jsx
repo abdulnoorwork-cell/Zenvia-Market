@@ -22,7 +22,7 @@ const MyAccount = () => {
   const [phone, setPhone] = useState('');
   const [image, setImage] = useState('');
   const [previewImage, setPreviewImage] = useState(profile_image);
-  const { token, userId, backendUrl, currency, navigate,wishlist, toggleWishlist,fetchUserOrders,orders } = useContext(AppContext)
+  const { token, userId, backendUrl, currency, navigate, wishlist, toggleWishlist, fetchUserOrders, orders } = useContext(AppContext)
   const file = useRef();
 
   const statusColor = (order_status) => {
@@ -63,19 +63,15 @@ const MyAccount = () => {
       }
     }
     fetchUserData()
-  }, [token,userId])
+  }, [token, userId])
 
   const logout = () => {
-    try {
-      localStorage.removeItem('User');
-      toast.success("Logout successfully")
-      setTimeout(() => {
-        window.location.href('/user/login')
-        window.location.reload()
-      }, 1000)
-    } catch (error) {
-      console.log(error)
-    }
+    localStorage.removeItem('User');
+    toast.success("Logout successfully")
+    setTimeout(() => {
+      navigate('/user/login')
+      window.location.reload()
+    }, 1000)
   }
 
   const updateUserHandler = async (e) => {
