@@ -8,21 +8,23 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-    const [loading,setLoading]=useState(false)
-    const [blogLoading,setBlogLoading]=useState(false)
-    const [orderLoading,setOrderLoading]=useState(false)
-    const [wishlistLoading,setWishlistLoading]=useState(false)
+    const [loading, setLoading] = useState(false)
+    const [blogLoading, setBlogLoading] = useState(false)
+    const [orderLoading, setOrderLoading] = useState(false)
+    const [wishlistLoading, setWishlistLoading] = useState(false)
     const initAuthUser = localStorage.getItem('User');
     const [authenticated, setAuthenticated] = useState(initAuthUser ? JSON.parse(initAuthUser) : undefined)
     const token = authenticated?.token;
     const userId = authenticated?.data?.[0]._id;
     const isAdmin = localStorage.getItem('token');
     const [orders, setOrders] = useState([])
+    const [adminOrders, setAdminOrders] = useState([])
     const [blogs, setBlogs] = useState([]);
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([])
     const [totalCartItems, setTotalCartItems] = useState([])
     const [wishlist, setWishlist] = useState([]);
+    const [allReviews, setAllReviews] = useState([]);
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [query, setQuery] = useState([])
     const [suggestions, setSuggestions] = useState([]);
@@ -106,7 +108,7 @@ const AppContextProvider = ({ children }) => {
                     const sugRes = await axios.get(`${backendUrl}/api/product/get-suggestions`, {
                         params: { query },
                     });
-                    if(sugRes.data){
+                    if (sugRes.data) {
                         setSuggestions(sugRes.data);
                         setSuggestionLoading(false)
                     }
@@ -216,6 +218,47 @@ const AppContextProvider = ({ children }) => {
         }
     }
 
+    const fetchAllReviews = async () => {
+        try {
+            setLoading(true)
+            let response = await axios.get(`${backendUrl}/api/review/all-reviews`, {
+                headers: {
+                    Authorization: `${isAdmin}`
+                },
+                withCredentials: true
+            })
+            if (response.data) {
+                setAllReviews(response.data)
+                setLoading(false)
+            }
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    }
+    const fetchAdminOrders = async () => {
+        try {
+            setOrderLoading(true)
+            let response = await axios.get(`${backendUrl}/api/order/get-orders`, {
+                headers: {
+                    Authorization: `${isAdmin}`
+                },
+                withCredentials: true
+            })
+            if (response.data) {
+                setAdminOrders(response.data)
+                setOrderLoading(false)
+            } else {
+                setOrderLoading(false)
+                console.log(error.response.data.messege);
+            }
+        } catch (error) {
+            setOrderLoading(false)
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         fetchBlogs();
         fetchProducts();
@@ -225,10 +268,12 @@ const AppContextProvider = ({ children }) => {
         handleClearSearch()
         fetchWishlist();
         fetchUserOrders()
+        fetchAllReviews();
+        fetchAdminOrders()
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading,suggestionLoading,setSuggestionLoading,loading,blogLoading,orderLoading,setOrderLoading, wishlistLoading,setWishlistLoading }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews,fetchAdminOrders,adminOrders }}>{children}</AppContext.Provider>
     )
 }
 

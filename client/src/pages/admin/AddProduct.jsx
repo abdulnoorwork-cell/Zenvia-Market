@@ -16,7 +16,7 @@ const AddProduct = () => {
   const editorRef2 = useRef(null);
   const quillRef2 = useRef(null)
   const navigate = useNavigate()
-  const { backendUrl, token, isAdmin } = useContext(AppContext);
+  const { backendUrl, isAdmin,fetchProducts } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -98,6 +98,7 @@ const AddProduct = () => {
         setColors([]);
         quillRef.current.root.innerHTML = ''
         quillRef2.current.root.innerHTML = ''
+        fetchProducts()
         setTimeout(() => {
           navigate('/admin/listproduct')
         }, 1000)

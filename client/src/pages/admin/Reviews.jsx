@@ -7,42 +7,61 @@ import profile_image from '../../assets/profile_image.png'
 import { AiFillStar } from "react-icons/ai";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegCommentDots } from "react-icons/fa6";
+import toast from 'react-hot-toast';
 
 const Reviews = () => {
-    const [allReviews, setAllReviews] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const { backendUrl, isAdmin, currency } = useContext(AppContext);
-    const fetchAllReviews = async () => {
+    const [model, setModel] = useState(false)
+    const [singleReview, setSingleReview] = useState([]);
+    const [reply, setReply] = useState('')
+    const [replyLoading, setReplyLoading] = useState(false);
+    const { backendUrl, isAdmin, currency,fetchAllReviews,loading,allReviews } = useContext(AppContext);
+
+    const fetchSingleReview = async (review_id) => {
         try {
-            setLoading(true)
-            let response = await axios.get(`${backendUrl}/api/review/all-reviews`, {
+            let response = await axios.get(`${backendUrl}/api/review/get-single-review/${review_id}`, {
                 headers: {
                     Authorization: `${isAdmin}`
                 },
                 withCredentials: true
             })
             if (response.data) {
-                setAllReviews(response.data)
-                setLoading(false)
+                setModel(true)
+                setSingleReview(response.data[0]);
             }
-            setLoading(false)
         } catch (error) {
-            setLoading(false)
             console.log(error)
         }
     }
 
-    useEffect(() => {
-        fetchAllReviews();
-    }, [])
-
-    console.log(allReviews)
+    const handleReply = async (review_id) => {
+        try {
+            setReplyLoading(true)
+            let response = await axios.post(`${backendUrl}/api/review/reply/add`, { review_id, reply }, {
+                headers: {
+                    Authorization: `${isAdmin}`
+                },
+                withCredentials: true
+            })
+            if (response.data.success) {
+                toast.success(response.data.messege)
+                setReply('')
+                setModel(false)
+                setReplyLoading(false);
+                fetchAllReviews()
+            }
+            setReplyLoading(false)
+        } catch (error) {
+            console.log(error)
+            setReplyLoading(false)
+            toast.error(error.response.data.messege)
+        }
+    }
 
     return (
         <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
             <div className='flex flex-col w-full'>
-                <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><TfiCommentAlt /></span>Reviews List</h1>
-                <div className='mt-4 w-full shadow bg-white'>
+                <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><TfiCommentAlt /></span>Reviews List</h1>
+                <div className='w-full shadow bg-white'>
                     <div className='w-full sm:text-sm text-xs'>
                         <div className='sm:grid hidden xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
                             <label style={{ fontFamily: "Montserrat" }}>Customer</label>
@@ -85,12 +104,86 @@ const Reviews = () => {
                                                 <p className='mx-auto text-center leading-[1.4em] font-medium' style={{ fontFamily: 'Montserrat' }}>{new Date(review?.created_at).toDateString()}</p>
                                             </div>
                                             <div className='flex items-center gap-2 mx-auto max-sm:mt-2'>
-                                                <div className='bg-blue-50 text-blue-600 rounded-md cursor-pointer flex items-center gap-1 py-1.5 px-3 text-xs font-medium'>
-                                                    <span onClick={() => deleteProduct(product._id)} className='text-lg'><FaRegCommentDots /></span>
+                                                <div onClick={() => fetchSingleReview(review._id)} className='bg-blue-50 text-blue-600 rounded-md cursor-pointer flex items-center gap-1 py-1.5 px-3 text-xs font-medium'>
+                                                    <span className='text-lg'><FaRegCommentDots /></span>
                                                     Reply
                                                 </div>
-                                                <div className='bg-red-50 text-red-500 text-xl p-1 rounded-md cursor-pointer'>
+                                                {/* <div className='bg-red-50 text-red-500 text-xl p-1 rounded-md cursor-pointer'>
                                                     <span onClick={() => deleteProduct(product._id)} className=''><MdDeleteOutline /></span>
+                                                </div> */}
+                                            </div>
+                                            {/* ================= ADMIN REPLY SECTION ================= */}
+                                            <div className={`fixed inset-0 z-50 items-center justify-center ${model && singleReview ? "flex" : "hidden"}`}>
+                                                {/* Overlay */}
+                                                <div
+                                                    className="absolute inset-0 bg-[#14102b44] backdrop-blur-[0.4px]"
+                                                    onClick={() => setModel(false)}
+                                                ></div>
+
+                                                {/* Modal */}
+                                                <div className="relative w-full max-w-lg bg-white rounded-lg z-10">
+
+                                                    {/* Header */}
+                                                    <div className="flex justify-between items-center px-5 py-2.5 rounded-tl-lg rounded-tr-lg border-b border-[#E2E8F0] bg-gray-100">
+                                                        <h2 className="text-base font-semibold tracking-[-0.2px]" style={{ fontFamily: "Montserrat" }}>
+                                                            Reply to Review
+                                                        </h2>
+                                                        <button
+                                                            onClick={() => setModel(false)}
+                                                            className="text-gray-700 hover:text-red-500 text-lg cursor-pointer"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+
+                                                    {/* Content */}
+                                                    <div className="p-5">
+
+                                                        {/* Customer Info */}
+                                                        <div className="flex gap-3 items-center mb-4">
+                                                            <img
+                                                                src={singleReview.profile_image ? JSON.parse(singleReview?.profile_image) : profile_image}
+                                                                alt="user"
+                                                                className="w-10 h-10 rounded-full"
+                                                            />
+                                                            <div>
+                                                                <h6 className="text-sm font-semibold">
+                                                                    {singleReview.name}
+                                                                </h6>
+                                                                <p className="text-xs text-gray-500">
+                                                                    {singleReview.email}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Review Box */}
+                                                        <div className="bg-gray-100 p-3 rounded-lg text-sm text-gray-600 mb-4">
+                                                            {singleReview.comment}
+                                                        </div>
+
+                                                        {/* Textarea */}
+                                                        <textarea
+                                                            value={reply}
+                                                            onChange={(e) => setReply(e.target.value)}
+                                                            placeholder="Write your reply..."
+                                                            rows={4}
+                                                            className="w-full border-2 border-gray-400 focus:border-none rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                                                        ></textarea>
+                                                    </div>
+
+                                                    {/* Footer */}
+                                                    <div className="flex justify-end gap-2 px-5 py-3 border-t border-gray-400">
+                                                        <button
+                                                            onClick={() => setModel(false)}
+                                                            style={{ fontFamily: "Montserrat" }}
+                                                            className="cursor-pointer px-4 py-1.5 font-medium text-sm border border-gray-400 rounded-lg hover:bg-gray-100"
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        <button style={{ fontFamily: "Montserrat" }} onClick={() => handleReply(singleReview._id)} className="cursor-pointer px-4 py-1.5 font-medium text-sm bg-[#2563EB] text-white rounded-lg hover:bg-blue-600">
+                                                            {replyLoading ? "loading..." : "Send Reply"}
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,8 +194,8 @@ const Reviews = () => {
                         </div>}
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

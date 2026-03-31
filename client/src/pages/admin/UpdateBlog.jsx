@@ -18,7 +18,7 @@ const UpdateBlog = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('')
 
-  const { backendUrl, token, isAdmin } = useContext(AppContext);
+  const { backendUrl, isAdmin,fetchBlogs } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   const fetchBog = async () => {
@@ -59,6 +59,7 @@ const UpdateBlog = () => {
       if (response.data.success) {
         toast.success(response.data.messege);
         setLoading(false);
+        await fetchBlogs()
         setTimeout(() => {
           navigate('/admin/listblog')
         }, 1000)

@@ -3,6 +3,12 @@ import { v2 as cloudinary } from 'cloudinary'
 
 export const addReview = async (req, res) => {
     const { product_id, user_id, rating, comment } = req.body;
+    if (!rating) {
+        return res.status(400).json({ success: false, message: "Rating can,t be null!" })
+    }
+    if (!comment) {
+        return res.status(400).json({ success: false, message: "Comment can,t be null!" })
+    }
     const images = Array.isArray(req.body.images) ? req.body.images : [];
     let uploadedUrls = [];
     const allowedFormat = ["image/jpg", "image/png", "image/jpeg", "image/webp"];
@@ -53,7 +59,18 @@ export const addReview = async (req, res) => {
 
 export const getProductReviews = (req, res) => {
     const { product_id } = req.params;
-    const sql = `SELECT * FROM reviews JOIN users ON reviews.user_id = users._id WHERE product_id = ? ORDER BY reviews.created_at DESC`;
+    const sql = `SELECT 
+    reviews.*,
+    users.name,
+    users.email,
+    users.profile_image,
+    reviews_replies.reply,
+    reviews_replies.created_at AS reply_created_at
+FROM reviews
+JOIN users ON reviews.user_id = users._id
+LEFT JOIN reviews_replies ON reviews._id = reviews_replies.review_id
+WHERE reviews.product_id = ?
+ORDER BY reviews.created_at DESC`;
     db.query(sql, [product_id], (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, message: err });
@@ -95,6 +112,38 @@ export const getAllReviews = (req, res) => {
                 product.images = images.map(img => img.image)
             }
             res.status(200).json(data)
+        }
+    })
+}
+
+export const getSingleReview = (req, res) => {
+    const { id } = req.params;
+    const sql = `SELECT reviews._id, reviews.comment, users.name, users.email, users.profile_image FROM reviews JOIN users ON users._id = reviews.user_id WHERE reviews._id = ?`
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, message: err });
+        } else {
+            res.status(200).json(data)
+        }
+    })
+}
+
+export const adminReply = (req, res) => {
+    const { review_id, reply } = req.body;
+    if (!review_id) {
+        return res.status(400).json({ success: false, messege: "Invalid review ID" })
+    }
+    if (!reply) {
+        return res.status(400).json({ success: false, messege: "Reply comment can,t be null!" })
+    }
+    const sql = `INSERT INTO reviews_replies (review_id, reply) VALUES (?,?)`;
+    db.query(sql, [review_id, reply], (err, data) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ success: false, messege: err });
+        } else {
+            res.status(201).json({ success: true, messege: "Reply added successfully" })
         }
     })
 }

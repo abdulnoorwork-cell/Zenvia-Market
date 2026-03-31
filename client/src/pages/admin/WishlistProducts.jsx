@@ -13,7 +13,7 @@ import { MdDeleteOutline } from 'react-icons/md';
 
 const WishlistProducts = () => {
     const [wishlist, setWishlist] = useState([]);
-    const { backendUrl, isAdmin, currency, wishlistLoading, setWishlistLoading } = useContext(AppContext);
+    const { backendUrl, isAdmin, currency, wishlistLoading,fetchProducts } = useContext(AppContext);
     const fetchWishlistProducts = async () => {
         try {
             let response = await axios.get(`${backendUrl}/api/wishlist/get-wishlist-products`, {
@@ -41,6 +41,7 @@ const WishlistProducts = () => {
             if (response.data.success) {
                 toast.success(response.data.messege)
                 await fetchWishlistProducts()
+                await fetchProducts()
             }
         } catch (error) {
             toast.error(error.response.data.messege);
@@ -51,14 +52,12 @@ const WishlistProducts = () => {
     useEffect(() => {
         fetchWishlistProducts()
     }, [])
-
-    console.log(wishlist)
-
+    
     return (
         <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
             <div className='flex flex-col w-full'>
-                <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><CgHeart /></span>Wishlist</h1>
-                <div className='mt-4 w-full shadow bg-white'>
+                <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><CgHeart /></span>Wishlist</h1>
+                <div className='w-full shadow bg-white'>
                     <div className='w-full sm:text-sm text-xs'>
                         <div className='admin_products_label grid lg:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] items-center gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
                             <label>Product</label>
@@ -83,7 +82,7 @@ const WishlistProducts = () => {
                                             <h6 className='category mx-auto text-center font-medium leading-[1.4em] hidden lg:block' style={{ fontFamily: 'Outfit' }}>{currency}.{w?.offerPrice}</h6>
                                             <h6 className='mx-auto text-center leading-[1.4em] font-medium flex items-center gap-1' style={{ fontFamily: 'Outfit' }}><span className='text-red-500/60 text-[15px]'><FaHeart /></span> {w?.total_wishes < 10 ? "0" + w.total_wishes : total_wishes}</h6>
                                             <div className='bg-red-50 text-red-500 text-xl p-1 rounded-md cursor-pointer mx-auto'>
-                                                <span onClick={() => deleteProduct(product._id)} className=''><MdDeleteOutline /></span>
+                                                <span onClick={() => deleteWishlistProduct(w._id)} className=''><MdDeleteOutline /></span>
                                             </div>
                                         </div>
                                     ))}

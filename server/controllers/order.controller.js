@@ -29,8 +29,9 @@ export const placeOrder = async (req, res) => {
                                 const deleteQuery = 'DELETE FROM cart_items WHERE user_id = ?'
                                 db.query(deleteQuery, [user_id], (err, result) => {
                                     if (err) return res.status(500).json({ success: false, message: err })
-                                    return res.json({ success: true, message: "Order placed (COD)" });
+                                    res.json({ success: true, message: "Order placed (COD)" });
                                 })
+                                return;
                             }
                             // 🔵 ONLINE (Stripe)
                             if (payment_method === "ONLINE") {

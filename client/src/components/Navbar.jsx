@@ -307,7 +307,7 @@ const Navbar = () => {
                 setSuggestions([]);
                 handleClearSearch();
                 setSearchLoading(false);
-            }} className={`fixed top-0 left-0 w-full h-screen bg-black/80 z-40 ${mobileMenu || searchBox || searchLoading ? 'block' : 'hidden'}`}></div>
+            }} className={`fixed top-0 left-0 w-full h-screen bg-[#0f0b25af] backdrop-blur-[0.6px] z-40 ${mobileMenu || searchBox || searchLoading ? 'block' : 'hidden'}`}></div>
             {/* Loader */}
             <img src={loading_animation} alt='loader' className={`fixed top-2/4 left-2/4 z-50 -translate-y-2/4 -translate-x-2/4 ${searchLoading ? "block" : "hidden"}`} />
         </>

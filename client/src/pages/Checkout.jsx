@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const Checkout = () => {
     const [loading, setLoading] = useState(false)
-    const { cartItems, backendUrl, userId, token, getCartItems, shippingFee, currency, discount, getTotalCartItems } = useContext(AppContext)
+    const { cartItems, backendUrl, userId, token, getCartItems, shippingFee, currency, discount, getTotalCartItems,fetchAdminOrders } = useContext(AppContext)
     const subtotal = cartItems.reduce(
         (total, item) => total + item.offerPrice * item.quantity,
         0
@@ -54,6 +54,7 @@ const Checkout = () => {
                     } else {
                         window.location.href = response.data.url
                     }
+                    fetchAdminOrders()
                 }
                 setLoading(false)
             } catch (error) {
@@ -66,7 +67,7 @@ const Checkout = () => {
             window.location.reload()
         }
     }
-    console.log(total)
+
     return (
         <div className="min-h-screen py-12">
 

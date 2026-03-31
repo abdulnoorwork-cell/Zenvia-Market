@@ -1,0 +1,23 @@
+<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Outer Circle -->
+  <circle cx="35" cy="35" r="30" stroke="#2D4DA3" stroke-width="2.5"></circle>
+
+  <!-- Icon Group -->
+  <g transform="translate(15,15)">
+    
+    <!-- Hammer Handle -->
+    <line x1="10" y1="28" x2="30" y2="8" stroke="#2D4DA3" stroke-width="3" stroke-linecap="round"></line>
+
+    <!-- Hammer Head -->
+    <rect x="26" y="5" width="10" height="6" rx="1.5" fill="#2D4DA3"></rect>
+
+    <!-- Shopping Bag -->
+    <rect x="8" y="28" width="20" height="14" rx="3" fill="#F4C542"></rect>
+
+    <!-- Bag Handle -->
+    <path d="M12 28C12 23 24 23 24 28" stroke="#2D4DA3" stroke-width="2" fill="none"></path>
+
+  </g>
+
+</svg>

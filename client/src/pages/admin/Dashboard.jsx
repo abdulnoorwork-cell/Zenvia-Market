@@ -11,7 +11,7 @@ import loading_animation from '../../../public/loading_animation.svg'
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
-  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, blogs, fetchBlogs, loading, blogLoading, orderLoading, setOrderLoading } = useContext(AppContext);
+  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, blogs, fetchBlogs, loading, blogLoading, orderLoading, setOrderLoading,fetchAdminOrders } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -89,8 +89,8 @@ const Dashboard = () => {
         withCredentials: true
       });
       if (response.data.success) {
-        fetchAllOrders()
         toast.success(response.data.messege);
+        await fetchAdminOrders()
       } else {
         toast.error(response.data.messege)
       }

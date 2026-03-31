@@ -180,26 +180,6 @@ const Login = () => {
                                 {loading ? 'loading...' : "Login"}
                             </button>
 
-                            {/* Divider */}
-                            <div className="flex items-center my-4">
-                                <div className="flex-1 h-px bg-gray-200"></div>
-                                <span className="px-3 text-gray-400 text-sm">OR</span>
-                                <div className="flex-1 h-px bg-gray-200"></div>
-                            </div>
-
-                            {/* Social Login */}
-                            <div className="grid grid-cols-2 gap-3 text-sm">
-
-                                <button className="border border-gray-300 py-2 rounded-lg hover:bg-gray-50">
-                                    Google
-                                </button>
-
-                                <button className="border border-gray-300 py-2 rounded-lg hover:bg-gray-50">
-                                    Facebook
-                                </button>
-
-                            </div>
-
                             {/* Signup Link */}
                             <h6 className="text-center sm:text-sm text-xs text-gray-700 mt-6">
                                 Don't have an account?{" "}
@@ -334,26 +314,6 @@ const Login = () => {
                             <button onClick={onSignupHandler} className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
                                 {loading ? "Creating..." : "Create Account"}
                             </button>
-
-                            {/* Divider */}
-                            <div className="flex items-center my-4">
-                                <div className="flex-1 h-px bg-gray-200"></div>
-                                <span className="px-3 text-gray-400 text-sm">OR</span>
-                                <div className="flex-1 h-px bg-gray-200"></div>
-                            </div>
-
-                            {/* Social Login */}
-                            <div className="grid grid-cols-2 gap-3">
-
-                                <button className="border border-gray-300 py-2 rounded-lg hover:bg-gray-50">
-                                    Google
-                                </button>
-
-                                <button className="border border-gray-300 py-2 rounded-lg hover:bg-gray-50">
-                                    Facebook
-                                </button>
-
-                            </div>
 
                             {/* Login Link */}
                             <h6 className="text-center sm:text-sm text-xs text-gray-700 mt-6">

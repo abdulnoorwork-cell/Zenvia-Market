@@ -18,7 +18,7 @@ const AddBlog = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('')
 
-  const { backendUrl, token, isAdmin } = useContext(AppContext);
+  const { backendUrl, isAdmin,fetchBlogs } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
@@ -42,6 +42,7 @@ const AddBlog = () => {
         setImage(false);
         setTitle('');
         quillRef.current.innerHTML = '';
+        fetchBlogs()
         setTimeout(() => {
           navigate('/admin/listblog')
         }, 1000)

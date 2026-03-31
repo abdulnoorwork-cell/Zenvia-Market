@@ -15,7 +15,7 @@ import { LuUpload } from "react-icons/lu";
 import { IoIosPaperPlane } from "react-icons/io";
 import { MdOutlineReviews } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
-import { formatDistanceToNow } from 'date-fns';
+import admin_profile from '../assets/admin_profile.png'
 
 const SingleProduct = () => {
     const file = useRef()
@@ -31,7 +31,7 @@ const SingleProduct = () => {
     const [thumbnail, setThumbnail] = useState("");
     const [label, setLabel] = useState("Description");
     const { product_id } = useParams()
-    const { products, currency, backendUrl, token, userId, getCartItems, getTotalCartItems, navigate, toggleWishlist, isInWishlist } = useContext(AppContext);
+    const { products, currency, backendUrl, token, userId, getCartItems, getTotalCartItems, navigate, toggleWishlist, isInWishlist, fetchAllReviews } = useContext(AppContext);
     const [qty, setQty] = useState(1);
 
     const [selectedSize, setSelectedSize] = useState("");
@@ -163,6 +163,7 @@ const SingleProduct = () => {
                 setImages([]);
                 setPreview([])
                 fetchReviews()
+                fetchAllReviews()
             }
             setLoading(false)
         } catch (error) {
@@ -175,6 +176,8 @@ const SingleProduct = () => {
             toast.error(error.response.data.messege)
         }
     }
+
+    console.log(reviews)
 
     const cleanHTML = product?.about
         ?.replace(/style="[^"]*color:[^";]+;?[^"]*"/gi, "")
@@ -322,7 +325,7 @@ const SingleProduct = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-12 bg-white sm:p-7 p-5 rounded-2xl">
+                        <div className="mt-10 bg-white sm:p-7 p-5 rounded-2xl">
                             <div className="border-b border-gray-300 flex font-semibold">
                                 <button onClick={() => setLabel('Description')} className={`text-[13px] sm:text-sm cursor-pointer border border-r-[0] border-b-[0] border-gray-300 sm:px-8 px-6 py-2 text-gray-600 ${label === "Description" ? "bg-[#2563EB] text-white" : ""}`} style={{ fontFamily: "Outfit" }}>Description</button>
                                 <button onClick={() => setLabel('Reviews')} className={`text-[13px] sm:text-sm cursor-pointer border border-b-[0] border-gray-300 px-8 py-2 texsm:t-gr px-6ay-600 ${label === "Reviews" ? "bg-[#2563EB] text-white" : ""}`} style={{ fontFamily: "Outfit" }}>Reviews</button>
@@ -422,9 +425,9 @@ const SingleProduct = () => {
                         {label === "Reviews" &&
                             <div className='p-6 bg-white mt-8 rounded-2xl'>
                                 <h3 className='text-xl font-bold mb-5 w-full'>All Reviews ({reviews.length})</h3>
-                                <div className='grid xl:grid-cols-3 md:grid-cols-2 gap-5 w-full'>
+                                <div className='flex flex-col gap-5 w-full'>
                                     {reviews.length !== 0 ? reviews.map((v, i) => (
-                                        <div key={i} className='border border-[#E2E8F0] rounded-lg p-4'>
+                                        <div key={i} className='p-4 border-b border-[#E2E8F0]'>
                                             <div className='flex sm:flex-row flex-col sm:items-center gap-2'>
                                                 <figure>
                                                     <img src={JSON.parse(v.profile_image)} alt="profile_image" className='w-12 h-12 rounded-full' />
@@ -432,7 +435,7 @@ const SingleProduct = () => {
                                                 <div>
                                                     {/* name */}
                                                     <div className="flex flex-col sm:flex-row sm:items-center gap-1">
-                                                        <h4 className='text-[15px] font-medium leading-none'>{v.name}</h4>
+                                                        <h4 className='text-[15px] font-semibold leading-none'>{v.name}</h4>
                                                         <span className="bg-green-100 text-green-600 text-xs px-3 py-0.5 rounded-full w-fit">Verified Purchase
                                                         </span>
                                                     </div>
@@ -451,11 +454,38 @@ const SingleProduct = () => {
                                                 </div>
                                             </div>
                                             <h6 style={{ fontFamily: "Outfit" }} className='my-3 text-gray-700 text-sm'>{v.comment}</h6>
-                                            <figure className='grid grid-cols-4 gap-3'>
-                                                {JSON.parse(v.images).map((img, i) => {
-                                                    return <img src={img} key={i} alt="" className='rounded-md bg-gray-50 border border-[#E2E8F0]' />
+                                            <figure className='flex items-center gap-3'>
+                                                {v.images && JSON.parse(v.images).map((img, i) => {
+                                                    return <img src={img} key={i} alt="" className='rounded-md bg-gray-50 border border-[#E2E8F0] max-w-[100px]' />
                                                 })}
                                             </figure>
+                                            {/* Admin Reply */}
+                                            {v.reply &&
+                                                <div className="mt-5 ml-12 border-l-4 border-blue-500 pl-4 bg-blue-50 p-4 rounded-xl">
+                                                    <div className="flex gap-3">
+                                                        <img
+                                                            src={admin_profile}
+                                                            alt="admin"
+                                                            className="w-11 h-11 rounded-full"
+                                                        />
+
+                                                        <div className="flex-1">
+                                                            <div className="flex items-center gap-2">
+                                                                <h4 className="font-semibold text-gray-800 text-base">Abdul Noor</h4>
+                                                                <span className="text-xs bg-blue-600 text-white px-2.5 py-0.5 rounded-full">
+                                                                    Admin
+                                                                </span>
+                                                                <span className="text-xs text-gray-400 ml-auto">
+                                                                    {new Date(v.reply_created_at).toDateString()}
+                                                                </span>
+                                                            </div>
+
+                                                            <h6 className="text-gray-700 mt-1 text-sm" style={{ fontFamily: "Outfit" }}>
+                                                                {v.reply}
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>}
                                         </div>
                                     )) : <div className='text-center flex items-center gap-1 w-full font-medium text-gray-600 text-base min-h-[40px]'>
                                         <span className='text-[#2563EB] text-lg'><MdOutlineReviews /></span>
