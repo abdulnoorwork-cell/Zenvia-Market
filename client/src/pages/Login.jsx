@@ -69,11 +69,13 @@ const Login = () => {
     const onLoginHandler = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             let response = await axios.post(`${backendUrl}/api/user/login`, { email, password }, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true
             })
             if (response.data.success) {
+                setLoading(false)
                 localStorage.setItem('User', JSON.stringify(response.data))
                 toast.success(response.data.messege)
                 setEmail('');
@@ -83,7 +85,9 @@ const Login = () => {
                     window.location.reload();
                 }, 1000)
             }
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.log(error)
             setError(error.response.data)
         }
