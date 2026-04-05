@@ -3,6 +3,7 @@ import { Heart, ShoppingCart, Star } from "lucide-react";
 import { AppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { HiMiniArrowRight } from "react-icons/hi2";
+import { HiOutlineChevronRight } from 'react-icons/hi';
 
 const Wishlist = ({ addToCart }) => {
     const { wishlist, currency, toggleWishlist, navigate } = useContext(AppContext);
@@ -11,7 +12,7 @@ const Wishlist = ({ addToCart }) => {
 
             {/* Header */}
             <div className="container mx-auto px-4 my-10">
-                <h6 className="text-sm text-gray-600 mb-2"><Link to={'/'}>Home</Link> > Wishlist</h6>
+                <h6 className="text-sm text-gray-600 mb-2 flex items-center gap-1"><Link to={'/'}>Home</Link> <span><HiOutlineChevronRight /></span> Wishlist</h6>
 
                 <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                     <div className='flex flex-col gap-1'>
