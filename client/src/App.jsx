@@ -50,7 +50,7 @@ const App = () => {
           <Route path='/blog/:blog_id' element={<SingleBlog />} />
           <Route path='/shop/all-products' element={<AllProducts />} />
           <Route path='/shop/product/:product_id' element={<SingleProduct />} />
-          <Route path='/cart' element={<Cart />} />
+          <Route path='/cart' element={token && <Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/checkout' element={token && <Checkout /> } />
           <Route path='/category/clothing' element={<CategoryProducts category="Clothing & Style" />} />
