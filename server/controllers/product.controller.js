@@ -8,6 +8,9 @@ export const addProduct = async (req, res) => {
             return res.status(400).json({ success: false, messege: "Please fill required fields" })
         }
     }
+    if (!name || !category || !about || !description || !price || !offerPrice) {
+        return res.status(400).json({ success: false, messege: "Please fill required fields" })
+    }
     if (name.length > 120) {
         return res.status(401).json({ success: false, messege: "maximum name is 80 characters" })
     }

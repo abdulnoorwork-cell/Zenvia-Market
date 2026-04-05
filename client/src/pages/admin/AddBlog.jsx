@@ -66,7 +66,7 @@ const AddBlog = () => {
   }, [])
 
   return (
-    <form onSubmit={onSubmitHandler} className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 text-gray-600 h-full min-h-[95vh]'>
+    <form onSubmit={onSubmitHandler} className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 text-gray-600 h-full min-h-[85vh]'>
       <div className='bg-white flex flex-col w-full max-w-[700px] p-6 md:p-10 shadow rounded'>
         <label htmlFor="image">
           <img src={!image ? upload_area : URL.createObjectURL(image)} className='rounded cursor-pointer max-h-24 max-w-24' alt="" />
@@ -79,7 +79,7 @@ const AddBlog = () => {
         <label className="block sm:text-sm text-xs font-medium mt-4 mb-2">
           Blog Description
         </label>
-        <textarea ref={editorRef} placeholder='Type Here...' className='w-full relative border border-gray-300 min-h-[160px] max-h-[360px] overflow-y-auto outline-none'></textarea>
+        <div ref={editorRef} placeholder='Type Here...' className='w-full relative border border-gray-300 min-h-[160px] max-h-[360px] overflow-y-auto outline-none'></div>
         <button style={{ fontFamily: 'Outfit' }} type='submit' className='mt-7 sm:text-sm text-xs px-8 w-fit py-[10px] bg-[#2563EB] text-white rounded cursor-pointer'>{loading ? 'Ading...' : 'Add Blog'}</button>
       </div>
     </form>
