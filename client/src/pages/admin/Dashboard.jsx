@@ -132,7 +132,7 @@ const Dashboard = () => {
       </div>
       {/* Products */}
       <div>
-        <div className='flex items-center gap-3 m-4 mt-6'>
+        <div className='flex items-center gap-3 mb-4 mt-6'>
           <img src={dashboard_icon_4} alt="" />
           <h6 className='font-semibold text-gray-700'>Latest Products</h6>
         </div>
@@ -170,7 +170,7 @@ const Dashboard = () => {
         </div>}
       </div>
       {/* blogs */}
-      <div className='flex items-center gap-3 m-4 mt-6'>
+      <div className='flex items-center gap-3 mb-4 mt-6'>
         <img src={dashboard_icon_4} alt="" />
         <h6 className='font-semibold text-gray-700'>Latest Blogs</h6>
       </div>
@@ -215,7 +215,7 @@ const Dashboard = () => {
           </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-white rounded-md w-full'>You don,t have any blogs</div>}
       </div>}
       {/* Orders */}
-      <div className='flex items-center gap-3 m-4 mt-6'>
+      <div className='flex items-center gap-3 mb-4 mt-6'>
         <img src={dashboard_icon_4} alt="" />
         <h6 className='font-semibold text-gray-700'>Latest Orders</h6>
       </div>
