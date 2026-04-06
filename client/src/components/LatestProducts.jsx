@@ -10,26 +10,12 @@ import axios from 'axios';
 import { Suspense } from 'react';
 
 const LatestProducts = () => {
-    const [products, setProducts] = useState([])
-    const { backendUrl } = useContext(AppContext);
-    useEffect(() => {
-        const fetchLatestProducts = async (req, res) => {
-            try {
-                let response = await axios.get(`${backendUrl}/api/product/latest-products`, { withCredentials: true })
-                if (response.data) {
-                    setProducts(response.data)
-                }
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchLatestProducts()
-    }, [])
+    const { latestProducts } = useContext(AppContext);
     return (
         <div className='container mx-auto px-4 mt-10'>
             <h6 className='text-[22px] tracking-[0.1px] mb-4 font-semibold' style={{fontFamily:"Outfit"}}>Latest Products</h6>
             <div>
-                {products.length > 0 ?
+                {latestProducts.length > 0 ?
                     <Swiper
                         modules={[Autoplay]}
                         spaceBetween={18}
@@ -47,7 +33,7 @@ const LatestProducts = () => {
                             1536: { slidesPerView: 6 },
                         }}
                     >
-                        {products.reverse().map((product, index) => (
+                        {latestProducts.reverse().map((product, index) => (
                             <SwiperSlide key={product.id}>
                                 <div className="card">
                                     <Suspense key={index}>

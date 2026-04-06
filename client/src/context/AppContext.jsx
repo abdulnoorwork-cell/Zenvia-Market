@@ -21,6 +21,7 @@ const AppContextProvider = ({ children }) => {
     const [adminOrders, setAdminOrders] = useState([])
     const [blogs, setBlogs] = useState([]);
     const [products, setProducts] = useState([]);
+    const [latestProducts, setLatestProducts] = useState([])
     const [cartItems, setCartItems] = useState([])
     const [totalCartItems, setTotalCartItems] = useState([])
     const [wishlist, setWishlist] = useState([]);
@@ -59,6 +60,17 @@ const AppContextProvider = ({ children }) => {
             setLoading(false)
         } catch (error) {
             setLoading(false)
+            console.log(error)
+        }
+    }
+
+    const fetchLatestProducts = async (req, res) => {
+        try {
+            let response = await axios.get(`${backendUrl}/api/product/latest-products`, { withCredentials: true })
+            if (response.data) {
+                setProducts(response.data)
+            }
+        } catch (error) {
             console.log(error)
         }
     }
@@ -270,10 +282,11 @@ const AppContextProvider = ({ children }) => {
         fetchUserOrders()
         fetchAllReviews();
         fetchAdminOrders()
+        fetchLatestProducts()
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews,fetchAdminOrders,adminOrders }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts,fetchLatestProducts,latestProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews, fetchAdminOrders, adminOrders }}>{children}</AppContext.Provider>
     )
 }
 
