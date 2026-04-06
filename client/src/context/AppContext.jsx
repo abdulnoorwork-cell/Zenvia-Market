@@ -20,6 +20,7 @@ const AppContextProvider = ({ children }) => {
     const [orders, setOrders] = useState([])
     const [adminOrders, setAdminOrders] = useState([])
     const [blogs, setBlogs] = useState([]);
+    const [latestBlogs, setLatestBlogs] = useState([])
     const [products, setProducts] = useState([]);
     const [latestProducts, setLatestProducts] = useState([])
     const [cartItems, setCartItems] = useState([])
@@ -46,6 +47,16 @@ const AppContextProvider = ({ children }) => {
             setBlogLoading(false)
         } catch (error) {
             setBlogLoading(false)
+            console.log(error)
+        }
+    }
+    const fetchLatestBlogs = async () => {
+        try {
+            let response = await axios.get(`${backendUrl}/api/blog/latest-blogs`, { withCredentials: true })
+            if (response.data) {
+                setLatestBlogs(response.data)
+            }
+        } catch (error) {
             console.log(error)
         }
     }
@@ -273,6 +284,7 @@ const AppContextProvider = ({ children }) => {
 
     useEffect(() => {
         fetchBlogs();
+        fetchLatestBlogs()
         fetchProducts();
         handleSearchProducts();
         getCartItems()
@@ -286,7 +298,7 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, isAdmin, products, setProducts, fetchProducts,fetchLatestProducts,latestProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews, fetchAdminOrders, adminOrders }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, isAdmin, products, setProducts, fetchProducts, fetchLatestProducts, latestProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews, fetchAdminOrders, adminOrders }}>{children}</AppContext.Provider>
     )
 }
 

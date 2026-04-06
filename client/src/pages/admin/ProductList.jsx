@@ -60,7 +60,7 @@ const ProductList = () => {
                       <h6 className='category mx-auto text-center leading-[1.4em] max-sm:hidden' style={{ fontFamily: 'Outfit' }}>{product?.category}</h6>
                       <h6 className='category_2 mx-auto text-center leading-[1.4em] text-blue-600 hidden' style={{ fontFamily: 'Outfit' }}>{product?.category}</h6>
                       <h6 className='category mx-auto text-center leading-[1.4em] font-medium' style={{ fontFamily: 'Outfit' }}>{currency}.{product?.offerPrice}</h6>
-                      <h6 className='mx-auto max-xl:hidden text-center leading-[1.4em] text-gray-500' style={{ fontFamily: 'Outfit' }}>{new Date(product?.created_at).toDateString()}</h6>
+                      <h6 className='mx-auto max-xl:hidden text-center leading-[1.4em] text-gray-500 text-[13px]' style={{ fontFamily: 'Outfit' }}>{new Date(product?.created_at).toDateString()}</h6>
                       <div className='bg-red-50 text-red-500 text-xl p-1 rounded-md cursor-pointer mx-auto'>
                         <span onClick={() => deleteProduct(product._id)} className=''><MdDeleteOutline /></span>
                       </div>

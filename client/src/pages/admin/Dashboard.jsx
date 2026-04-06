@@ -11,7 +11,7 @@ import loading_animation from '../../../public/loading_animation.svg'
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
-  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts,latestProducts, blogs, fetchBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
+  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts,fetchLatestProducts,latestProducts, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -24,6 +24,7 @@ const Dashboard = () => {
       if (response.data.success) {
         toast.success(response.data.messege)
         await fetchBlogs();
+        await fetchLatestBlogs()
       }
     } catch (error) {
       console.log(error)
@@ -46,6 +47,7 @@ const Dashboard = () => {
       if (response.data.success) {
         toast.success(response.data.messege)
         await fetchProducts();
+        await fetchLatestProducts()
       }
     } catch (error) {
       toast.error(error.response.data.messege);
@@ -101,7 +103,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchBlogs();
+    fetchLatestBlogs()
     fetchProducts();
+    fetchLatestProducts()
     fetchLatestOrders();
   }, [])
 
@@ -158,7 +162,7 @@ const Dashboard = () => {
                       </div>
                       <h6 className='category mx-auto text-center leading-[1.4em] max-sm:hidden' style={{ fontFamily: 'Outfit' }}>{product?.category}</h6>
                       <h6 className='category mx-auto text-center leading-[1.4em] font-medium' style={{ fontFamily: 'Outfit' }}>{currency}.{product?.offerPrice}</h6>
-                      <h6 className='mx-auto max-xl:hidden text-center leading-[1.4em]' style={{ fontFamily: 'Outfit' }}>{new Date(product?.created_at).toDateString()}</h6>
+                      <h6 className='mx-auto max-xl:hidden text-center leading-[1.4em] text-gray-500 text-[13px]' style={{ fontFamily: 'Outfit' }}>{new Date(product?.created_at).toDateString()}</h6>
                       <figure className='mx-auto'>
                         <img src={cross_icon} onClick={() => deleteProduct(product._id)} alt="" className='sm:h-[20px] sm:w-[20px] w-[17px] h-[17px] border border-red-400 rounded-full hover:scale-110 transition-all cursor-pointer ' />
                       </figure>
@@ -181,12 +185,12 @@ const Dashboard = () => {
         <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Action</label>
       </div>
       {blogLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
-        {blogs.length > 0 ?
+        {latestBlogs.length > 0 ?
           <div className='w-full'>
             <div className='relative w-full text-sm overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
               <div className='w-full sm:text-sm text-xs'>
                 <div>
-                  {blogs?.slice(length - 3).reverse().map((blog, index) => (
+                  {latestBlogs?.slice(length - 3).reverse().map((blog, index) => (
                     <div key={index} className='blog_list text-gray-800 sm:text-sm text-[13px] border-b border-[#E5E7EB] px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
                       <div className='flex items-center sm:gap-4 gap-3'>
                         <img className='main_image h-8 w-14' src={blog.image} alt="" />
@@ -199,7 +203,7 @@ const Dashboard = () => {
                             ?.replace(/color:[^;"]+;?/gi, "")
                         }}></h6>
                       </div>
-                      <h6 className='max-lg:hidden mx-auto text-xs' style={{ fontFamily: 'Outfit' }}>{new Date(blog.created_at).toDateString()}</h6>
+                      <h6 className='max-lg:hidden mx-auto text-gray-500 text-[13px]' style={{ fontFamily: 'Outfit' }}>{new Date(blog.created_at).toDateString()}</h6>
                       <div className=' flex text-sm items-center sm:gap-2 gap-1.5 mx-auto'>
                         <span onClick={() => { navigate(`/admin/updateblog/${blog?._id}`) }} className='lg:text-lg text-[16px] hover:scale-105 transition-all cursor-pointer'>
                           <FaEdit />

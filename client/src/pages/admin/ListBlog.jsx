@@ -64,7 +64,7 @@ const ListBlog = () => {
                             ?.replace(/color:[^;"]+;?/gi, "")
                         }}></h6>
                       </div>
-                      <h6 className='max-lg:hidden mx-auto text-xs' style={{ fontFamily: 'Outfit' }}>{new Date(blog.created_at).toDateString()}</h6>
+                      <h6 className='max-lg:hidden mx-auto text-gray-500 text-[13px]' style={{ fontFamily: 'Outfit' }}>{new Date(blog.created_at).toDateString()}</h6>
                       <div className=' flex text-sm items-center sm:gap-2 gap-1.5 mx-auto'>
                         <span onClick={() => { navigate(`/admin/updateblog/${blog?._id}`) }} className='lg:text-lg text-[16px] hover:scale-105 transition-all cursor-pointer'>
                           <FaEdit />
