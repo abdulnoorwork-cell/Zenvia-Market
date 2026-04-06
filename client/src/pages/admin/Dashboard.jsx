@@ -11,7 +11,7 @@ import loading_animation from '../../../public/loading_animation.svg'
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
-  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, blogs, fetchBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
+  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts,latestProducts, blogs, fetchBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -144,11 +144,11 @@ const Dashboard = () => {
           <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Action</label>
         </div>
         {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
-          {products.length > 0 ?
+          {latestProducts.length > 0 ?
             <div className='relative w-fulloverflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
               <div className='w-full sm:text-[13px] text-xs'>
                 <div>
-                  {products?.slice(length - 3).reverse().map((product, index) => (
+                  {latestProducts?.slice(length - 3).reverse().map((product, index) => (
                     <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-800 sm:text-sm text-[13px]'>
                       <div className='main_img flex items-center sm:gap-4 gap-3'>
                         <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
