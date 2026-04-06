@@ -20,6 +20,7 @@ import admin_profile from '../assets/admin_profile.png'
 const SingleProduct = () => {
     const file = useRef()
     const [product, setProduct] = useState([]);
+    const [relatedProducts, setRelatedProducts] = useState([])
     const [reviews, setReviews] = useState([]);
     const [rating, setRating] = useState(0);
     const [getRating, setGetRating] = useState([]);
@@ -48,6 +49,17 @@ const SingleProduct = () => {
         }
     }
 
+    const fetchRelatedProducts = async () => {
+        try {
+            let response = await axios.get(`${backendUrl}/api/product/subcategory-products/${product.subCategory}`, { withCredentials: true })
+            if (response.data) {
+                setRelatedProducts(response.data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const fetchReviews = async () => {
         try {
             let response = await axios.get(`${backendUrl}/api/review/get-reviews/${product_id}`, { withCredentials: true });
@@ -69,6 +81,12 @@ const SingleProduct = () => {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        if (product?.subCategory) {
+            fetchRelatedProducts()
+        }
+    }, [product])
 
     useEffect(() => {
         fetchProduct();
@@ -499,7 +517,7 @@ const SingleProduct = () => {
                 <div className="mt-10 flex flex-col mx-auto">
                     <h6 className='text-[22px] tracking-[0.1px] mb-5 font-semibold'>Related Products</h6>
                     <div className='md:block hidden'>
-                        {products.length > 0 ?
+                        {relatedProducts.length > 0 ?
                             <Swiper
                                 modules={[Autoplay]}
                                 spaceBetween={18}
@@ -517,7 +535,7 @@ const SingleProduct = () => {
                                     // 1536: { slidesPerView: 6 },
                                 }}
                             >
-                                {products?.filter(prod => prod.subCategory === product.subCategory).reverse().map((product, index) => (
+                                {relatedProducts.reverse().map((product, index) => (
                                     <SwiperSlide key={product.id}>
                                         <div className="card">
                                             <Suspense key={index}>
@@ -530,7 +548,7 @@ const SingleProduct = () => {
                             : <img src={loading_animation} alt='loader' className='mx-auto' />}
                     </div>
                     <div className='products grid grid-cols-2 sm:gap-[18px] gap-4 md:hidden'>
-                        {products.length > 0 ? products?.filter(prod => prod.subCategory === product.subCategory).reverse().map((product, index) => (
+                        {relatedProducts.length > 0 ? relatedProducts?.reverse().map((product, index) => (
                             <Suspense key={index}>
                                 <ProductCard product={product} />
                             </Suspense>
