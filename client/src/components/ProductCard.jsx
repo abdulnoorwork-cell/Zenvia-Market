@@ -46,7 +46,6 @@ const ProductCard = React.memo(({ product }) => {
           {[...Array(5)].map((_, i) => (
             <Star key={i} size={14} fill="currentColor" strokeWidth={0} />
           ))}
-          <span className="text-gray-500 text-xs ml-1">(24)</span>
         </div>
 
         {/* Price */}
