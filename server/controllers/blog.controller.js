@@ -14,7 +14,7 @@ export const addBlog = async (req, res) => {
         return res.status(401).json({ success: false, messege: "title contains 12 characters atleast" })
     }
     if (description.length < 256) {
-        return res.status(401).json({ success: false, messege: "descrupition contains 256 characters atleast" })
+        return res.status(401).json({ success: false, messege: "description contains 256 characters atleast" })
     }
     const allowedFormat = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
     if (!allowedFormat.includes(image.mimetype)) {
@@ -89,7 +89,7 @@ export const updateBlog = async (req, res) => {
             return res.status(401).json({ success: false, messege: "title contains 12 characters atleast" })
         }
         if (description.length < 256) {
-            return res.status(401).json({ success: false, messege: "descrupition contains 256 characters atleast" })
+            return res.status(401).json({ success: false, messege: "description contains 256 characters atleast" })
         }
         const { blogId } = req.params;
         const allowedFormat = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
