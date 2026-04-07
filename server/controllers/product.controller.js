@@ -157,17 +157,6 @@ export const deleteProduct = async (req, res) => {
                 }
             );
         });
-        // 4️⃣ Delete from wishlist (important)
-        await new Promise((resolve, reject) => {
-            db.query(
-                "DELETE FROM wishlist WHERE product_id = ?",
-                [productId],
-                (err) => {
-                    if (err) return reject(err);
-                    resolve();
-                }
-            );
-        });
         // 5️⃣ Delete product
         await new Promise((resolve, reject) => {
             db.query(
