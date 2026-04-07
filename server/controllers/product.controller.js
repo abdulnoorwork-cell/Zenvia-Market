@@ -4,7 +4,7 @@ import { v2 as cloudinary } from 'cloudinary'
 export const addProduct = async (req, res) => {
     const { name, category, subCategory, about, description, price, offerPrice, sizes, footwear_sizes, colors, images } = req.body;
     if (category !== "Home Decor") {
-        if (!name || !category || !subCategory || !about || !description || !price || !offerPrice) {
+        if (!name || !category || !subCategory || !about || !description || !price || !offerPrice || !images) {
             return res.status(400).json({ success: false, messege: "Please fill required fields" })
         }
     }
