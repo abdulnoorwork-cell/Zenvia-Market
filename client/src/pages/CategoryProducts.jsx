@@ -276,7 +276,7 @@ const CategoryProducts = ({ category }) => {
               {/* Prev */}
               <button
                 disabled={currentPage === 1}
-                onClick={() => setCurrentPage(currentPage - 1)}
+                onClick={() => {setCurrentPage(currentPage - 1);scrollTo(0,0)}}
                 className='bg-indigo-600 text-white px-3 sm:px-6 py-2 rounded-sm disabled:opacity-50'
                 style={{ fontFamily: 'Outfit' }}
               >
@@ -302,7 +302,7 @@ const CategoryProducts = ({ category }) => {
                 .map((page, index) => (
                   <button
                     key={index}
-                    onClick={() => typeof page === "number" && setCurrentPage(page)}
+                    onClick={() => {typeof page === "number" && setCurrentPage(page);scrollTo(0,0)}}
                     style={{
                       padding: "6px 10px",
                       background: currentPage === page ? "black" : "white",
@@ -321,7 +321,7 @@ const CategoryProducts = ({ category }) => {
               {/* Next */}
               <button
                 disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(currentPage + 1)}
+                onClick={() => {setCurrentPage(currentPage + 1);scrollTo(0,0)}}
                 className='bg-indigo-600 text-white px-3 sm:px-6 py-2 rounded-sm disabled:opacity-50'
                 style={{ fontFamily: 'Outfit' }}
               >
