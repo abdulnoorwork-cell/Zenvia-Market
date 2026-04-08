@@ -67,7 +67,7 @@ const AddBlog = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 text-gray-600 h-full min-h-[85vh]'>
-      <div className='bg-white flex flex-col w-full max-w-[700px] p-6 md:p-10 shadow rounded'>
+      <div className='bg-white flex flex-col w-full max-w-[700px] p-6 md:p-10 shadow rounded-xl'>
         <label htmlFor="image">
           <img src={!image ? upload_area : URL.createObjectURL(image)} className='rounded cursor-pointer max-h-24 max-w-24' alt="" />
           <input type="file" onChange={(e) => setImage(e.target.files[0])} hidden id='image' />
