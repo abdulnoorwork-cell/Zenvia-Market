@@ -53,7 +53,7 @@ export const totalPrice = (req, res) => {
     const sql = 'SELECT SUM(products.offerPrice * cart_items.quantity) AS total FROM cart_items JOIN products ON cart_items.product_id = products._id WHERE cart_items.user_id = ?';
     db.query(sql, [user_id], (err, data) => {
         if (err) {
-            return req.status(500).json({ success: false, messege: "Error in getting total amount: " + err })
+            return res.status(500).json({ success: false, messege: "Error in getting total amount: " + err })
         } else {
             res.status(200).json(data)
         }
