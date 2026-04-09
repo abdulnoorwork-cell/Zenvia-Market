@@ -215,9 +215,14 @@ const MyAccount = () => {
           </div> :
           label === "Orders" ?
             <div className="md:col-span-3 space-y-6 max-h-[630px] overflow-y-auto">
-
-              {/* Orders List */}
-              {orders.map((order, index) => (
+              {orders.length === 0 ? <div className="text-center py-20 border border-gray-400">
+                <p className="text-xl font-semibold">
+                  Your orders is empty
+                </p>
+                <p className="text-gray-500 text-sm sm:text-base">
+                  You do,t have any order items
+                </p>
+              </div> : orders.map((order, index) => (
                 <div
                   key={index}
                   className="w-full bg-white rounded-xl shadow p-4.5"
