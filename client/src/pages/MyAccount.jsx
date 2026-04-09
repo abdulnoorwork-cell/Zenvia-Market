@@ -124,7 +124,7 @@ const MyAccount = () => {
           <div className="text-center border-b border-[#e2e8f0a4] ml-3 pb-4">
             <img
               src={previewImage}
-              className="w-[75px] h-[75px] rounded-full mx-auto"
+              className="w-[70px] h-[70px] rounded-full mx-auto"
             />
 
             <h3 className="mt-3 font-semibold">
