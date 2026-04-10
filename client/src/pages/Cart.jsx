@@ -187,9 +187,11 @@ const Cart = () => {
 
                     </div>
 
-                    <button onClick={() => { navigate('/checkout'); scrollTo(0, 0) }} className="w-full mt-6 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition text-sm">
+                    {token ? <button onClick={() => { navigate('/checkout'); scrollTo(0, 0) }} className="w-full mt-6 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition text-sm">
                         Proceed to Checkout
-                    </button>
+                    </button> : <button onClick={() => { navigate('/user/login'); scrollTo(0, 0) }} className="w-full mt-6 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition text-sm">
+                        Proceed to Checkout
+                    </button>}
 
                     <button onClick={() => { navigate('/shop/all-products'); scrollTo(0, 0) }} className="w-full mt-3 border cursor-pointer border-gray-300 py-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-sm">
                         Continue Shopping
