@@ -81,7 +81,6 @@ const Cart = () => {
     useEffect(() => {
         getTotalAmount()
     }, [])
-    console.log(cartItems)
     return (
         <div className="min-h-screen py-10">
             <div className="container mx-auto px-4 grid lg:grid-cols-3 gap-8">

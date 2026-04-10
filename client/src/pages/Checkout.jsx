@@ -202,7 +202,7 @@ const Checkout = () => {
                                 <img
                                     src={item.images[0]}
                                     alt=""
-                                    className="w-16 h-16 object-contain bg-gray-50 border border-gray-200 rounded"
+                                    className="w-16 h-16 object-cover bg-gray-50 border border-gray-200 rounded"
                                 />
 
                                 <div className="flex-1">
