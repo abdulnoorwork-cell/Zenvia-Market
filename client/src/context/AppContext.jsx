@@ -79,7 +79,7 @@ const AppContextProvider = ({ children }) => {
         try {
             let response = await axios.get(`${backendUrl}/api/product/latest-products`, { withCredentials: true })
             if (response.data) {
-                setProducts(response.data)
+                setLatestProducts(response.data)
             }
         } catch (error) {
             console.log(error)
@@ -286,7 +286,7 @@ const AppContextProvider = ({ children }) => {
         fetchBlogs();
         fetchLatestBlogs()
         fetchProducts();
-        fetchLatestProducts()
+        fetchLatestProducts();
         handleSearchProducts();
         getCartItems()
         getTotalCartItems()
