@@ -22,6 +22,7 @@ import { BiSolidUser } from "react-icons/bi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import loading_animation from '../../public/loading_animation.svg'
 import { TbLoader2 } from "react-icons/tb";
+import { RiAdminLine } from "react-icons/ri";
 
 const Navbar = () => {
 
@@ -91,6 +92,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
+                    <Link className='border border-gray-500 px-4 py-1.5 text-xs xl:block hidden' to={'/admin'} onClick={()=>scrollTo(0,0)}>Admin Panel</Link>
                     <div className='header_icons flex items-center gap-3 sm:gap-4 font-medium'>
                         {/* Search Icon */}
                         <span onClick={() => setSearchBox(true)} className='text-base cursor-pointer relative bg-gray-100 border border-[#E5E7EB] p-2 sm:p-2.5 flex items-center justify-center rounded-full max-lg:block hidden'><FiSearch /></span>
@@ -255,6 +257,7 @@ const Navbar = () => {
                 </span>Blogs</div></NavLink>
                 <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/contact'} className={'p-2 hover:text-white hover:bg-[#2563EB] transition-all duration-150 rounded border border-[#E5E7EB] bg-[#e4e4f56c]'}><div style={{ fontFamily: 'Montserrat' }} className='font-medium flex items-center gap-2'><span className='text-xl text-green-700/70'><BsTelephoneFill />
                 </span>Contact us</div></NavLink>
+                <Link className='p-2 flex items-center gap-2 text-white bg-[#2563EB] transition-all duration-150 rounded border font-medium' to={'/admin'} onClick={()=>scrollTo(0,0)} style={{fontFamily:'Montserrat'}}><span className='text-xl text-green-700/70'><RiAdminLine /></span> Admin Panel</Link>
             </div>
             {/* Mobile Search Box */}
             <div className={`relative ${searchBox ? 'flex lg:hidden' : 'hidden'}`}>
