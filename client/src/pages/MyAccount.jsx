@@ -409,23 +409,27 @@ const MyAccount = () => {
                 {/* Orders + Wishlist */}
                 <div className="grid md:grid-cols-2 gap-6">
 
-                  <div className="bg-white p-6 rounded-xl shadow">
-                    <h3 className="font-semibold mb-2">
-                      My Orders
-                    </h3>
+                  {orders.length > 0 ? orders.map((order, index) => (
+                    <div key={index} className="bg-white p-6 rounded-xl shadow">
+                      <h3 className="font-semibold mb-2">
+                        My Orders
+                      </h3>
 
-                    <p className="text-gray-600">
-                      Order #987654
-                    </p>
+                      <p className="text-gray-600">
+                        Order #{order._id}
+                      </p>
 
-                    <p className="text-green-600 text-sm">
-                      Shipped
-                    </p>
+                      <p className="text-green-600 text-sm">
+                        Shipped
+                      </p>
 
-                    <button onClick={() => setLabel("Orders")} className="mt-3 text-blue-600 cursor-pointer">
-                      View Orders →
-                    </button>
-                  </div>
+                      <button onClick={() => setLabel("Orders")} className="mt-3 text-blue-600 cursor-pointer">
+                        View Orders →
+                      </button>
+                    </div>
+                  )) : <div className="bg-white p-6 rounded-xl shadow">
+                    You have not any order item
+                  </div>}
 
                   <div className="bg-white p-6 rounded-xl shadow">
                     <h3 className="font-semibold mb-2">
@@ -433,7 +437,7 @@ const MyAccount = () => {
                     </h3>
 
                     <p className="text-gray-600">
-                      4 items saved
+                      {wishlist?.length} items saved
                     </p>
 
                     <button onClick={() => setLabel("Wishlist")} className="mt-3 cursor-pointer text-blue-600">
@@ -481,7 +485,7 @@ const MyAccount = () => {
       </div>
       {/* User Update */}
       <div className={`relative ${model ? 'block' : 'hidden'}`}>
-        <form onSubmit={updateUserHandler} className='bg-white sm:p-10 p-8 z-50 fixed rounded-lg top-[50%] left-[50%] max-w-[500px] w-[93%] mx-auto h-fit shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)]' style={{ transform: 'translate(-50%,-50%)' }}>
+        <form onSubmit={updateUserHandler} className='bg-whi=te sm:p-10 p-8 z-50 fixed rounded-lg top-[50%] left-[50%] max-w-[500px] w-[93%] mx-auto h-fit shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)]' style={{ transform: 'translate(-50%,-50%)' }}>
           <span onClick={() => setModel(false)} className='absolute top-0 right-0 bg-red-500 text-white text-xl cursor-pointer p-1'><IoClose /></span>
           <h3 className='text-xl font-semibold'>Update Profile</h3>
           <div className='text-sm flex flex-col gap-4 mt-5'>
