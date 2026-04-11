@@ -93,7 +93,7 @@ const Reviews = () => {
                                                 <h6 className='lg:text-[13.4px] text-[12.8px] mt-0.5 max-sm:text-gray-500'>{review?.comment}</h6>
                                             </div>
                                             <div className='flex flex-col lg:flex-row lg:items-center sm:gap-2 gap-1.5'>
-                                                <img src={review?.images[0]} className='sm:w-14 sm:h-14 w-20 h-20 max-sm:mx-auto' alt="" />
+                                                <img src={review?.images[0]} className='sm:w-14 sm:h-14 w-20 h-20 max-sm:mx-auto object-cover' alt="" />
                                                 <h5 className='font-medium leading-[1.2em] lg:text-[14.8px] text-sm tracking-[-0.2px]' style={{ fontFamily: "Montserrat" }}>{review.product_name}</h5>
                                             </div>
                                             <div className="mx-auto xl:block hidden">
