@@ -286,6 +286,7 @@ const AppContextProvider = ({ children }) => {
         fetchBlogs();
         fetchLatestBlogs()
         fetchProducts();
+        fetchLatestProducts()
         handleSearchProducts();
         getCartItems()
         getTotalCartItems()
