@@ -442,7 +442,7 @@ const SingleProduct = () => {
                         </div>
                         {label === "Reviews" &&
                             <div className='p-6 bg-white mt-8 rounded-2xl'>
-                                <h3 className='text-xl font-bold mb-5 w-full'>All Reviews ({reviews.length})</h3>
+                                <h3 className='text-xl font-bold mb-5 w-full'>All Reviews({reviews.length})</h3>
                                 <div className='flex flex-col gap-5 w-full'>
                                     {reviews.length !== 0 ? reviews.map((v, i) => (
                                         <div key={i} className='p-4 border-b border-[#E2E8F0]'>
