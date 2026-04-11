@@ -35,6 +35,7 @@ import OrderSuccessfull from './pages/OrderSuccessfull';
 import Wishlist from './pages/Wishlist';
 import WishlistProducts from './pages/admin/WishlistProducts';
 import Reviews from './pages/admin/Reviews';
+import OrderCancelled from './pages/OrderCancelled';
 
 const App = () => {
   const { isAdmin,token,navigate } = useContext(AppContext);
@@ -77,6 +78,7 @@ const App = () => {
         </Route>
         <Route path='/user/login' element={!token ? <Login /> : undefined} />
         <Route path='/success' element={<OrderSuccessfull />} />
+        <Route path='/cancel' element={<OrderCancelled />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         {isAdmin ? <Route path='/admin' element={<Layout />}>

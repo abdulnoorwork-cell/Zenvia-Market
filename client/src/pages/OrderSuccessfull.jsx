@@ -14,7 +14,7 @@ const OrderSuccessfull = () => {
                 <img src={check_mark} className='w-12 mb-2' alt="" />
                 <h3 className='text-2xl font-bold' style={{fontFamily:'Outfit'}}>Payment Successfull</h3>
                 <p>Thank you for your payment</p>
-                <button onClick={()=>{navigate('/');scrollTo(0,0)}} className='cursor-pointer text-white font-medium cursor-pointer bg-[#2563EB] px-10 py-3 mt-6 rounded-lg active:bg-blue-500'>Continue Shopping</button>
+                <button onClick={()=>{navigate('/');scrollTo(0,0)}} className='cursor-pointer text-white font-medium bg-[#2563EB] px-10 py-3 mt-6 rounded-lg active:bg-blue-500'>Continue Shopping</button>
             </div>
         </div>
     )
