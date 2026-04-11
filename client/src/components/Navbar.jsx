@@ -257,7 +257,7 @@ const Navbar = () => {
                 </span>Blogs</div></NavLink>
                 <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/contact'} className={'p-2 hover:text-white hover:bg-[#2563EB] transition-all duration-150 rounded border border-[#E5E7EB] bg-[#e4e4f56c]'}><div style={{ fontFamily: 'Montserrat' }} className='font-medium flex items-center gap-2'><span className='text-xl text-green-700/70'><BsTelephoneFill />
                 </span>Contact us</div></NavLink>
-                <Link className='p-2 flex items-center gap-2 text-white bg-[#2563EB] transition-all duration-150 rounded border font-medium' to={'/admin'} onClick={()=>scrollTo(0,0)} style={{fontFamily:'Montserrat'}}><span className='text-xl text-green-700/70'><RiAdminLine /></span> Admin Panel</Link>
+                <Link className='p-2 flex items-center gap-2 text-white bg-[#2563EB] transition-all duration-150 rounded border font-medium' to={'/admin'} onClick={()=>scrollTo(0,0)} style={{fontFamily:'Montserrat'}}><span className='text-xl text-white'><RiAdminLine /></span> Admin Panel</Link>
             </div>
             {/* Mobile Search Box */}
             <div className={`relative ${searchBox ? 'flex lg:hidden' : 'hidden'}`}>
