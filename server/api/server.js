@@ -109,6 +109,10 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
   res.json({ received: true });
 });
 
+app.get('/',(req,res)=>{
+  res.status(200).json({success:true,message:"Response from the server"})
+})
+
 // app.listen(Port, () => {
 //     console.log(`Server is running http://localhost:${Port}`)
 // })
