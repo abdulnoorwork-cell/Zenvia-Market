@@ -448,15 +448,47 @@ const MyAccount = () => {
                 </div>
 
                 {/* Address */}
-                <div className="bg-white p-6 rounded-xl shadow">
+                {orders.length > 0 ? orders.map((order, index) => (
+                  <div className="bg-white p-6 rounded-xl shadow">
+
+                    <div key={index} className="flex justify-between">
+
+                      <p className="font-semibold">
+                        Shipping Address
+                      </p>
+
+                      {/* <button className="text-blue-600 text-sm">
+                        Edit
+                      </button> */}
+
+                    </div>
+
+                    <p className="mt-3 text-gray-600">
+                      {JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}
+                    </p>
+
+                    <p className="text-gray-600">
+                      {JSON.parse(order.address).address}
+                    </p>
+
+                    <p className="text-gray-600">
+                      {JSON.parse(order.address).city} {JSON.parse(order.address).postal_code}
+                    </p>
+
+                    <p className="text-gray-600">
+                      {JSON.parse(order.address).phone}
+                    </p>
+
+                  </div>
+                )) : <div className="bg-white p-6 rounded-xl shadow">
 
                   <div className="flex justify-between">
 
-                    <h3 className="font-semibold">
+                    <p className="font-semibold">
                       Shipping Address
-                    </h3>
+                    </p>
 
-                    <button className="text-blue-600 text-sm">
+                    <button className="bg-[#FE6A13] text-white px-4 py-[5px] cursor-pointer text-sm font-medium">
                       Edit
                     </button>
 
@@ -478,7 +510,7 @@ const MyAccount = () => {
                     +92 303 1234567
                   </p>
 
-                </div>
+                </div>}
 
               </div>}
 
