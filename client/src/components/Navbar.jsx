@@ -81,7 +81,8 @@ const Navbar = () => {
                                         <li key={i} onClick={() => {
                                             setQuery("");  // select suggestion
                                             setSearchBox(false);
-                                            navigate(`/shop/product/${v._id}`)
+                                            navigate(`/shop/product/${v._id}`);
+                                            scrollTo(0,0)
                                         }} className='cursor-pointer flex items-center gap-1 w-full border-b border-[#E2E8F0]'>
                                             <img src={v?.images[0]} className='w-14 h-14 object-contain' alt="" />
                                             <h6 className='text-[13px]'>{v.name}</h6>
@@ -290,7 +291,8 @@ const Navbar = () => {
                                     <li key={i} onClick={() => {
                                         setQuery("");  // select suggestion
                                         setSearchBox(false);
-                                        navigate(`/shop/product/${v._id}`)
+                                        navigate(`/shop/product/${v._id}`);
+                                        scrollTo(0,0)
                                     }} className='cursor-pointer flex items-center gap-1 w-full border-b border-[#E2E8F0]'>
                                         <img src={v?.images[0]} className='w-14 h-14 object-contain' alt="" />
                                         <h6 className='text-[13px]'>{v.name}</h6>
