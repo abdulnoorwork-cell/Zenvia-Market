@@ -54,7 +54,7 @@ const Navbar = () => {
                             Zenvia<span className='text-[#2563EB] font-semibold tracking-[-0.2px]' style={{ fontFamily: 'Poppins' }}> Market</span>
                         </div>
                     </div>
-                    <div className="search relative hidden lg:flex items-center w-full max-w-[500px] 2l:h-[45px] h-10">
+                    <div className="search relative hidden lg:flex items-center w-full max-w-[500px] 2xl:h-[45px] h-10">
                         <div className='flex items-center justify-between w-full h-full px-3 py-2 rounded-tl-md rounded-bl-md border border-gray-300'>
                             <input type="text" placeholder='Search Products...' value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => {
                                 if (e.key === "Enter" || e.keyCode === 13) {
@@ -295,7 +295,7 @@ const Navbar = () => {
                                         scrollTo(0,0)
                                     }} className='cursor-pointer flex items-center gap-1 w-full border-b border-[#E2E8F0]'>
                                         <img src={v?.images[0]} className='w-14 h-14 object-contain' alt="" />
-                                        <h6 className='text-[13px]'>{v.name}</h6>
+                                        <h6 className='text-[13px] line-clamp-2'>{v.name}</h6>
                                     </li>
                                 ))}
                             </ul>
