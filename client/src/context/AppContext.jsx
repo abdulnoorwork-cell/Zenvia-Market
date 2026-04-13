@@ -299,7 +299,7 @@ const AppContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, isAdmin, products, setProducts, fetchProducts, fetchLatestProducts, latestProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews, fetchAdminOrders, adminOrders }}>{children}</AppContext.Provider>
+        <AppContext.Provider value={{ navigate, userId, discount, backendUrl, token, shippingFee, loading, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, isAdmin, products, setProducts, fetchProducts, fetchLatestProducts, latestProducts, currency, handleSearchProducts, query, setQuery, suggestions, setSuggestions, cartItems, getCartItems, totalCartItems, getTotalCartItems, handleClearSearch, toggleWishlist, isInWishlist, fetchWishlist, wishlist, orders, fetchUserOrders, searchLoading, setSearchLoading, suggestionLoading, setSuggestionLoading, loading, blogLoading, orderLoading, setOrderLoading, wishlistLoading, setWishlistLoading, fetchAllReviews, allReviews, fetchAdminOrders, adminOrders }}>{children}</AppContext.Provider>
     )
 }
 

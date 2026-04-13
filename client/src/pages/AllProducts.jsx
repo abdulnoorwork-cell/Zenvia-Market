@@ -13,7 +13,7 @@ import { IoClose } from 'react-icons/io5';
 
 const AllProducts = () => {
     const [model, setModel] = useState(false)
-    const { products, setProducts } = useContext(AppContext);
+    const { products, setProducts, loading } = useContext(AppContext);
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState([]);
     const [sortType, setSortType] = useState('latest');
@@ -197,13 +197,15 @@ const AllProducts = () => {
                     </div>
 
                     {/* Product Grid */}
-                    <div className={`products grid 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-[18px]`}>
+                    <div className={`products w-full h-full grid 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-[18px]`}>
 
-                        {currentProducts.length > 0 ? currentProducts.map((product, index) => (
-                            <Suspense>
-                                <ProductCard key={index} product={product} />
-                            </Suspense>
-                        )) : <img src={loading_animation} alt='loader' className='mx-auto' />}
+                        {loading ? <img src={loading_animation} alt='loader' className='mx-auto' /> :
+                            currentProducts.length > 0 ? currentProducts.map((product, index) => (
+                                <Suspense>
+                                    <ProductCard key={index} product={product} />
+                                </Suspense>
+                            )) : <div style={{fontFamily:'Montserrat'}}>You don,t have any product</div>
+                        }
 
                     </div>
 
@@ -214,7 +216,7 @@ const AllProducts = () => {
                             {/* Prev */}
                             <button
                                 disabled={currentPage === 1}
-                                onClick={() => {setCurrentPage(currentPage - 1);scrollTo(0,0)}}
+                                onClick={() => { setCurrentPage(currentPage - 1); scrollTo(0, 0) }}
                                 className='bg-indigo-600 text-white px-3 sm:px-6 py-2 rounded-sm disabled:opacity-50'
                                 style={{ fontFamily: 'Outfit' }}
                             >
@@ -240,7 +242,7 @@ const AllProducts = () => {
                                 .map((page, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => {typeof page === "number" && setCurrentPage(page);scrollTo(0,0)}}
+                                        onClick={() => { typeof page === "number" && setCurrentPage(page); scrollTo(0, 0) }}
                                         style={{
                                             padding: "6px 10px",
                                             background: currentPage === page ? "black" : "white",
@@ -259,7 +261,7 @@ const AllProducts = () => {
                             {/* Next */}
                             <button
                                 disabled={currentPage === totalPages}
-                                onClick={() => {setCurrentPage(currentPage + 1);scrollTo(0,0)}}
+                                onClick={() => { setCurrentPage(currentPage + 1); scrollTo(0, 0) }}
                                 className='bg-indigo-600 text-white px-3 sm:px-6 py-2 rounded-sm disabled:opacity-50'
                                 style={{ fontFamily: 'Outfit' }}
                             >

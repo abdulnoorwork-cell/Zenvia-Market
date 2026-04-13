@@ -5,7 +5,7 @@ import logo from '../assets/logo.svg'
 const Footer = () => {
 
   return (
-    <div className='pt-16 mt-13 border-t bg-[#0F172A]'>
+    <div className='pt-16 mt-16 border-t bg-[#0F172A]'>
       <div className="container mx-auto px-4 lg:flex grid sm:grid-cols-3 grid-cols-2 gap-7 justify-between">
         <div>
           <div onClick={() => { navigate('/'); scrollTo(0, 0) }} className="cursor-pointer flex items-center gap-1.5">

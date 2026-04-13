@@ -36,7 +36,7 @@ const Login = () => {
   
   return (
     <div className='flex items-center justify-center h-screen'>
-      <div className='w-full max-w-md p-6 max-md:m-4 border border-gray-300 rounded-lg bg-white'>
+      <div className='w-full max-w-lg p-6 max-md:m-4 border border-gray-300 rounded-lg bg-white'>
         <div className='flex flex-col items-center justify-center'>
           <div className='w-full mb-2 text-center'>
               <h6 className='sm:text-3xl text-2xl font-bold'><span className='text-blue-600'>Admin </span>Login</h6>
@@ -46,7 +46,7 @@ const Login = () => {
             <h6 className='text-blue-600 font-medium'>Admin Email: <span className='text-gray-800 font-normal'>abdulnoorwork@gmail.com</span></h6>
             <h6 className='text-blue-600 font-medium'>Admin Password: <span className='text-gray-800 font-normal'>toxd egor wsfl ovjv</span></h6>
           </div>
-          <form onSubmit={handleSubmit} className='w-full mt-5 sm:max-w-md text-sm text-gray-700'>
+          <form onSubmit={handleSubmit} className='w-full mt-5 text-sm text-gray-700'>
             <p className='text-red-500'>{error ? error : null}</p>
             <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='your email id' className='w-full border border-gray-300 bg-[#f1f1f1] p-2.5 outline-none mb-6' required />
             <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='your password' className='w-full border border-gray-300 bg-[#f1f1f1] p-2.5 outline-none mb-6' required />
