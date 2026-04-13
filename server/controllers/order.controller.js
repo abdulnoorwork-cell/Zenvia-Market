@@ -6,77 +6,135 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const placeOrder = async (req, res) => {
     const { user_id, items, total_amount, payment_method, address } = req.body;
-    try {
-        if (!address || !address.firstName) {
-            return res.status(400).json({ message: "Invalid address" });
-        }
-        // 1. Save order in DB
+
+    if (!address || !address.firstName) {
+        return res.status(400).json({ messege: "Invalid address" });
+    }
+
+    // 🟢 COD (Keep your existing logic)
+    if (payment_method === "COD") {
         db.query(
-            `INSERT INTO orders (user_id, total_amount, payment_method, address)
-       VALUES (?, ?, ?, ?)`,
-            [user_id, total_amount, payment_method, JSON.stringify(address)], (err, result) => {
-                if (err) return res.status(500).json({ success: false, message: err })
+            `INSERT INTO orders (user_id, total_amount, payment_method, address, payment_status)
+             VALUES (?, ?, ?, ?, ?)`,
+            [user_id, total_amount, payment_method, JSON.stringify(address), "PENDING"],
+            (err, result) => {
+                if (err) return res.status(500).json({ success: false, messege: err });
+
                 const order_id = result.insertId;
-                // 2. Save items
-                for (let item of items) {
+
+                items.forEach(item => {
                     db.query(
                         `INSERT INTO order_items (order_id, product_id,size, color, footwear_size, quantity, price)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                        [order_id, item._id, item.size || null, item.color || null, item.footwear_size || null, item.quantity, item.offerPrice], async (err, data) => {
-                            if (err) return res.status(500).json({ success: false, message: err })
-                            // 🟢 COD Flow
-                            if (payment_method === "COD") {
-                                const deleteQuery = 'DELETE FROM cart_items WHERE user_id = ?'
-                                db.query(deleteQuery, [user_id], (err, result) => {
-                                    if (err) return res.status(500).json({ success: false, message: err })
-                                    res.json({ success: true, message: "Order placed (COD)" });
-                                })
-                                return;
-                            }
-                            // 🔵 ONLINE (Stripe)
-                            if (payment_method === "ONLINE") {
-                                const session = await stripe.checkout.sessions.create({
-                                    payment_method_types: ["card"],
-
-                                    line_items: items.map(item => ({
-                                        price_data: {
-                                            currency: "pkr",
-                                            product_data: {
-                                                name: item.name,
-                                            },
-                                            unit_amount: item.offerPrice * 100,
-                                        },
-                                        quantity: item.quantity,
-                                    })),
-
-                                    mode: "payment",
-
-                                    success_url: `${process.env.FRONTEND_URL}/success?order_id=${order_id}`,
-                                    cancel_url: `${process.env.FRONTEND_URL}/cancel`,
-
-                                    metadata: {
-                                        order_id: order_id.toString(),
-                                    },
-                                });
-                                res.json({ url: session.url });
-
-                                if (payment_method === "ONLINE") {
-                                    const deleteQuery = 'DELETE FROM cart_items WHERE user_id = ?'
-                                    db.query(deleteQuery, [user_id], (err, result) => {
-                                        if (err) return res.status(500).json({ success: false, message: err })
-                                        db.query('UPDATE orders SET payment_status = ? WHERE _id = ?', ["PAID", order_id])
-                                    })
-                                }
-                            }
-                        }
+                        [order_id, item._id, item.size || null, item.color || null, item.footwear_size || null, item.quantity, item.offerPrice]
                     );
+                });
+
+                // delete cart
+                db.query('DELETE FROM cart_items WHERE user_id = ?', [user_id]);
+
+                res.json({ success: true, messege: "Order placed (COD)" });
+            }
+        );
+    }
+
+    // 🔵 ONLINE (Stripe)
+    if (payment_method === "ONLINE") {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+
+            line_items: items.map(item => ({
+                price_data: {
+                    currency: "pkr",
+                    product_data: {
+                        name: item.name,
+                    },
+                    unit_amount: Math.round(Number(total_amount) * 100),
+                },
+                quantity: 1,
+            })),
+
+            mode: "payment",
+
+            success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+
+            metadata: {
+                user_id: user_id.toString(),
+                items: JSON.stringify(
+                    items.map(item => ({
+                        id: item._id,
+                        qty: item.quantity,
+                        price: item.offerPrice,
+                        size: item.size || null,
+                        color: item.color || null,
+                        footwear_size: item.footwear_size || null
+                    }))
+                ),
+                address: JSON.stringify(address),
+                total_amount: total_amount
+            },
+        });
+
+        return res.json({ url: session.url });
+    }
+};
+
+export const confirmOrder = async (req, res) => {
+    const { session_id } = req.body;
+
+    try {
+        // 🔒 Check if already exists
+        db.query(
+            "SELECT * FROM orders WHERE stripe_session_id = ?",
+            [session_id],
+            async (err, data) => {
+
+                if (data.length > 0) {
+                    return res.json({ messege: "Order already exists" });
                 }
+
+                // 👉 Continue only if NOT exists
+                const session = await stripe.checkout.sessions.retrieve(session_id);
+
+                if (session.payment_status !== "paid") {
+                    return res.status(400).json({ messege: "Payment not completed" });
+                }
+
+                const user_id = session.metadata.user_id;
+                const items = JSON.parse(session.metadata.items);
+                const address = JSON.parse(session.metadata.address);
+                const total_amount = session.metadata.total_amount;
+
+                db.query(
+                    `INSERT INTO orders (user_id, total_amount, payment_method, address, payment_status, stripe_session_id)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+                    [user_id, total_amount, "ONLINE", JSON.stringify(address), "PAID", session_id],
+                    (err, result) => {
+
+                        const order_id = result.insertId;
+
+                        items.forEach(item => {
+                            db.query(
+                                `INSERT INTO order_items (order_id, product_id, quantity, price, size, color, footwear_size)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                                [order_id, item.id, item.qty, item.price, item.size || null, item.color || null, item.footwear_size || null]
+                            );
+                        });
+
+                        db.query(
+                            "DELETE FROM cart_items WHERE user_id = ?",
+                            [user_id]
+                        );
+
+                        res.json({ success: true });
+                    }
+                );
             }
         );
 
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ success: false, message: error });
+        res.status(500).json({ messege: "Error" });
     }
 }
 

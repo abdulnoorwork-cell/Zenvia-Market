@@ -17,11 +17,11 @@ const Layout = () => {
   }
   return (
     <>
-      <div className='flex items-center justify-between py-3 px-4 sm:px-12 border-b border-[rgba(192,193,196,0.28)] gap-2 bg-[#FFFFFF]'>
-        <div onClick={() => { navigate('/admin'); scrollTo(0, 0) }} className="logo leading-none sm:text-3xl text-2xl cursor-pointer">
+      <div className='flex items-center justify-between py-3 px-4 sm:px-12 border-b border-[rgba(192,193,196,0.28)] gap-2 bg-[#FFFFFF] min-h-[75px]'>
+        <div onClick={() => { navigate('/admin'); scrollTo(0, 0) }} className="logo leading-none sm:text-3xl text-2xl cursor-pointer tracking-tight">
           Admin<span className='text-[#2563EB] font-bold'> Panel</span>
         </div>
-        <button onClick={logout} type='submit' className='sm:text-sm text-xs px-7 w-fit py-[10px] bg-orange-500 text-white rounded-full cursor-pointer font-medium flex items-center gap-1'><span className='text-lg'><BiLogOut /></span>Logout</button>
+        <button onClick={logout} type='submit' className='sm:text-sm text-xs px-7 w-fit py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full cursor-pointer font-medium flex items-center gap-1'><span className='text-lg'><BiLogOut /></span>Logout</button>
       </div>
       <div className='flex min-h-[95vh]'>
         <Sidebar />

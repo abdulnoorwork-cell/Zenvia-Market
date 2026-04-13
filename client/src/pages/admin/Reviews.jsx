@@ -79,8 +79,8 @@ const Reviews = () => {
                                             <div className='flex flex-col 2xl:flex-row max-sm:items-center 2xl:items-center 2xl:gap-3 gap-2'>
                                                 <img className='h-12 w-12 object-contain rounded-full' src={review.profile_image ? JSON.parse(review?.profile_image) : profile_image} alt="profile_image" />
                                                 <div className='flex flex-col'>
-                                                    <h6 className='leading-[1.3em] font-medium text-base'>{review?.name}</h6>
-                                                    <h6 className='text-gray-700 text-[13.4px]'>{review?.email}</h6>
+                                                    <h6 className='leading-[1.3em] font-medium text-base tracking-tight'>{review?.name}</h6>
+                                                    <h6 className='text-gray-500 text-[13.4px]'>{review?.email}</h6>
                                                 </div>
                                             </div>
                                             {/* Reviews */}
@@ -90,7 +90,7 @@ const Reviews = () => {
                                                         <AiFillStar key={i} />
                                                     ))}
                                                 </div>
-                                                <h6 className='lg:text-[13.4px] text-[12.8px] mt-0.5 max-sm:text-gray-500'>{review?.comment}</h6>
+                                                <h6 className='lg:text-[13.4px] text-[12.8px] mt-0.5 text-gray-600'>{review?.comment}</h6>
                                             </div>
                                             <div className='flex flex-col lg:flex-row lg:items-center sm:gap-2 gap-1.5'>
                                                 <img src={review?.images[0]} className='sm:w-14 sm:h-14 w-20 h-20 max-sm:mx-auto object-cover' alt="" />
@@ -101,7 +101,7 @@ const Reviews = () => {
                                                 <h6 className='category mx-auto text-center leading-[1.4em] font-medium line-through text-gray-600/90' style={{ fontFamily: 'Montserrat' }}>{currency}. {review?.price}</h6>
                                             </div>
                                             <div className="mx-auto lg:block hidden">
-                                                <p className='mx-auto text-center leading-[1.4em] font-medium' style={{ fontFamily: 'Montserrat' }}>{new Date(review?.created_at).toDateString()}</p>
+                                                <h6 className='mx-auto text-center leading-[1.4em] text-gray-500 tracking-tight text-[13.4px]'>{new Date(review?.created_at).toDateString()}</h6>
                                             </div>
                                             <div className='flex items-center gap-2 mx-auto max-sm:mt-2'>
                                                 <div onClick={() => fetchSingleReview(review._id)} className='bg-blue-50 text-blue-600 rounded-md cursor-pointer flex items-center gap-1 py-1.5 px-3 text-xs font-medium'>

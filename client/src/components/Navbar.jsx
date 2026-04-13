@@ -46,7 +46,7 @@ const Navbar = () => {
     return (
         <>
             <div className='bg-blue-800/80 text-white text-center sm:text-[13px] text-xs p-2 flex items-center justify-center gap-2 px-4'><span className='sm:text-xl text-lg'><TbTruckDelivery /></span> <span>Free Shipping on Orders Over Rs.2000!</span></div>
-            <div className={`sticky top-0 flex items-center justify-between bg-[#FFFFFF] py-2 border-b z-40 border-[#E2E8F0] ${sticky ? "shadow-[0_10px_30px_rgba(0,0,0,0.1)]" : "bg-[#FFFFFF]"}`}>
+            <div className={`sticky top-0 flex items-center justify-between bg-[#FFFFFF] py-3 border-b z-40 border-[#E2E8F0] ${sticky ? "shadow-[0_10px_30px_rgba(0,0,0,0.1)]" : "bg-[#FFFFFF]"}`}>
                 <nav className='container mx-auto px-4 flex items-center justify-between'>
                     <div onClick={() => { navigate('/'); scrollTo(0, 0) }} className="cursor-pointer flex items-center gap-1.5">
                         <img src={logo} className='h-13' alt="" />

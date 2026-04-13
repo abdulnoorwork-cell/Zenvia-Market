@@ -262,7 +262,7 @@ WHERE name LIKE ? OR category LIKE ? OR subCategory LIKE ? LIMIT 8`
 
 export const getLatestProducts = (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
-    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice FROM products ORDER BY created_at DESC LIMIT ?'
+    const sql = 'SELECT _id, name, category, subCategory, price, offerPrice, created_at FROM products ORDER BY created_at DESC LIMIT ?'
     db.query(sql, [limit], async (err, data) => {
         if (err) {
             console.log(err);

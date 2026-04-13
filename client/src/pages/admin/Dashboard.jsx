@@ -3,15 +3,18 @@ import axios from 'axios'
 import { AppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 import { useContext } from 'react'
-import dashboard_icon_1 from '../../assets/dashboard_icon_1.svg'
 import dashboard_icon_4 from '../../assets/dashboard_icon_4.svg'
 import { FaEdit } from 'react-icons/fa'
 import cross_icon from '../../assets/cross_icon.svg'
 import loading_animation from '../../../public/loading_animation.svg'
+import { MdDeleteOutline, MdOutlineReviews } from 'react-icons/md'
+import { BsCartPlus } from "react-icons/bs";
+import { TfiWrite } from 'react-icons/tfi'
+import { RiBox3Line } from 'react-icons/ri'
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
-  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts,fetchLatestProducts,latestProducts, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
+  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, fetchLatestProducts, latestProducts, allReviews, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -113,24 +116,31 @@ const Dashboard = () => {
     <div className='flex-1 px-4 py-8 lg:px-10'>
       <div className='flex flex-wrap gap-4'>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
+          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><BsCartPlus /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{products.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Products</h6>
           </div>
         </div>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
+          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><TfiWrite /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{blogs.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Blogs</h6>
           </div>
         </div>
         <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
-          <img src={dashboard_icon_1} className='sm:w-14 w-12' alt="" />
+          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><RiBox3Line /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{orders?.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Orders</h6>
+          </div>
+        </div>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
+          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><MdOutlineReviews /></span>
+          <div>
+            <p className='sm:text-xl text-lg font-semibold'>{allReviews?.length}</p>
+            <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Reviews</h6>
           </div>
         </div>
       </div>

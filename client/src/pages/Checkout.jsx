@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const Checkout = () => {
     const [loading, setLoading] = useState(false)
-    const { cartItems, backendUrl, userId, token, getCartItems, shippingFee, currency, discount, getTotalCartItems,fetchAdminOrders } = useContext(AppContext)
+    const { cartItems, backendUrl, userId, token, getCartItems, shippingFee, currency, discount, getTotalCartItems, fetchAdminOrders, navigate } = useContext(AppContext)
     const subtotal = cartItems.reduce(
         (total, item) => total + item.offerPrice * item.quantity,
         0
@@ -51,6 +51,7 @@ const Checkout = () => {
                     getTotalCartItems()
                     if (payment === "COD") {
                         toast.success("Order placed successfully!")
+                        navigate('/my-account')
                     } else {
                         window.location.href = response.data.url
                     }
@@ -62,9 +63,11 @@ const Checkout = () => {
                 console.log(error)
             }
         } else {
-            localStorage.removeItem('User')
-            window.location.href ="/user/login";
-            window.location.reload()
+            if (error.response.status === 500) {
+                localStorage.removeItem('User')
+                window.location.href = "/user/login";
+                window.location.reload()
+            }
         }
     }
 
@@ -244,7 +247,7 @@ const Checkout = () => {
 
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
-                            <span>{currency}. {subtotal>0 ? total.toLocaleString() : '0'}</span>
+                            <span>{currency}. {subtotal > 0 ? total.toLocaleString() : '0'}</span>
                         </div>
 
                     </div>
