@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import MainLayout from './MainLayout'
 import Home from './pages/Home'
@@ -38,7 +38,24 @@ import Reviews from './pages/admin/Reviews';
 import OrderCancelled from './pages/OrderCancelled';
 
 const App = () => {
-  const { isAdmin,token,navigate } = useContext(AppContext);
+  const { isAdmin, token, navigate } = useContext(AppContext);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const expiryTime = localStorage.getItem("expiryTime");
+
+      if (!expiryTime) return;
+
+      if (Date.now() > expiryTime) {
+        // ✅ AUTO LOGOUT
+        localStorage.removeItem("User");
+        localStorage.removeItem("expiryTime");
+
+        window.location.href = "/login";
+      }
+    }, 60000); // check every 1 minute
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className='bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100 min-h-screen'>
       <Routes>
@@ -53,7 +70,7 @@ const App = () => {
           <Route path='/shop/product/:product_id' element={<SingleProduct />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
-          <Route path='/checkout' element={token && <Checkout /> } />
+          <Route path='/checkout' element={token && <Checkout />} />
           <Route path='/category/clothing' element={<CategoryProducts category="Clothing & Style" />} />
           <Route path='/category/footwear' element={<CategoryProducts category="Footwear" />} />
           <Route path='/category/bags' element={<CategoryProducts category="Bags & Accessories" />} />

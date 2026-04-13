@@ -107,7 +107,7 @@ export const login = async (req, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
-                maxAge: 1 * 24 * 60 * 60 * 1000
+                maxAge: 60 * 60 * 1000
             })
             res.status(200).json({ success: true, messege: `Welcome back ${data[0].name}`, data, token, expiresIn: 86400 })
         } else {
