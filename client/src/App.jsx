@@ -50,7 +50,8 @@ const App = () => {
         localStorage.removeItem("User");
         localStorage.removeItem("expiryTime");
 
-        window.location.href = "/login";
+        window.location.href = "/user/login";
+        window.location.reload();
       }
     }, 60000); // check every 1 minute
 
