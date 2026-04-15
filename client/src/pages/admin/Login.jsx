@@ -42,7 +42,7 @@ const Login = () => {
               <h6 className='sm:text-3xl text-2xl font-bold'><span className='text-blue-600'>Admin </span>Login</h6>
               <p className='leading-none mt-1.5 text-xs'>Enter your credientials to access the admin panel</p>
           </div>
-          <div className='text-sm'>
+          <div className='text-[13px]'>
             <h6 className='text-blue-600 font-medium'>Admin Email: <span className='text-gray-800 font-normal'>abdulnoorwork@gmail.com</span></h6>
             <h6 className='text-blue-600 font-medium'>Admin Password: <span className='text-gray-800 font-normal'>toxd egor wsfl ovjv</span></h6>
           </div>

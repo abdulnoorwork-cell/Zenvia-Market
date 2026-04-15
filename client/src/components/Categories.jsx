@@ -53,7 +53,7 @@ const Categories = () => {
 
     return (
         <section>
-            <section className="pt-10 pb-2">
+            <section className="pt-14 pb-2">
                 <div className="container mx-auto px-4">
 
                     <h2 className="text-[22px] tracking-[0.1px] mb-4 font-semibold" style={{fontFamily:"Outfit"}}>

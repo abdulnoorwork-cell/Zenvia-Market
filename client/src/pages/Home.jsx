@@ -4,7 +4,6 @@ const LatestProducts = React.lazy(() => import('../components/LatestProducts'))
 const Categories = React.lazy(() => import('../components/Categories'))
 const BeautyProducts = React.lazy(() => import('../components/BeautyProducts'))
 const ElectronicsAndGadgets = React.lazy(() => import('../components/ElectronicsAndGadgets'))
-const HomeDecor = React.lazy(() => import('../components/HomeDecor'))
 const BagsAndAccessories = React.lazy(() => import('../components/BagsAndAccessories'))
 const Footwear = React.lazy(() => import('../components/Footwear'))
 const Clothing = React.lazy(() => import('../components/Clothing.jsx'))
@@ -26,9 +25,6 @@ const Home = () => {
       </Suspense>
       <Suspense fallback={<p>Loading...</p>}>
         <ElectronicsAndGadgets />
-      </Suspense>
-      <Suspense fallback={<p>Loading...</p>}>
-        <HomeDecor />
       </Suspense>
       <Suspense fallback={<p>Loading...</p>}>
         <Footwear />

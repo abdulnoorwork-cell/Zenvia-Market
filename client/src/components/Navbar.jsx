@@ -131,7 +131,7 @@ const Navbar = () => {
                 <div className='container mx-auto px-4'>
                     <div className='flex items-center gap-6 text-blue-950'>
                         <div className='group'>
-                            <NavLink className={"flex items-center gap-2 py-2 hover:text-[#2563EB] transition-all duration-150"}>Clothing & Style <span><FaAngleDown /></span></NavLink>
+                            <NavLink className={"flex items-center gap-1.5 py-2 hover:text-[#2563EB] transition-all duration-150"}>Clothing & Style <span><FaAngleDown /></span></NavLink>
                             <div className={`w-full opacity-0 invisible -z-10 group-hover:opacity-100 py-0 group-hover:py-8 group-hover:z-10 transition-all group-hover:opacity-100 group-hover:visible duration-300 bg-[#FFFFFF] border-t border-b border-[rgba(192,193,196,0.28)] absolute top-[100%] left-0`}>
                                 <div className='container mx-auto px-4 flex items-center gap-24'>
                                     <ul className='flex flex-col'>
@@ -142,7 +142,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='group'><NavLink className={"flex items-center gap-2 py-2 hover:text-[#2563EB] transition-all duration-150"}>Footwear <span><FaAngleDown /></span></NavLink>
+                        <div className='group'><NavLink className={"flex items-center gap-1.5 py-2 hover:text-[#2563EB] transition-all duration-150"}>Footwear <span><FaAngleDown /></span></NavLink>
                             <div className={`w-full opacity-0 invisible -z-10 group-hover:opacity-100 py-0 group-hover:py-8 group-hover:z-10 transition-all group-hover:opacity-100 group-hover:visible duration-300 bg-[#FFFFFF] border-t border-b border-[rgba(192,193,196,0.28)] absolute top-[100%] left-0`}>
                                 <div className='container mx-auto px-4 flex items-center gap-24'>
                                     <ul className='flex flex-col'>
@@ -153,7 +153,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='group'><NavLink className={"flex items-center gap-2 py-2 hover:text-[#2563EB] transition-all duration-150"}>Bags & Accessories <span><FaAngleDown /></span></NavLink>
+                        <div className='group'><NavLink className={"flex items-center gap-1.5 py-2 hover:text-[#2563EB] transition-all duration-150"}>Bags & Accessories <span><FaAngleDown /></span></NavLink>
                             <div className={`w-full opacity-0 invisible -z-10 group-hover:opacity-100 py-0 group-hover:py-8 group-hover:z-10 transition-all group-hover:opacity-100 group-hover:visible duration-300 bg-[#FFFFFF] border-t border-b border-[rgba(192,193,196,0.28)] absolute top-[100%] left-0`}>
                                 <div className='container mx-auto px-4 flex gap-24'>
                                     <ul className='flex flex-col'>
@@ -164,7 +164,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='group'><NavLink className={"flex items-center gap-2 py-2 hover:text-[#2563EB] transition-all duration-150"}>Beauty & Wellness <span><FaAngleDown /></span></NavLink>
+                        <div className='group'><NavLink className={"flex items-center gap-1.5 py-2 hover:text-[#2563EB] transition-all duration-150"}>Beauty & Wellness <span><FaAngleDown /></span></NavLink>
                             <div className={`w-full opacity-0 invisible -z-10 group-hover:opacity-100 py-0 group-hover:py-8 group-hover:z-10 transition-all group-hover:opacity-100 group-hover:visible duration-300 bg-[#FFFFFF] border-t border-b border-[rgba(192,193,196,0.28)] absolute top-[100%] left-0`}>
                                 <div className='container mx-auto px-4 flex items-center gap-24'>
                                     <ul className='flex flex-col'>
@@ -175,7 +175,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='group'><NavLink className={"flex items-center gap-2 py-2 hover:text-[#2563EB] transition-all duration-150"}>Electronics & Gadgets <span><FaAngleDown /></span></NavLink>
+                        <div className='group'><NavLink className={"flex items-center gap-1.5 py-2 hover:text-[#2563EB] transition-all duration-150"}>Electronics & Gadgets <span><FaAngleDown /></span></NavLink>
                             <div className={`w-full opacity-0 invisible -z-10 group-hover:opacity-100 py-0 group-hover:py-8 group-hover:z-10 transition-all group-hover:opacity-100 group-hover:visible duration-300 bg-[#FFFFFF] border-t border-b border-[rgba(192,193,196,0.28)] absolute top-[100%] left-0`}>
                                 <div className='container mx-auto px-4 flex items-center gap-24'>
                                     <ul className='flex flex-col'>
@@ -186,8 +186,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                         </div>
-                        <div><NavLink onClick={() => scrollTo(0, 0)} to={'/category/home-decor'} className={"py-2 hover:text-[#2563EB] transition-all duration-150"}>Home Decor</NavLink></div>
-                        <div><NavLink onClick={() => scrollTo(0, 0)} to={'/shop/all-products'} className={"py-2 hover:text-[#2563EB] transition-all duration-150"}>All Products</NavLink></div>
+                        <div><NavLink onClick={() => scrollTo(0, 0)} to={'/shop/all-products'} className={"py-2 hover:text-[#2563EB] transition-all duration-150"}>Shop</NavLink></div>
                         <div><NavLink onClick={() => scrollTo(0, 0)} to={'/about'} className={"py-2 hover:text-[#2563EB] transition-all duration-150"}>About us</NavLink></div>
                         <div><NavLink onClick={() => scrollTo(0, 0)} to={'/blogs'} className={"py-2 hover:text-[#2563EB] transition-all duration-150"}>Blogs</NavLink></div>
                         <div><NavLink onClick={() => scrollTo(0, 0)} to={'/contact'} className={"py-2 hover:text-[#2563EB] transition-all duration-150"}>Contact us</NavLink></div>
@@ -248,10 +247,8 @@ const Navbar = () => {
                         <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/shop/electronics-&-gadgets/audio-&-accessories'} className={"p-2 border-b border-gray-300/90 rounded"} style={{ fontFamily: 'Montserrat' }}>Audio & Accessories</NavLink>
                     </ul>
                 </NavLink>
-                <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/category/home-decor'} className={'p-2 hover:text-white hover:bg-[#2563EB] transition-all duration-150 rounded border border-[#E5E7EB] bg-[#e4e4f56c]'}><div style={{ fontFamily: 'Montserrat' }} className='font-medium flex items-center gap-2'><span className='text-xl text-amber-800/70'><RiArmchairFill />
-                </span>Home Decor</div></NavLink>
                 <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/shop/all-products'} className={'p-2 hover:text-white hover:bg-[#2563EB] transition-all duration-150 rounded border border-[#E5E7EB] bg-[#e4e4f56c]'}><div style={{ fontFamily: 'Montserrat' }} className='font-medium flex items-center gap-2'><span className='text-xl text-sky-700'><AiFillProduct />
-                </span>All Products</div></NavLink>
+                </span>Shop</div></NavLink>
                 <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/about'} className={'p-2 hover:text-white hover:bg-[#2563EB] transition-all duration-150 rounded border border-[#E5E7EB] bg-[#e4e4f56c]'}><div style={{ fontFamily: 'Montserrat' }} className='font-medium flex items-center gap-2'><span className='text-xl text-orange-700/70'><FaUserCheck />
                 </span>About us</div></NavLink>
                 <NavLink onClick={() => { scrollTo(0, 0); setMobileMenu(false) }} to={'/blogs'} className={'p-2 hover:text-white hover:bg-[#2563EB] transition-all duration-150 rounded border border-[#E5E7EB] bg-[#e4e4f56c]'}><div style={{ fontFamily: 'Montserrat' }} className='font-medium flex items-center gap-2'><span className='text-xl text-gray-500/70'><FaCommentDots />
