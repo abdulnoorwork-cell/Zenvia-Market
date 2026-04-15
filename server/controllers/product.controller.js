@@ -266,7 +266,7 @@ export const getLatestProducts = (req, res) => {
     db.query(sql, [limit], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ messege: "Server error" });
+            return res.status(500).json(err);
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
@@ -290,7 +290,7 @@ export const getCategoryProducts = (req, res) => {
     db.query(sql, [category], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ messege: "Server error" });
+            return res.status(500).json(err);
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
@@ -314,7 +314,7 @@ export const getLatestCategoryProducts = (req, res) => {
     db.query(sql, [category, limit], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ messege: "Server error" });
+            return res.status(500).json(err);
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
@@ -338,7 +338,7 @@ export const getSubCategoryProducts = (req, res) => {
     db.query(sql, [subCategory], async (err, data) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ messege: "Server error" });
+            return res.status(500).json(err);
         } else {
             for (let product of data) {
                 const images = await new Promise((resolve, reject) => {
