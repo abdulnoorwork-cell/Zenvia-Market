@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
         const profile_image = req.files?.profile_image;
 
         if (!name || !email || !password) {
-            return res.status(400).json({ message: "Required fields missing" });
+            return res.status(400).json({ message: "Please fill required fileds" });
         }
 
         if (password.length < 8) {
@@ -60,7 +60,7 @@ export const signup = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Signup error" });
+        res.status(500).json({ message: err });
     }
 };
 
@@ -78,7 +78,7 @@ export const login = async (req, res) => {
         );
 
         if (users.length === 0) {
-            return res.status(400).json({ message: "User not found" });
+            return res.status(400).json({ success: false, message: "Invalid email or password" });
         }
 
         const user = users[0];
@@ -86,7 +86,7 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.status(400).json({ message: "Incorrect password" });
+            return res.status(400).json({ success: false, message: "Invalid email or password" });
         }
 
         const token = generateToken(user._id);
@@ -101,7 +101,9 @@ export const login = async (req, res) => {
         res.status(200).json({
             success: true,
             message: `Welcome ${user.name}`,
-            token
+            user,
+            token,
+            expiresIn: 86400
         });
 
     } catch (err) {

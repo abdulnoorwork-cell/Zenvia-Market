@@ -49,7 +49,8 @@ const Login = () => {
             })
             if (response.data.success) {
                 setLoading(false)
-                toast.success(response.data.messege)
+                setError('')
+                toast.success(response.data.message)
                 setName('');
                 setEmail('');
                 setPassword('');
@@ -61,13 +62,12 @@ const Login = () => {
         } catch (error) {
             setLoading(false)
             console.log(error)
-            { error.response.data.messege === 'Email already exist' ? toast.error(error.response.data.messege) : null }
-            setError(error.response.data)
+            setError(error.response.data.message)
         }
     }
 
     const onLoginHandler = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
             setLoading(true)
             let response = await axios.post(`${backendUrl}/api/user/login`, { email, password }, {
@@ -75,24 +75,29 @@ const Login = () => {
                 withCredentials: true
             })
             if (response.data.success) {
+                console.log(response.data)
                 setLoading(false)
+                setError('')
                 // ⏰ assume token expires in 1 hour (same as backend)
                 const expiryTime = Date.now() + 60 * 60 * 1000;
                 localStorage.setItem("expiryTime", expiryTime);
                 localStorage.setItem('User', JSON.stringify(response.data))
-                toast.success(response.data.messege)
+                toast.success(response.data.message)
                 setEmail('');
                 setPassword('');
                 setTimeout(() => {
-                    navigate('/')
-                    window.location.reload();
+                    window.location.href = '/'
                 }, 1000)
+                setTimeout(() => {
+                    localStorage.removeItem('User');
+                    window.location.reload()
+                }, response.data.expiresIn * 1000)
             }
             setLoading(false)
         } catch (error) {
             setLoading(false)
-            console.log(error)
-            setError(error.response.data)
+            console.log(error.response)
+            setError(error.response.data.message)
         }
     }
 
@@ -145,6 +150,7 @@ const Login = () => {
                                     value={email} onChange={(e) => setEmail(e.target.value)}
                                     className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
+                                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error ? error : null}</h6>
                             </div>
 
                             {/* Password */}
@@ -163,6 +169,7 @@ const Login = () => {
                                     <span onClick={() => setPasswordShow(true)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "hidden" : "block"}`}><GoEyeClosed /></span>
                                     <span onClick={() => setPasswordShow(false)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "block" : "hidden"}`}><RxEyeOpen /></span>
                                 </div>
+                                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error ? error : null}</h6>
                             </div>
 
                             {/* Remember + Forgot */}
@@ -254,6 +261,7 @@ const Login = () => {
                                     placeholder="Enter your name"
                                     className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
+                                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please fill required fileds' ? error : null}</h6>
                             </div>
 
                             {/* Email */}
@@ -268,6 +276,7 @@ const Login = () => {
                                     placeholder="Enter your email"
                                     className="w-full mt-1 px-4 py-3 border border-gray-400 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
+                                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please fill required fileds' || error === 'Email already exists' ? error : null}</h6>
                             </div>
 
                             {/* Password */}
@@ -286,9 +295,10 @@ const Login = () => {
                                     <span onClick={() => setPasswordShow(true)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "hidden" : "block"}`}><GoEyeClosed /></span>
                                     <span onClick={() => setPasswordShow(false)} className={`cursor-pointer text-base text-gray-700 ${passwordShow ? "block" : "hidden"}`}><RxEyeOpen /></span>
                                 </div>
+                                <h6 className='text-red-600 mt-2 leading-none text-xs'>{error === 'Please fill required fileds' || error === 'Password must be at least 8 characters' ? error : null}</h6>
                             </div>
 
-                            {/* Confirm Password */}
+                            {/* Phone */}
                             <div>
                                 <label className="text-sm text-gray-600">
                                     Phone

@@ -166,7 +166,7 @@ const AppContextProvider = ({ children }) => {
         try {
             let response = await axios.get(`${backendUrl}/api/cart/totalitems/${userId}`, { withCredentials: true });
             if (response.data) {
-                setTotalCartItems(response.data[0].total_items)
+                setTotalCartItems(response.data.total_items)
             }
         } catch (error) {
             console.log(error)
