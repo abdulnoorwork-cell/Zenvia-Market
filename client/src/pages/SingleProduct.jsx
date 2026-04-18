@@ -75,7 +75,7 @@ const SingleProduct = () => {
         try {
             let response = await axios.get(`${backendUrl}/api/review/get-product-rating/${product_id}`, { withCredentials: true })
             if (response.data) {
-                setGetRating(response.data[0])
+                setGetRating(response.data)
             }
         } catch (error) {
             console.log(error)
@@ -124,7 +124,7 @@ const SingleProduct = () => {
                 if (response.data) {
                     getCartItems()
                     getTotalCartItems()
-                    toast.success(response.data.messege)
+                    toast.success(response.data.message)
                 }
             } catch (error) {
                 console.log(error)
@@ -175,7 +175,7 @@ const SingleProduct = () => {
             })
             if (response.data.success) {
                 setLoading(false)
-                toast.success(response.data.messege)
+                toast.success(response.data.message)
                 setRating(0);
                 setComment("");
                 setImages([]);
@@ -187,15 +187,9 @@ const SingleProduct = () => {
         } catch (error) {
             setLoading(false)
             console.log(error)
-            if (error.response.status === 500) {
-                localStorage.removeItem("User");
-                window.location.href = "/user/login"
-            }
-            toast.error(error.response.data.messege)
+            toast.error(error.response.data.message)
         }
     }
-
-    console.log(reviews)
 
     const cleanHTML = product?.about
         ?.replace(/style="[^"]*color:[^";]+;?[^"]*"/gi, "")
@@ -243,8 +237,7 @@ const SingleProduct = () => {
                                                 />
                                             ))}
                                         </div>
-                                        {reviews.length > 0 ?
-                                            <span className="text-gray-600 text-sm" style={{ fontFamily: "Outfit" }}>({getRating.average_rating === 5 || getRating.average_rating === 4 || getRating.average_rating === 3 || getRating.average_rating === 2 || getRating.average_rating === 1 ? getRating.average_rating + ".0" : ""})</span> : null}
+                                            <span className="text-gray-600 text-sm" style={{ fontFamily: "Outfit" }}>({getRating.average_rating ? getRating.average_rating.slice(0,3) : "0 Reviews"})</span>
                                     </div>
 
                                     <div className="flex items-center gap-3 mt-2">
@@ -448,7 +441,7 @@ const SingleProduct = () => {
                                         <div key={i} className='p-4 border-b border-[#E2E8F0]'>
                                             <div className='flex sm:flex-row flex-col sm:items-center gap-2'>
                                                 <figure>
-                                                    <img src={JSON.parse(v.profile_image)} alt="profile_image" className='w-12 h-12 rounded-full' />
+                                                    <img src={v.profile_image} alt="profile_image" className='w-12 h-12 rounded-full' />
                                                 </figure>
                                                 <div>
                                                     {/* name */}

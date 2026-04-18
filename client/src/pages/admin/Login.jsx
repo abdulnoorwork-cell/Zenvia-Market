@@ -20,7 +20,7 @@ const Login = () => {
       if(response.data.success) {
         localStorage.setItem('token', response.data.token);
         axios.defaults.headers.common['Authorization'] = response.data.token;
-        toast.success(response.data.messege);
+        toast.success(response.data.message);
         setLoading(false);
         setTimeout(()=>{
           window.location.reload()
@@ -29,8 +29,9 @@ const Login = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error)
-      setError(error.response.data.messege)
+      console.log(error.response.data.message)
+      setError(error.response.data.message)
+      toast.error(error.response.data.message)
     }
   }
   

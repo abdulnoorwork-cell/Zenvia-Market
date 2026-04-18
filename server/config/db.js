@@ -15,7 +15,7 @@ if (!global.dbPool) {
         enableKeepAlive: true,
         keepAliveInitialDelay: 0
     })
-    console.log("Connected to Database: " + process.env.DB_DATABAE)
+    console.log("Connected to Database: " + process.env.DB_DATABASE)
 }
 db = global.dbPool
 

@@ -164,30 +164,19 @@ export const updateUser = async (req, res) => {
 export const adminLogin = (req, res) => {
     try {
         const { email, password } = req.body;
-
         if (!email || !password) {
-            return res.status(400).json({ message: "Required fields missing" });
+            return res.status(401).json({ success: false, messege: "Can,t be empty" })
         }
-
-        if (
-            email !== process.env.ADMIN_EMAIL ||
-            password !== process.env.ADMIN_PASSWORD
-        ) {
-            return res.status(401).json({ message: "Invalid credentials" });
+        if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
+            return res.status(401).json({ success: false, message: "Invalid Credientials" })
         }
-
-        const token = jwt.sign(
-            { email },
-            process.env.ADMIN_JWT_SECRET,
-            { expiresIn: "1d" }
-        );
-
-        res.status(200).json({ success: true, token });
-
-    } catch (err) {
-        res.status(500).json({ message: "Admin login error" });
+        const token = jwt.sign(email + password, process.env.ADMIN_JWT_SECRET);
+        res.status(200).json({ success: true, message: "admin loggedin successfull", token })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Error in Login: " + error })
     }
-};
+}
+
 
 export const forgotPassword = async (req, res) => {
     try {

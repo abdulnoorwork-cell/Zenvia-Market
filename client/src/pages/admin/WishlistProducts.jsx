@@ -39,12 +39,12 @@ const WishlistProducts = () => {
                 withCredentials: true
             });
             if (response.data.success) {
-                toast.success(response.data.messege)
+                toast.success(response.data.message)
                 await fetchWishlistProducts()
                 await fetchProducts()
             }
         } catch (error) {
-            toast.error(error.response.data.messege);
+            toast.error(error.response.data.message);
             console.log(error)
         }
     }

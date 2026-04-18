@@ -26,7 +26,7 @@ const Reviews = () => {
             })
             if (response.data) {
                 setModel(true)
-                setSingleReview(response.data[0]);
+                setSingleReview(response.data);
             }
         } catch (error) {
             console.log(error)
@@ -43,7 +43,7 @@ const Reviews = () => {
                 withCredentials: true
             })
             if (response.data.success) {
-                toast.success(response.data.messege)
+                toast.success(response.data.message)
                 setReply('')
                 setModel(false)
                 setReplyLoading(false);
@@ -53,9 +53,11 @@ const Reviews = () => {
         } catch (error) {
             console.log(error)
             setReplyLoading(false)
-            toast.error(error.response.data.messege)
+            toast.error(error.response.data.message)
         }
     }
+
+    console.log(allReviews)
 
     return (
         <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
@@ -77,7 +79,7 @@ const Reviews = () => {
                                     {allReviews?.reverse().map((review, index) => (
                                         <div key={index} className='border-b border-[#E5E7EB] sm:p-3 p-5 sm:grid flex flex-col text-center sm:text-start xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 items-center'>
                                             <div className='flex flex-col 2xl:flex-row max-sm:items-center 2xl:items-center 2xl:gap-3 gap-2'>
-                                                <img className='h-12 w-12 object-contain rounded-full' src={review.profile_image ? JSON.parse(review?.profile_image) : profile_image} alt="profile_image" />
+                                                <img className='h-12 w-12 object-contain rounded-full' src={review.profile_image ? review?.profile_image : profile_image} alt="profile_image" />
                                                 <div className='flex flex-col'>
                                                     <h6 className='leading-[1.3em] font-medium text-base tracking-tight'>{review?.name}</h6>
                                                     <h6 className='text-gray-500 text-[13.4px]'>{review?.email}</h6>
@@ -112,11 +114,12 @@ const Reviews = () => {
                                                     <span onClick={() => deleteProduct(product._id)} className=''><MdDeleteOutline /></span>
                                                 </div> */}
                                             </div>
+
                                             {/* ================= ADMIN REPLY SECTION ================= */}
                                             <div className={`fixed inset-0 z-50 items-center justify-center ${model && singleReview ? "flex" : "hidden"}`}>
                                                 {/* Overlay */}
                                                 <div
-                                                    className="absolute inset-0 bg-[#14102b44] backdrop-blur-[0.4px]"
+                                                    className="absolute inset-0 bg-[#14102b18] backdrop-blur-[0.4px]"
                                                     onClick={() => setModel(false)}
                                                 ></div>
 
@@ -142,7 +145,7 @@ const Reviews = () => {
                                                         {/* Customer Info */}
                                                         <div className="flex gap-3 items-center mb-4">
                                                             <img
-                                                                src={singleReview.profile_image ? JSON.parse(singleReview?.profile_image) : profile_image}
+                                                                src={singleReview.profile_image ? singleReview?.profile_image : profile_image}
                                                                 alt="user"
                                                                 className="w-10 h-10 rounded-full"
                                                             />

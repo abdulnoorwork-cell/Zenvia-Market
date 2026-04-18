@@ -8,7 +8,7 @@ export const placeOrder = async (req, res) => {
     try {
         const { user_id, items, total_amount, payment_method, address } = req.body;
 
-        if (!address?.firstName) {
+        if (!address || !address?.firstName) {
             return res.status(400).json({ message: "Invalid address" });
         }
 
@@ -52,8 +52,10 @@ export const placeOrder = async (req, res) => {
                 payment_method_types: ["card"],
                 line_items: items.map(item => ({
                     price_data: {
-                        currency: "pkr",
-                        product_data: { name: item.name },
+                        currency: "pkr", // or "usd" if needed
+                        product_data: {
+                            name: item.name
+                        },
                         unit_amount: Math.round(Number(item.offerPrice) * 100)
                     },
                     quantity: item.quantity
@@ -62,11 +64,17 @@ export const placeOrder = async (req, res) => {
                 success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url: `${process.env.FRONTEND_URL}/cancel`,
                 metadata: {
-                    user_id,
-                    items: JSON.stringify(items),
+                    user_id: user_id.toString(),
+                    items: JSON.stringify(
+                        items.map(item => ({
+                            id: item._id,
+                            qty: item.quantity,
+                            price: item.offerPrice,
+                        }))
+                    ),
                     address: JSON.stringify(address),
-                    total_amount
-                }
+                    total_amount: total_amount,
+                },
             });
 
             return res.json({ url: session.url });
@@ -74,27 +82,34 @@ export const placeOrder = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: "Order error" });
+        res.status(500).json({ message: err });
     }
 };
 
 export const confirmOrder = async (req, res) => {
-    try {
-        const { session_id } = req.body;
+    const { session_id } = req.body;
 
-        const [existing] = await db.execute(
+    const conn = await db.getConnection(); // ✅ use connection for transaction
+
+    try {
+        await conn.beginTransaction();
+
+        // ✅ Check existing order
+        const [existing] = await conn.query(
             "SELECT _id FROM orders WHERE stripe_session_id = ?",
             [session_id]
         );
 
-        if (existing.length > 0) {
-            return res.json({ message: "Order already exists" });
+        if (existing.length) {
+            await conn.rollback();
+            return res.json({ messege: "Order already exists" });
         }
 
         const session = await stripe.checkout.sessions.retrieve(session_id);
 
         if (session.payment_status !== "paid") {
-            return res.status(400).json({ message: "Payment not completed" });
+            await conn.rollback();
+            return res.status(400).json({ messege: "Payment not completed" });
         }
 
         const user_id = session.metadata.user_id;
@@ -102,39 +117,37 @@ export const confirmOrder = async (req, res) => {
         const address = JSON.parse(session.metadata.address);
         const total_amount = session.metadata.total_amount;
 
-        const [order] = await db.execute(
+        // ✅ Insert order
+        const [orderResult] = await conn.query(
             `INSERT INTO orders 
-            (user_id, total_amount, payment_method, address, payment_status, stripe_session_id)
-            VALUES (?, ?, ?, ?, ?, ?)`,
+      (user_id, total_amount, payment_method, address, payment_status, stripe_session_id)
+      VALUES (?, ?, ?, ?, ?, ?)`,
             [user_id, total_amount, "ONLINE", JSON.stringify(address), "PAID", session_id]
         );
 
-        const order_id = order.insertId;
+        const order_id = orderResult.insertId;
 
-        await Promise.all(items.map(item =>
-            db.execute(
-                `INSERT INTO order_items 
-                (order_id, product_id, quantity, price, size, color, footwear_size)
-                VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    order_id,
-                    item._id,
-                    item.quantity,
-                    item.offerPrice,
-                    item.size || null,
-                    item.color || null,
-                    item.footwear_size || null
-                ]
-            )
-        ));
+        // ✅ Insert items
+        for (const item of items) {
+            await conn.query(
+                `INSERT INTO order_items (order_id, product_id, quantity, price)
+         VALUES (?, ?, ?, ?)`,
+                [order_id, item.id, item.qty, item.price]
+            );
+        }
 
-        await db.execute("DELETE FROM cart_items WHERE user_id = ?", [user_id]);
+        // ✅ Clear cart
+        await conn.query("DELETE FROM cart_items WHERE user_id = ?", [user_id]);
 
-        res.json({ success: true });
+        await conn.commit();
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Confirm order error" });
+        return res.json({ success: true });
+
+    } catch (error) {
+        await conn.rollback();
+        return res.status(500).json({ messege: error.message });
+    } finally {
+        conn.release();
     }
 };
 

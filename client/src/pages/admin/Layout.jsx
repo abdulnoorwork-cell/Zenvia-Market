@@ -12,7 +12,7 @@ const Layout = () => {
     localStorage.removeItem('token');
     toast.success('Logout Successfully')
     setTimeout(() => {
-      window.location.reload()
+      window.location.href = '/admin'
     }, 1000)
   }
   return (

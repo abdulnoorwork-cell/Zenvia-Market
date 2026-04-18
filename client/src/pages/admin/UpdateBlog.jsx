@@ -30,9 +30,9 @@ const UpdateBlog = () => {
         withCredentials: true
       });
       if (response.data) {
-        setBlog(response.data[0])
-        setTitle(response.data[0].title);
-        quillRef.current.root.innerHTML = response.data[0].description
+        setBlog(response.data)
+        setTitle(response.data.title);
+        quillRef.current.root.innerHTML = response.data.description
       }
     } catch (error) {
       console.log(error)
@@ -57,7 +57,7 @@ const UpdateBlog = () => {
         }
       })
       if (response.data.success) {
-        toast.success(response.data.messege);
+        toast.success(response.data.message);
         setLoading(false);
         await fetchBlogs()
         setTimeout(() => {
@@ -72,7 +72,7 @@ const UpdateBlog = () => {
         localStorage.removeItem('token');
         window.location.href = "/admin"
       }
-      toast.error(error.response.data.messege)
+      toast.error(error.response.data.message)
     }
   }
 

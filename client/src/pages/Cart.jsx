@@ -15,7 +15,7 @@ const Cart = () => {
                 withCredentials: true
             })
             if (response.data) {
-                setTotalAmount(response.data?.[0]?.total)
+                setTotalAmount(response.data?.total)
             }
         } catch (error) {
             console.log(error)
@@ -35,7 +35,7 @@ const Cart = () => {
                     withCredentials: true
                 })
                 if (response.data.success) {
-                    toast.success(response.data.messege)
+                    toast.success(response.data.message)
                     getCartItems()
                     getTotalCartItems()
                     getTotalAmount()
@@ -46,7 +46,7 @@ const Cart = () => {
                     localStorage.removeItem('User')
                     window.location.href = "/user/login"
                 }
-                toast.error(error.response.data.messege)
+                toast.error(error.response.data.message)
             }
         }
     }
@@ -66,7 +66,7 @@ const Cart = () => {
                     getCartItems()
                     getTotalCartItems()
                     getTotalAmount()
-                    toast.success(response.data.messege)
+                    toast.success(response.data.message)
                 }
             } catch (error) {
                 console.log(error)
@@ -74,7 +74,7 @@ const Cart = () => {
                     localStorage.removeItem('User')
                     window.location.href = "/user/login"
                 }
-                toast.error(error.response.data.messege)
+                toast.error(error.response.data.message)
             }
         }
     }
@@ -182,7 +182,7 @@ const Cart = () => {
 
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
-                            <span>{currency}. {cartItems?.[0]?.total > 0 ? ((totalAmount + shippingFee) - discount).toLocaleString() : '0'}</span>
+                            <span>{currency}. {cartItems?.[0]?.total > 0 ? (Number(totalAmount) + shippingFee - discount).toLocaleString() : '0'}</span>
                         </div>
 
                     </div>

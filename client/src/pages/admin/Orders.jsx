@@ -24,9 +24,9 @@ const Orders = () => {
             if (response.data.success) {
                 await fetchAdminOrders()
                 await fetchUserOrders()
-                toast.success(response.data.messege);
+                toast.success(response.data.message);
             } else {
-                toast.error(response.data.messege)
+                toast.error(response.data.message)
             }
         } catch (error) {
             console.log(error)
@@ -55,7 +55,7 @@ const Orders = () => {
                             {adminOrders?.map((order, index) => (
                                 <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 ">
                                     <div className="order_image_parent flex gap-2">
-                                        <img className="w-12 h-12 object-cover" src={order.images[0] ? order.images[0] : parcel_icon} alt="product_image" />
+                                        <img className="w-12 h-12 object-cover" src={parcel_icon} alt="product_image" />
                                         <div className="flex flex-col justify-center">
                                             <h6 className="font-medium text-sm">
                                                 {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>

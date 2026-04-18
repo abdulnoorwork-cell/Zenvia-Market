@@ -12,6 +12,7 @@ import { FiHeart } from "react-icons/fi";
 import { RiUserLine } from "react-icons/ri";
 import { MdOutlineReviews } from "react-icons/md";
 import { Heart, Star } from 'lucide-react';
+import parcel_icon from '../assets/parcel_icon.svg'
 
 const MyAccount = () => {
   const [label, setLabel] = useState("Dashboard");
@@ -51,10 +52,10 @@ const MyAccount = () => {
             withCredentials: true
           })
           if (response.data) {
-            setName(response.data[0].name)
-            setEmail(response.data[0].email);
-            setPhone(response.data[0].phone);
-            setPreviewImage(JSON.parse(response?.data[0]?.profile_image))
+            setName(response.data.name)
+            setEmail(response.data.email);
+            setPhone(response.data.phone);
+            setPreviewImage(response?.data?.profile_image)
             await fetchUserOrders()
           }
         } catch (error) {
@@ -93,14 +94,14 @@ const MyAccount = () => {
       if (response.data.success) {
         setLoading(false)
         setModel(false)
-        toast.success(response.data.messege);
+        toast.success(response.data.message);
         fetchUser();
       }
       setLoading(false)
     } catch (error) {
       setLoading(false)
       console.log(error)
-      toast.error(error.response.data.messege);
+      toast.error(error.response.data.message);
     }
   }
 
@@ -251,7 +252,7 @@ const MyAccount = () => {
                   {/* Middle */}
                   <div className="flex gap-4 items-center border-b border-[#E2E8F0] pb-4">
                     <img
-                      src={order.images[0]}
+                      src={parcel_icon}
                       alt="product"
                       className="w-16 h-16 rounded-md object-cover border border-[#E2E8F0] bg-gray-100"
                     />
@@ -398,10 +399,10 @@ const MyAccount = () => {
 
                   </div>
 
-                  <div className="mt-4 text-gray-600">
-                    <p>{name}</p>
-                    <p>{email}</p>
-                    <p>{phone}</p>
+                  <div className="mt-4">
+                    <p>Name: <span className='text-gray-600'>{name}</span></p>
+                    <p>Email: <span className='text-gray-600'>{email}</span></p>
+                    <p>Phone: <span className='text-gray-600'>{phone}</span></p>
                   </div>
 
                 </div>
@@ -517,7 +518,7 @@ const MyAccount = () => {
       </div>
       {/* User Update */}
       <div className={`relative ${model ? 'block' : 'hidden'}`}>
-        <form onSubmit={updateUserHandler} className='bg-whi=te sm:p-10 p-8 z-50 fixed rounded-lg top-[50%] left-[50%] max-w-[500px] w-[93%] mx-auto h-fit shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)]' style={{ transform: 'translate(-50%,-50%)' }}>
+        <form onSubmit={updateUserHandler} className='bg-white sm:p-10 p-8 z-50 fixed rounded-lg top-[50%] left-[50%] max-w-[500px] w-[93%] mx-auto h-fit shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)]' style={{ transform: 'translate(-50%,-50%)' }}>
           <span onClick={() => setModel(false)} className='absolute top-0 right-0 bg-red-500 text-white text-xl cursor-pointer p-1'><IoClose /></span>
           <h3 className='text-xl font-semibold'>Update Profile</h3>
           <div className='text-sm flex flex-col gap-4 mt-5'>
@@ -531,7 +532,7 @@ const MyAccount = () => {
             </div>
             <div className='flex flex-col gap-1 text-gray-800 w-full'>
               <label className='ml-1'>Phone</label>
-              <input required onChange={(e) => setPhone(e.target.value)} name='phone' value={phone} className='border bg-[#f4f7fa] border-gray-300 py-[10px] rounded-[10px] px-3.5 w-full outline-none' type="number" placeholder='Phone' />
+              <input onChange={(e) => setPhone(e.target.value)} name='phone' value={phone} className='border bg-[#f4f7fa] border-gray-300 py-[10px] rounded-[10px] px-3.5 w-full outline-none' type="number" placeholder='Phone' />
             </div>
             <img src={previewImage} onClick={() => file.current.click()} className='w-[70px] h-[70px] rounded-full cursor-pointer mt-1' alt="profile image" />
             <input type="file" ref={file} onChange={imageHandler} hidden />

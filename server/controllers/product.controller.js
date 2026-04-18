@@ -2,93 +2,113 @@ import db from "../config/db.js";
 import { v2 as cloudinary } from 'cloudinary'
 
 export const addProduct = async (req, res) => {
-  const conn = await db.getConnection();
+    try {
+        const {
+            name, category, subCategory, about,
+            description, price, offerPrice,
+            sizes, footwear_sizes, colors,
+            images
+        } = req.body;
 
-  try {
-    const {
-      name, category, subCategory, about,
-      description, price, offerPrice,
-      sizes, footwear_sizes, colors
-    } = req.body;
-
-    if (!name || !category || !about || !description || !price || !offerPrice) {
-      return res.status(400).json({ success: false, messege: "Required fields missing" });
-    }
-
-    if (name.length < 8 || name.length > 120) {
-      return res.status(400).json({ success: false, messege: "Name must be 8–120 chars" });
-    }
-
-    if (Number(offerPrice) > Number(price)) {
-      return res.status(400).json({ success: false, messege: "Offer price invalid" });
-    }
-
-    await conn.beginTransaction();
-
-    // ✅ Insert product
-    const [result] = await conn.query(
-      `INSERT INTO products 
-      (name, category, subCategory, about, description, price, offerPrice, sizes, footwear_sizes, colors)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        name,
-        category,
-        subCategory,
-        about,
-        description,
-        price,
-        offerPrice,
-        JSON.stringify(sizes || []),
-        JSON.stringify(footwear_sizes || []),
-        JSON.stringify(colors || [])
-      ]
-    );
-
-    const productId = result.insertId;
-
-    let imageRows = [];
-
-    // ✅ Handle file uploads
-    if (req.files && req.files.images) {
-      const files = Array.isArray(req.files.images)
-        ? req.files.images
-        : [req.files.images];
-
-      const allowedFormat = ["image/jpg", "image/jpeg", "image/png", "image/webp"];
-
-      for (const file of files) {
-        if (!allowedFormat.includes(file.mimetype)) {
-          await conn.rollback();
-          return res.status(400).json({ success: false, messege: "Invalid image format" });
+        // ✅ Basic validation
+        if (!name || !category || !about || !description || !price || !offerPrice) {
+            return res.status(400).json({
+                success: false,
+                message: "Required fields missing"
+            });
         }
 
-        const upload = await cloudinary.uploader.upload(file.tempFilePath);
+        if (name.length < 8 || name.length > 120) {
+            return res.status(400).json({
+                success: false,
+                message: "Name must be 8–120 characters"
+            });
+        }
 
-        imageRows.push([productId, upload.secure_url]);
-      }
+        if (Number(offerPrice) > Number(price)) {
+            return res.status(400).json({
+                success: false,
+                message: "Offer price must be less than price"
+            });
+        }
+
+        // ✅ Normalize images (handle string or array)
+        let imagesArray = [];
+
+        if (Array.isArray(images)) {
+            imagesArray = images;
+        } else if (typeof images === "string") {
+            imagesArray = [images];
+        }
+
+        if (imagesArray.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Images are required"
+            });
+        }
+
+        // ✅ Filter valid images (base64 or URL)
+        const validImages = imagesArray.filter(img =>
+            typeof img === "string" &&
+            (img.startsWith("data:image") || img.startsWith("http"))
+        );
+
+        if (validImages.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid image format"
+            });
+        }
+
+        // ✅ Insert product
+        const [result] = await db.execute(
+            `INSERT INTO products 
+            (name, category, subCategory, about, description, price, offerPrice, sizes, footwear_sizes, colors)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                name,
+                category,
+                subCategory,
+                about,
+                description,
+                price,
+                offerPrice,
+                JSON.stringify(sizes || []),
+                JSON.stringify(footwear_sizes || []),
+                JSON.stringify(colors || [])
+            ]
+        );
+
+        const productId = result.insertId;
+
+        const uploads = await Promise.all(
+            validImages.map(img =>
+                cloudinary.uploader.upload(img, { folder: "product_images" })
+            )
+        );
+
+        await Promise.all(
+            uploads.map(upload =>
+                db.execute(
+                    'INSERT INTO product_images (product_id, image) VALUES (?, ?)',
+                    [productId, upload.secure_url]
+                )
+            )
+        );
+
+        return res.status(201).json({
+            success: true,
+            message: "Product added successfully"
+        });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: err.message || err
+        });
     }
-
-    // ✅ Insert images
-    if (imageRows.length) {
-      await conn.query(
-        "INSERT INTO product_images (product_id, image) VALUES ?",
-        [imageRows]
-      );
-    }
-
-    await conn.commit();
-
-    return res.status(201).json({
-      success: true,
-      messege: "Product added successfully"
-    });
-
-  } catch (err) {
-    await conn.rollback();
-    return res.status(500).json({ success: false, messege: err.message });
-  } finally {
-    conn.release();
-  }
 };
 
 export const getProducts = async (req, res) => {
@@ -197,12 +217,12 @@ export const deleteProduct = async (req, res) => {
 };
 
 export const getSearchProducts = async (req, res) => {
-  try {
-    const { query } = req.query;
+    try {
+        const { query } = req.query;
 
-    if (!query) return res.json([]);
+        if (!query) return res.json([]);
 
-    const sql = `
+        const sql = `
       SELECT 
         p.*,
         GROUP_CONCAT(pi.image) AS images
@@ -217,22 +237,22 @@ export const getSearchProducts = async (req, res) => {
       GROUP BY p._id
     `;
 
-    const search = `%${query}%`;
+        const search = `%${query}%`;
 
-    const [data] = await db.query(sql, [
-      search, search, search, search, search
-    ]);
+        const [data] = await db.query(sql, [
+            search, search, search, search, search
+        ]);
 
-    const result = data.map(p => ({
-      ...p,
-      images: p.images ? p.images.split(",") : []
-    }));
+        const result = data.map(p => ({
+            ...p,
+            images: p.images ? p.images.split(",") : []
+        }));
 
-    return res.status(200).json(result);
+        return res.status(200).json(result);
 
-  } catch (err) {
-    return res.status(500).json({ success: false, messege: err.message });
-  }
+    } catch (err) {
+        return res.status(500).json({ success: false, messege: err.message });
+    }
 };
 
 export const getSuggestions = async (req, res) => {

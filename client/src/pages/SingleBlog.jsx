@@ -17,7 +17,7 @@ const SingleBlog = () => {
         try {
             let response = await axios.get(`${backendUrl}/api/blog/blog-detail/${blog_id}`, { withCredentials: true });
             if (response.data) {
-                setBlog(response.data[0]);
+                setBlog(response.data);
             }
         } catch (error) {
             console.log(error)

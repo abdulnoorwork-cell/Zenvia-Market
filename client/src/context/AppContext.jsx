@@ -15,7 +15,7 @@ const AppContextProvider = ({ children }) => {
     const initAuthUser = localStorage.getItem('User');
     const [authenticated, setAuthenticated] = useState(initAuthUser ? JSON.parse(initAuthUser) : undefined)
     const token = authenticated?.token;
-    const userId = authenticated?.data?.[0]._id;
+    const userId = authenticated?.user?._id;
     const isAdmin = localStorage.getItem('token');
     const [orders, setOrders] = useState([])
     const [adminOrders, setAdminOrders] = useState([])
@@ -200,7 +200,7 @@ const AppContextProvider = ({ children }) => {
                 if (response.data.success) {
                     setWishlist(prev => prev.filter(item => item._id !== productId));
                     fetchWishlist()
-                    toast.success(response.data.messege)
+                    toast.success(response.data.message)
                 }
             } catch (error) {
                 console.log(error)
@@ -214,7 +214,7 @@ const AppContextProvider = ({ children }) => {
                     withCredentials: true
                 });
                 if (response.data.success) {
-                    toast.success(response.data.messege)
+                    toast.success(response.data.message)
                     const product = products.find(p => p._id === productId);
                     setWishlist(prev => [...prev, product]);
                     fetchWishlist()

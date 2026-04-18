@@ -16,9 +16,6 @@ export const addReview = async (req, res) => {
         const images = Array.isArray(req.body.images) ? req.body.images : [];
 
         const allowedFormat = ["image/jpg", "image/png", "image/jpeg", "image/webp"];
-        if(!allowedFormat){
-            return res.status(400).json({ success: false, messege: "Invalid image format! Only jpg, jpeg, png, webp are allowed" });
-        }
 
         const uploadedUrls = [];
 
@@ -124,30 +121,44 @@ export const productRating = async (req, res) => {
 
 export const getAllReviews = async (req, res) => {
     try {
-        const [data] = await db.execute(`
+        const sql = `
             SELECT 
-                r._id,
-                r.product_id,
-                r.comment,
-                r.rating,
-                r.created_at,
-                u.name,
-                u.email,
-                u.profile_image,
-                p.name AS product_name,
-                p.price,
-                p.offerPrice,
-                pi.image
-            FROM reviews r
-            JOIN users u ON u._id = r.user_id
-            JOIN products p ON p._id = r.product_id
-            LEFT JOIN product_images pi ON pi.product_id = p._id
-        `);
+                reviews._id,
+                reviews.product_id,
+                reviews.user_id,
+                reviews.comment,
+                reviews.rating,
+                reviews.created_at,
+                users.name,
+                users.email,
+                users.profile_image,
+                products.name AS product_name,
+                products.price,
+                products.offerPrice
+            FROM reviews
+            JOIN users ON users._id = reviews.user_id
+            JOIN products ON products._id = reviews.product_id
+        `;
 
-        res.status(200).json(data);
+        const [data] = await db.query(sql);
+
+        for (let product of data) {
+            const [images] = await db.query(
+                "SELECT image FROM product_images WHERE product_id = ?",
+                [product.product_id]
+            );
+
+            product.images = images.map(img => img.image);
+        }
+
+        return res.status(200).json(data);
 
     } catch (err) {
-        res.status(500).json({ message: "Error fetching reviews" });
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: err.message
+        });
     }
 };
 

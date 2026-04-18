@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import upload_area from '../../assets/upload_area.svg'
 import { useContext } from 'react';
 import Quill from 'quill';
-import isAdmin from '../../context/AppContext';
-import { MdCloudUpload } from 'react-icons/md';
 
 const AddBlog = () => {
   const editorRef = useRef(null);
@@ -37,7 +35,7 @@ const AddBlog = () => {
         withCredentials: true
       })
       if (response.data.success) {
-        toast.success(response.data.messege);
+        toast.success(response.data.message);
         setLoading(false);
         setImage(false);
         setTitle('');
@@ -55,7 +53,7 @@ const AddBlog = () => {
         localStorage.removeItem('token');
         window.location.href = "/admin"
       }
-      toast.error(error.response.data.messege)
+      toast.error(error.response.data.message)
     }
   }
 
