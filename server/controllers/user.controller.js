@@ -6,244 +6,259 @@ import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 
 export const signup = async (req, res) => {
-    if (req.body.profile_image !== '') {
-        const { profile_image } = req.files;
-        if (!req.files || Object.keys(req.files).length === 0 || !profile_image) {
-            return res.status(400).json({ success: false, messege: 'No file uploaded' });
-        }
+    try {
         const { name, email, password, phone } = req.body;
-        if (!name) {
-            return res.status(400).json("Please enter the name")
+        const profile_image = req.files?.profile_image;
+
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: "Required fields missing" });
         }
-        if (!email) {
-            return res.status(400).json("Please enter the email")
-        }
-        if (!password) {
-            return res.status(400).json("Please enter the password")
-        }
+
         if (password.length < 8) {
-            return res.status(400).json("Password contains 8 characters long")
+            return res.status(400).json({ message: "Password must be at least 8 characters" });
         }
+
+        const [existing] = await db.execute(
+            "SELECT _id FROM users WHERE email = ?",
+            [email]
+        );
+
+        if (existing.length > 0) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
+
         const hashPassword = await bcrypt.hash(password, 10);
-        const allowedFormat = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
-        if (!allowedFormat.includes(profile_image.mimetype)) {
-            return res.status(400).json({ success: false, messege: "Invalid Format! Only jpg, jpeg, png, webp are allowed" })
+
+        let imgUrl = null;
+
+        if (profile_image) {
+            const allowed = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
+
+            if (!allowed.includes(profile_image.mimetype)) {
+                return res.status(400).json({ message: "Invalid image format" });
+            }
+
+            const upload = await cloudinary.uploader.upload(profile_image.tempFilePath);
+
+            imgUrl = upload.url;
         }
-        const cloudinaryResponse = await cloudinary.uploader.upload(profile_image.tempFilePath);
-        if (!cloudinaryResponse || cloudinaryResponse.error) {
-            console.log(cloudinaryResponse.error)
-        }
-        const imgUrl = cloudinaryResponse.url;
-        const sql = 'INSERT INTO users(`name`,`email`,`password`,`phone`,`profile_image`) VALUES(?)';
-        const values = [
+
+        const sql = `
+            INSERT INTO users (name, email, password, phone, profile_image)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
+        await db.execute(sql, [
             name,
             email,
             hashPassword,
-            phone,
-            JSON.stringify(imgUrl)
-        ]
-        db.query(sql, [values], (err, data) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).json({ success: false, messege: "Email already exist" })
-            } else {
-                return res.status(201).json({ success: true, messege: "Signup Successfully" })
-            }
-        })
-        return
+            phone || "",
+            imgUrl
+        ]);
+
+        res.status(201).json({ success: true, message: "Signup successful" });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Signup error" });
     }
-    const { email, password, name, phone } = req.body;
-    if (!name) {
-        return res.status(400).json("Please enter the name")
-    }
-    if (!email) {
-        return res.status(400).json("Please enter the email")
-    }
-    if (!password) {
-        return res.status(400).json("Please enter the password")
-    }
-    if (password.length < 2) {
-        return res.status(400).json("Password contains 2 characters long")
-    }
-    const hashPassword = await bcrypt.hash(password, 10);
-    const sql = 'INSERT INTO users(`name`,`email`,`password`,`phone`) VALUES(?)';
-    const values = [
-        name,
-        email,
-        hashPassword,
-        phone
-    ]
-    db.query(sql, [values], (err, data) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).json({ success: false, messege: "Email already exist" })
-        } else {
-            res.status(201).json({ success: true, messege: "Signup Successfully" })
-        }
-    })
-}
+};
 
 export const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email) {
-        return res.status(400).json("Please enter your email")
-    }
-    if (!password) {
-        return res.status(400).json("Please enter your password")
-    }
+    try {
+        const { email, password } = req.body;
 
-    const sql = 'SELECT * FROM users WHERE email = ?';
-    db.query(sql, email, async (err, data) => {
-        if (err) {
-            return res.status(500).json({ success: false, messege: "Error in login: " + err })
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email & password required" });
         }
-        if (data.length > 0) {
-            let isMatch = await bcrypt.compare(password, data[0].password);
-            if (!isMatch) {
-                return res.status(400).json("Incorrect Password")
-            }
-            let token = generateToken(data[0]._id);
-            res.cookie("token", token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-                maxAge: 60 * 60 * 1000
-            })
-            res.status(200).json({ success: true, messege: `Welcome back ${data[0].name}`, data, token, expiresIn: 86400 })
-        } else {
-            return res.status(400).json("No email exist")
-        }
-    })
-}
 
-export const getUser = (req, res) => {
-    const { user_id } = req.params;
-    const sql = 'SELECT * FROM users WHERE _id = ?';
-    db.query(sql, [user_id], (err, data) => {
-        if (err) {
-            return res.status(500).json({ success: false, messege: "Error in getting user: " + err })
-        } else {
-            res.status(200).json(data)
+        const [users] = await db.execute(
+            "SELECT * FROM users WHERE email = ?",
+            [email]
+        );
+
+        if (users.length === 0) {
+            return res.status(400).json({ message: "User not found" });
         }
-    })
-}
+
+        const user = users[0];
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: "Incorrect password" });
+        }
+
+        const token = generateToken(user._id);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 60 * 60 * 1000
+        });
+
+        res.status(200).json({
+            success: true,
+            message: `Welcome ${user.name}`,
+            token
+        });
+
+    } catch (err) {
+        res.status(500).json({ message: "Login error" });
+    }
+};
+
+export const getUser = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+
+        const [data] = await db.execute(
+            "SELECT * FROM users WHERE _id = ?",
+            [user_id]
+        );
+
+        res.status(200).json(data[0] || null);
+
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching user" });
+    }
+};
 
 export const updateUser = async (req, res) => {
-    if (req.body.profile_image !== '') {
-        const { name, email, phone } = req.body;
-        if (!name || !email) {
-            return res.status(400).json({ success: false, messege: "Please fill required fields" })
-        }
+    try {
         const { user_id } = req.params;
-        const { profile_image } = req.files;
-        const allowedFormat = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
-        if (!allowedFormat.includes(profile_image.mimetype)) {
-            return res.status(400).json({ success: false, messege: "Invalid Format! Only jpg, jpeg, png, webp are allowed" });
+        const { name, email, phone } = req.body;
+        const profile_image = req.files?.profile_image;
+
+        if (!name || !email) {
+            return res.status(400).json({ message: "Required fields missing" });
         }
-        const cloudinaryResponse = await cloudinary.uploader.upload(profile_image.tempFilePath, {
-            overwrite: true
-        })
-        if (!cloudinaryResponse || cloudinaryResponse.error) {
-            return console.log(cloudinaryResponse.error)
+
+        let imgUrl;
+
+        if (profile_image) {
+            const upload = await cloudinary.uploader.upload(profile_image.tempFilePath);
+            imgUrl = upload.url;
         }
-        const imgUrl = cloudinaryResponse.url;
-        const sql = 'UPDATE users SET name = ?, email = ?, phone = ?, profile_image = ? WHERE _id = ?';
-        const values = [name, email, phone, JSON.stringify(imgUrl)];
-        db.query(sql, [...values, user_id], (err, data) => {
-            if (err) {
-                return res.status(500).json({ success: false, messege: "Error in updating user: " + err })
-            } else {
-                res.status(200).json({ success: true, messege: "Profile updated" })
-            }
-        })
-        return
+
+        const sql = imgUrl
+            ? "UPDATE users SET name=?, email=?, phone=?, profile_image=? WHERE _id=?"
+            : "UPDATE users SET name=?, email=?, phone=? WHERE _id=?";
+
+        const values = imgUrl
+            ? [name, email, phone, imgUrl, user_id]
+            : [name, email, phone, user_id];
+
+        await db.execute(sql, values);
+
+        res.status(200).json({ success: true, message: "Profile updated" });
+
+    } catch (err) {
+        res.status(500).json({ message: "Update error" });
     }
-    const { name, email, phone } = req.body;
-    if (!name || !email) {
-        return res.status(400).json({ success: false, messege: "Please fill required fields" })
-    }
-    const { user_id } = req.params;
-    const sql = 'UPDATE users SET name = ?, email = ?, phone = ? WHERE _id = ?';
-    const values = [name, email, phone];
-    db.query(sql, [...values, user_id], (err, data) => {
-        if (err) {
-            return res.status(500).json({ success: false, messege: "Error in updating user: " + err })
-        } else {
-            res.status(200).json({ success: true, messege: "Profile updated" })
-        }
-    })
-}
+};
 
 export const adminLogin = (req, res) => {
     try {
         const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(401).json({ success: false, messege: "Can,t be empty" })
-        }
-        if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
-            return res.status(401).json({ success: false, messege: "Invalid Credientials" })
-        }
-        const token = jwt.sign(email + password, process.env.ADMIN_JWT_SECRET);
-        res.status(200).json({ success: true, messege: "admin loggedin successfull", token })
-    } catch (error) {
-        return res.status(500).json({ success: false, messege: "Error in Login: " + error })
-    }
-}
 
-export const forgotPassword = (req, res) => {
-    const { email } = req.body;
-    if (!email) {
-        return res.status(400).json({ success: false, messege: "Email is required" })
-    }
-    const sql = 'SELECT * FROM users WHERE email = ?';
-    db.query(sql, [email], async (err, data) => {
-        if (err) {
-            console.log({ success: false, messege: err })
-            return res.status(500).json({ success: false, messege: "Error: " + err })
-        } else {
-            const resetToken = jwt.sign({ id: data[0]?._id, email: data[0]?.email }, process.env.RESET_TOKEN, { expiresIn: '10m' });
-            const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: process.env.ADMIN_EMAIL,
-                    pass: process.env.ADMIN_PASSWORD
-                }
-            })
-            const mailOptions = {
-                from: process.env.ADMIN_EMAIL,
-                to: data[0]?.email,
-                subject: 'Reset Password',
-                text: `Click the link to reset your password ${resetLink}`
-            }
-            await transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error)
-                    return res.status(500).json({ success: false, messege: error.message })
-                } else {
-                    return res.status(200).json({ success: true, messege: "Reset Password link sent successfully", resetLink })
-                }
-            });
+        if (!email || !password) {
+            return res.status(400).json({ message: "Required fields missing" });
         }
-    })
-}
+
+        if (
+            email !== process.env.ADMIN_EMAIL ||
+            password !== process.env.ADMIN_PASSWORD
+        ) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        const token = jwt.sign(
+            { email },
+            process.env.ADMIN_JWT_SECRET,
+            { expiresIn: "1d" }
+        );
+
+        res.status(200).json({ success: true, token });
+
+    } catch (err) {
+        res.status(500).json({ message: "Admin login error" });
+    }
+};
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: "Email required" });
+        }
+
+        const [users] = await db.execute(
+            "SELECT _id, email FROM users WHERE email = ?",
+            [email]
+        );
+
+        if (users.length === 0) {
+            return res.status(400).json({ message: "User not found" });
+        }
+
+        const user = users[0];
+
+        const resetToken = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.RESET_TOKEN,
+            { expiresIn: "10m" }
+        );
+
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.ADMIN_EMAIL,
+                pass: process.env.ADMIN_PASSWORD
+            }
+        });
+
+        await transporter.sendMail({
+            from: process.env.ADMIN_EMAIL,
+            to: user.email,
+            subject: "Reset Password",
+            text: resetLink
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Reset link sent"
+        });
+
+    } catch (err) {
+        res.status(500).json({ message: "Forgot password error" });
+    }
+};
 
 export const resetPassword = async (req, res) => {
-    const { token, password } = req.body;
-    if (!token || !password) {
-        return res.status(400).json({ success: false, messege: "Password is required" })
-    }
-    const decoded = jwt.verify(token, process.env.RESET_TOKEN);
-    const hashPassword = await bcrypt.hash(password, 10)
-    const sql = 'Update users SET password=? WHERE _id = ?';
-    const values = [hashPassword, decoded.id]
-    db.query(sql, [...values], (err, data) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).json({ success: false, messege: "Error in reset password: " + err })
-        } else {
-            console.log({ success: true, messege: "Password Reset Successfully" })
-            return res.status(200).json({ success: true, messege: "Password Reset Successfully" })
+    try {
+        const { token, password } = req.body;
+
+        if (!token || !password) {
+            return res.status(400).json({ message: "Missing fields" });
         }
-    })
-}
+
+        const decoded = jwt.verify(token, process.env.RESET_TOKEN);
+
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        await db.execute(
+            "UPDATE users SET password = ? WHERE _id = ?",
+            [hashPassword, decoded.id]
+        );
+
+        res.status(200).json({ success: true, message: "Password reset successful" });
+
+    } catch (err) {
+        res.status(500).json({ message: "Reset password error" });
+    }
+};

@@ -1,91 +1,129 @@
 import db from '../config/db.js'
-export const addToWishlist = (req, res) => {
-    const { user_id, product_id } = req.body;
-    const sql = "INSERT INTO wishlist (user_id, product_id) VALUES(?,?)";
-    db.query(sql, [user_id, product_id], (err, result) => {
-        if (err) {
-            console.log(err)
-            if (err.code === "ER_DUP_ENTRY") {
-                console.log(err)
-                return res.json({ message: "Already in wishlist" });
-            }
-            return res.status(500).json(err);
+
+export const addToWishlist = async (req, res) => {
+    try {
+        const { user_id, product_id } = req.body;
+
+        const sql = "INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)";
+        await db.execute(sql, [user_id, product_id]);
+
+        res.status(201).json({ success: true, message: "Added to wishlist" });
+
+    } catch (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+            return res.json({ message: "Already in wishlist" });
         }
-        res.status(201).json({ success: true, messege: "Added to wishlist" });
-    })
-}
 
-export const removeFromWishlist = (req, res) => {
-    const { user_id, product_id } = req.body;
-    const sql = "DELETE FROM wishlist WHERE user_id = ? AND product_id = ?";
-    db.query(sql, [user_id, product_id], (err, result) => {
-        if (err) return res.status(500).json(err);
-        res.json({ success: true, messege: "Removed from wishlist" });
-    })
-}
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
 
-export const getWishlist = (req, res) => {
-    const { user_id } = req.params;
-    const sql = "SELECT products.* FROM wishlist JOIN products ON products._id = wishlist.product_id WHERE wishlist.user_id = ?";
-    db.query(sql, [user_id], async (err, data) => {
-        if (err) return res.status(500).json(err);
-        for (let product of data) {
-            const images = await new Promise((resolve, reject) => {
-                const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
-                db.query(imgSql, [product._id], (err, data) => {
-                    if (err) reject(err)
-                    resolve(data)
-                })
+export const removeFromWishlist = async (req, res) => {
+    try {
+        const { user_id, product_id } = req.body;
+
+        await db.execute(
+            "DELETE FROM wishlist WHERE user_id = ? AND product_id = ?",
+            [user_id, product_id]
+        );
+
+        res.json({ success: true, message: "Removed from wishlist" });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+export const getWishlist = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+
+        const [products] = await db.execute(
+            `SELECT p.* 
+             FROM wishlist w 
+             JOIN products p ON p._id = w.product_id 
+             WHERE w.user_id = ?`,
+            [user_id]
+        );
+
+        const updatedProducts = await Promise.all(
+            products.map(async (product) => {
+                const [images] = await db.execute(
+                    "SELECT image FROM product_images WHERE product_id = ?",
+                    [product._id]
+                );
+
+                return {
+                    ...product,
+                    images: images.map(img => img.image)
+                };
             })
-            product.images = images.map(img => img.image)
-        }
-        res.status(200).json(data);
-    })
-}
+        );
 
-export const getWishlistProducts = (req, res) => {
-    const sql = `SELECT 
-  p._id,
-  p.name,
-  p.category,
-  p.offerPrice,
-  COUNT(w.product_id) AS total_wishes
-FROM wishlist w
-JOIN products p ON p._id = w.product_id
-GROUP BY p._id
-ORDER BY total_wishes DESC`;
-    db.query(sql, async (err, data) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ message: "Server error" });
-        } else {
-            for (let product of data) {
-                const images = await new Promise((resolve, reject) => {
-                    const imgSql = "SELECT image FROM product_images WHERE product_id = ?";
-                    db.query(imgSql, [product._id], (err, data) => {
-                        if (err) reject(err)
-                        resolve(data)
-                    })
-                })
-                product.images = images.map(img => img.image)
-            }
-            res.status(200).json(data)
-        }
-    })
-}
+        res.status(200).json(updatedProducts);
 
-export const removeWishlistProduct = (req, res) => {
-    const { product_id } = req.params;
-    const sql = 'DELETE FROM wishlist WHERE product_id = ?'
-    db.query(sql, [product_id], (err, result) => {
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+export const getWishlistProducts = async (req, res) => {
+    try {
+        const [products] = await db.execute(`
+            SELECT 
+                p._id,
+                p.name,
+                p.category,
+                p.offerPrice,
+                COUNT(w.product_id) AS total_wishes
+            FROM wishlist w
+            JOIN products p ON p._id = w.product_id
+            GROUP BY p._id
+            ORDER BY total_wishes DESC
+        `);
+
+        const updatedProducts = await Promise.all(
+            products.map(async (product) => {
+                const [images] = await db.execute(
+                    "SELECT image FROM product_images WHERE product_id = ?",
+                    [product._id]
+                );
+
+                return {
+                    ...product,
+                    images: images.map(img => img.image)
+                };
+            })
+        );
+
+        res.status(200).json(updatedProducts);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+export const removeWishlistProduct = async (req, res) => {
+    try {
+        const { product_id } = req.params;
+
+        const [result] = await db.execute(
+            "DELETE FROM wishlist WHERE product_id = ?",
+            [product_id]
+        );
+
         if (result.affectedRows === 0) {
             return res.json({ success: false, message: "No product found with this ID" });
         }
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ message: "Server error" });
-        } else {
-            res.json({ success: true, messege: "Product removed from wishlist" })
-        }
-    })
-}
+
+        res.json({ success: true, message: "Product removed from wishlist" });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
