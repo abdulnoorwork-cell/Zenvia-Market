@@ -79,7 +79,7 @@ const Reviews = () => {
                                     {allReviews?.reverse().map((review, index) => (
                                         <div key={index} className='border-b border-[#E5E7EB] sm:p-3 p-5 sm:grid flex flex-col text-center sm:text-start xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 items-center'>
                                             <div className='flex flex-col 2xl:flex-row max-sm:items-center 2xl:items-center 2xl:gap-3 gap-2'>
-                                                <img className='h-12 w-12 object-contain rounded-full' src={review.profile_image ? review?.profile_image : profile_image} alt="profile_image" />
+                                                <img className='h-12 w-12 object-cover rounded-full' src={review.profile_image ? review?.profile_image : profile_image} alt="profile_image" />
                                                 <div className='flex flex-col'>
                                                     <h6 className='leading-[1.3em] font-medium text-base tracking-tight'>{review?.name}</h6>
                                                     <h6 className='text-gray-500 text-[13.4px]'>{review?.email}</h6>
