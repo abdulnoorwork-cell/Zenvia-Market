@@ -15,7 +15,7 @@ import parcel_icon from '../../assets/parcel_icon.svg'
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
-  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, fetchLatestProducts,fetchUserOrders, latestProducts, allReviews, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
+  const { backendUrl, navigate, isAdmin, currency, products, fetchProducts, fetchLatestProducts, fetchUserOrders, latestProducts, allReviews, blogs, fetchBlogs, fetchLatestBlogs, latestBlogs, loading, blogLoading, orderLoading, setOrderLoading, fetchAdminOrders } = useContext(AppContext);
 
   const deleteBlog = async (blogId) => {
     try {
@@ -98,6 +98,7 @@ const Dashboard = () => {
         toast.success(response.data.message);
         await fetchAdminOrders()
         await fetchUserOrders()
+        await fetchLatestOrders()
       } else {
         toast.error(response.data.message)
       }
