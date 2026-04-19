@@ -8,6 +8,7 @@ import { Autoplay } from "swiper/modules";
 
 const ReviewsSection = () => {
     const { allReviews, navigate } = useContext(AppContext)
+    console.log(allReviews)
     return (
         <section className="pt-14 pb-2">
             <div className="container mx-auto px-4">
