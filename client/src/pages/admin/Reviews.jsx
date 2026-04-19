@@ -57,8 +57,6 @@ const Reviews = () => {
         }
     }
 
-    console.log(allReviews)
-
     return (
         <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
             <div className='flex flex-col w-full'>

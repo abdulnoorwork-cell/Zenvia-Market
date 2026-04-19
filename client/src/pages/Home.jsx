@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
 import Hero from '../components/Hero'
+import ReviewsSection from '../components/ReviewsSection.jsx'
 const LatestProducts = React.lazy(() => import('../components/LatestProducts'))
 const Categories = React.lazy(() => import('../components/Categories'))
 const BeautyProducts = React.lazy(() => import('../components/BeautyProducts'))
@@ -34,6 +35,9 @@ const Home = () => {
       </Suspense>
       <Suspense fallback={<p>Loading...</p>}>
         <LatestBlog />
+      </Suspense>
+      <Suspense fallback={<p>Loading...</p>}>
+        <ReviewsSection />
       </Suspense>
     </div>
   )
