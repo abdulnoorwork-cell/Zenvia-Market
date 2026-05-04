@@ -63,7 +63,7 @@ const Reviews = () => {
                 <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><TfiCommentAlt /></span>Reviews List</h1>
                 <div className='w-full shadow bg-white'>
                     <div className='w-full sm:text-sm text-xs'>
-                        <div className='sm:grid hidden xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+                        <div className='sm:grid hidden xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
                             <label style={{ fontFamily: "Montserrat" }}>Customer</label>
                             <label style={{ fontFamily: "Montserrat" }}>Review</label>
                             <label style={{ fontFamily: "Montserrat" }}>Product</label>

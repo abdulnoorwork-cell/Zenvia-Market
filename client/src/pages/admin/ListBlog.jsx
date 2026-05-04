@@ -42,7 +42,7 @@ const ListBlog = () => {
         <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}>Blog List</h1>
         <div className='relative max-h-[75vh] overflow-x-auto shadow scrollbar-hide bg-white'>
           <div className='w-full sm:text-sm text-xs'>
-            <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 border-b border-[#E5E7EB] font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white'>
+            <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
               <label className=' l:px-6' style={{fontFamily:"Montserrat"}}>Blog</label>
               <label className=' l:px-6 hidden sm:block' style={{fontFamily:"Montserrat"}}>Description</label>
               <label className=' max-lg:hidden mx-auto' style={{fontFamily:"Montserrat"}}>Date</label>

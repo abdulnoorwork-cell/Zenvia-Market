@@ -42,7 +42,7 @@ const Orders = () => {
         <div className="flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]">
             <div className='flex flex-col w-full'>
                 <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><RiBox3Line /></span>Orders List</h1>
-                <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+                <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
                     <label style={{fontFamily:"Montserrat"}}>Order</label>
                     <label className='max-sm:hidden' style={{fontFamily:"Montserrat"}}>Delivery</label>
                     <label className='' style={{fontFamily:"Montserrat"}}>Amount</label>

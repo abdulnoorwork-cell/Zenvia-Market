@@ -118,28 +118,28 @@ const Dashboard = () => {
   return (
     <div className='flex-1 px-4 py-8 lg:px-10'>
       <div className='flex flex-wrap gap-4'>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
           <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><BsCartPlus /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{products.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Products</h6>
           </div>
         </div>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
           <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><TfiWrite /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{blogs.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Blogs</h6>
           </div>
         </div>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
           <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><RiBox3Line /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{orders?.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Orders</h6>
           </div>
         </div>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded shadow cursor-pointer hover:scale-105 transition-all'>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
           <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><MdOutlineReviews /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{allReviews?.length}</p>
@@ -151,9 +151,9 @@ const Dashboard = () => {
       <div>
         <div className='flex items-center gap-3 mb-4 mt-6'>
           <img src={dashboard_icon_4} alt="" />
-          <h6 className='font-semibold text-gray-700'>Latest Products</h6>
+          <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Products</h6>
         </div>
-        <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+        <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-[rgb(70,95,255)] text-white rounded-tr-lg rounded-tl-lg'>
           <label style={{ fontFamily: "Montserrat" }}>Product</label>
           <label className='mx-auto max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Category</label>
           <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Price</label>
@@ -162,11 +162,11 @@ const Dashboard = () => {
         </div>
         {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
           {latestProducts.length > 0 ?
-            <div className='relative w-fulloverflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
+            <div className='relative w-fulloverflow-x-auto scrollbar-hide bg-white'>
               <div className='w-full sm:text-[13px] text-xs'>
                 <div>
                   {latestProducts?.slice(length - 3).reverse().map((product, index) => (
-                    <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-800 sm:text-sm text-[13px]'>
+                    <div key={index} className='product_list border border-t-0 border-gray-200 px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-800 sm:text-sm text-[13px]'>
                       <div className='main_img flex items-center sm:gap-4 gap-3'>
                         <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                         <div className='flex flex-col'>
@@ -189,9 +189,9 @@ const Dashboard = () => {
       {/* blogs */}
       <div className='flex items-center gap-3 mb-4 mt-6'>
         <img src={dashboard_icon_4} alt="" />
-        <h6 className='font-semibold text-gray-700'>Latest Blogs</h6>
+        <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Blogs</h6>
       </div>
-      <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 border-b border-[#E5E7EB] font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white'>
+      <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
         <label className=' l:px-6' style={{ fontFamily: "Montserrat" }}>Blog</label>
         <label className=' l:px-6 hidden sm:block' style={{ fontFamily: "Montserrat" }}>Description</label>
         <label className=' max-lg:hidden mx-auto' style={{ fontFamily: "Montserrat" }}>Date</label>
@@ -234,9 +234,9 @@ const Dashboard = () => {
       {/* Orders */}
       <div className='flex items-center gap-3 mb-4 mt-6'>
         <img src={dashboard_icon_4} alt="" />
-        <h6 className='font-semibold text-gray-700'>Latest Orders</h6>
+        <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Orders</h6>
       </div>
-      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 border-b border-[#E5E7EB] text-xs uppercase font-semibold bg-[#2563EB] text-white'>
+      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
         <label style={{ fontFamily: "Montserrat" }}>Order</label>
         <label className='max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Delivery</label>
         <label className='' style={{ fontFamily: "Montserrat" }}>Amount</label>
