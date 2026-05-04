@@ -29,7 +29,7 @@ const AllProducts = () => {
         const priceMatch = product.offerPrice <= price;
         return categoryMatch && priceMatch;
     })
-    const [itemsPerPage, setItemsPerPage] = useState(15)
+    const [itemsPerPage, setItemsPerPage] = useState(8)
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         const updateItems = () => {
@@ -39,7 +39,7 @@ const AllProducts = () => {
                 setItemsPerPage(8)
             }
             else {
-                setItemsPerPage(15)
+                setItemsPerPage(8)
             }
         }
         updateItems()
@@ -75,7 +75,7 @@ const AllProducts = () => {
         }
     }
     return (
-        <div className="filter_main_parent min-h-screen 2xl:mt-14 sm:mt-12 mt-8">
+        <div className="filter_main_parent 2xl:mt-14 sm:mt-12 mt-8">
 
             <div className="container mx-auto px-4 flex lg:flex-row flex-col xl:gap-8 gap-6">
 
@@ -159,6 +159,7 @@ const AllProducts = () => {
                     </div>
 
                     <div className="mb-6">
+                        sdsds
                         <PriceFilter price={price} setPrice={setPrice} />
                     </div>
 
@@ -197,7 +198,7 @@ const AllProducts = () => {
                     </div>
 
                     {/* Product Grid */}
-                    <div className={`products w-full h-full grid 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-[18px]`}>
+                    <div className={`products w-full grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-[18px]`}>
 
                         {loading ? <img src={loading_animation} alt='loader' className='mx-auto' /> :
                             currentProducts.length > 0 ? currentProducts.map((product, index) => (

@@ -21,7 +21,7 @@ const ProductType = ({ type }) => {
       }
     }
     fetchSubCategoryProducts()
-  }, [])
+  }, [type])
   const [itemsPerPage, setItemsPerPage] = useState(12)
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
@@ -53,9 +53,9 @@ const ProductType = ({ type }) => {
 
   return (
     <div>
-      <div className="container mx-auto px-4 mt-10 min-h-screen">
+      <div className="container mx-auto px-4 mt-10 min-h-[80vh]">
         <h6 className='mb-3'>Showing {itemsPerPage} of {products.length} from {type}</h6>
-        <div className='products grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-[18px]'>
+        <div className='products grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[18px]'>
           {currentProducts.length > 0 ? currentProducts.map((product, index) => (
             <Suspense key={index}>
               <ProductCard product={product} />

@@ -44,7 +44,7 @@ const CategoryProducts = ({ category }) => {
   }, [products]);
 
   const filteredProducts = subCategory.length === 0 ? products.filter(prod => prod.category === category) : products.filter((product) => subCategory.includes(product.subCategory))
-  const [itemsPerPage, setItemsPerPage] = useState(15)
+  const [itemsPerPage, setItemsPerPage] = useState(8)
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     const updateItems = () => {
@@ -54,7 +54,7 @@ const CategoryProducts = ({ category }) => {
         setItemsPerPage(8)
       }
       else {
-        setItemsPerPage(15)
+        setItemsPerPage(8)
       }
     }
     updateItems()
@@ -90,7 +90,7 @@ const CategoryProducts = ({ category }) => {
     }
   }
   return (
-    <div className="filter_main_parent min-h-screen 2xl:mt-14 sm:mt-12 mt-8">
+    <div className="filter_main_parent 2xl:mt-14 sm:mt-12 mt-8">
 
       <div className="container mx-auto px-4 flex lg:flex-row flex-col xl:gap-8 gap-6">
 
@@ -259,7 +259,7 @@ const CategoryProducts = ({ category }) => {
           </div>
 
           {/* Product Grid */}
-          <div className={`products grid 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-[18px]`}>
+          <div className={`products grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-[18px]`}>
 
             {currentProducts.length > 0 ? currentProducts.map((product, index) => (
               <Suspense key={index}>
