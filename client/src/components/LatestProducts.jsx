@@ -30,7 +30,6 @@ const LatestProducts = () => {
                             768: { slidesPerView: 3 },
                             1024: { slidesPerView: 4 },
                             1280: { slidesPerView: 5 },
-                            1536: { slidesPerView: 6 },
                         }}
                     >
                         {latestProducts.reverse().map((product, index) => (

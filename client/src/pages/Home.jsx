@@ -34,10 +34,10 @@ const Home = () => {
         <Clothing />
       </Suspense>
       <Suspense fallback={<p>Loading...</p>}>
-        <LatestBlog />
+        <ReviewsSection />
       </Suspense>
       <Suspense fallback={<p>Loading...</p>}>
-        <ReviewsSection />
+        <LatestBlog />
       </Suspense>
     </div>
   )

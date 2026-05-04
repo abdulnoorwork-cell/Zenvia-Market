@@ -44,7 +44,6 @@ const ElectronicsAndGadgets = () => {
                             768: { slidesPerView: 3 },
                             1024: { slidesPerView: 4 },
                             1280: { slidesPerView: 5 },
-                            1536: { slidesPerView: 6 },
                         }}
                     >
                         {products.reverse().map((product, index) => (

@@ -199,8 +199,8 @@ const SingleProduct = () => {
         ?.replace(/color:[^;"]+;?/gi, "");
 
     return product && (
-        <div className='container mx-auto'>
-            <div className="max-w-7xl mx-auto px-4 pt-12">
+        <div className='container mx-auto px-4'>
+            <div className="pt-12">
                 {product ?
                     <div>
                         <div className="w-full mx-auto">
