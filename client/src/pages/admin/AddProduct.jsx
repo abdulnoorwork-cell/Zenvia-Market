@@ -140,7 +140,7 @@ const AddProduct = () => {
         <div className="flex flex-col sm:gap-5 gap-4">
           <div className='grid sm:grid-cols-2 sm:gap-5 gap-4 h-full'>
             {/* Upload */}
-            <div className='h-full w-full'>
+            <div className='h-full w-full bg-gray-50'>
               {previewImage.length < 1 ? <div onClick={() => file.current.click()} className="flex flex-col items-center justify-center h-full border-2 border-dashed border-[#E2E8F0] bg-gray-50 rounded-xl p-6 text-center hover:border-blue-500 transition cursor-pointer">
                 <span className='text-3xl text-gray-400/70'><MdCloudUpload /></span>
                 <h6 style={{ fontFamily: "Outfit" }} className="text-gray-500/90 leading-none sm:text-sm text-xs mb-1">Drag & drop images here</h6>
