@@ -85,7 +85,7 @@ const UpdateBlog = () => {
   console.log(blog)
 
   return (
-    <form onSubmit={onSubmitHandler} className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 text-gray-600 h-full sm:text-sm text-xs min-h-[95vh]'>
+    <form onSubmit={onSubmitHandler} className='flex items-center w-full justify-center px-4 py-8 md:px-8 lg:py-10 text-gray-600 h-full sm:text-sm text-xs min-h-[95vh]'>
       <div className='bg-white flex flex-col w-full h-fit max-w-3xl p-6 md:p-10 shadow rounded'>
         <label htmlFor="image">
           <img src={!image ? blog.image : URL.createObjectURL(image)} className='rounded cursor-pointer max-h-24 max-w-24' alt="" />
