@@ -398,7 +398,7 @@ const AddProduct = () => {
             </div>
           </div>
         </div>
-        <button style={{ fontFamily: 'Outfit' }} type='submit' className='mt-7 flex items-center gap-1 sm:text-sm text-xs px-8 w-fit py-[10px] bg-[#2563EB] text-white rounded cursor-pointer'><span className='text-white text-base'><LuPlus /></span>{loading ? 'Ading...' : 'Add Product'}</button>
+        <button style={{ fontFamily: 'Outfit' }} type='submit' className='mt-7 flex items-center gap-1 sm:text-sm text-xs px-6 w-fit py-[10px] bg-[#2563EB] text-white rounded cursor-pointer'><span className='text-white text-base'><LuPlus /></span>{loading ? 'Ading...' : 'Add Product'}</button>
       </div>
     </form>
   )
