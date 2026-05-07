@@ -127,7 +127,7 @@ const AddProduct = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 text-gray-600 h-full min-h-[85vh]'>
-      <div className='w-full h-fit max-w-5xl bg-white rounded-2xl shadow-lg sm:p-8 p-6'>
+      <div className='w-full h-fit max-w-5xl bg-white rounded-2xl border border-gray-200 sm:p-8 p-6'>
         {/* Header */}
         <div className="mb-6 lg:block hidden">
           <div>
