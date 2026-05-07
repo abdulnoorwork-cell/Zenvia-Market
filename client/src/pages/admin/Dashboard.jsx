@@ -236,7 +236,7 @@ const Dashboard = () => {
         <img src={dashboard_icon_4} alt="" />
         <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Orders</h6>
       </div>
-      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 hidden gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
+      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
         <label style={{ fontFamily: "Montserrat" }}>Order</label>
         <label className='max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Delivery</label>
         <label className='' style={{ fontFamily: "Montserrat" }}>Amount</label>
