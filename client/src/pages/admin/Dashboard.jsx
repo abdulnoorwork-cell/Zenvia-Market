@@ -12,6 +12,7 @@ import { BsCartPlus } from "react-icons/bs";
 import { TfiWrite } from 'react-icons/tfi'
 import { RiBox3Line } from 'react-icons/ri'
 import parcel_icon from '../../assets/parcel_icon.svg'
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -116,31 +117,31 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <div className='flex-1 px-4 py-8 lg:px-10'>
+    <div className='w-full sm:p-5 sm:pl-6 p-4'>
       <div className='flex flex-wrap gap-4'>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
-          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><BsCartPlus /></span>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded-md border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
+          <span className='sm:text-2xl text-xl text-[#3858e9] bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><BsCartPlus /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{products.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Products</h6>
           </div>
         </div>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
-          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><TfiWrite /></span>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded-md border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
+          <span className='sm:text-2xl text-xl text-[#3858e9] bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><TfiWrite /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{blogs.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Blogs</h6>
           </div>
         </div>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
-          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><RiBox3Line /></span>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded-md border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
+          <span className='sm:text-2xl text-xl text-[#3858e9] bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><RiBox3Line /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{orders?.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Orders</h6>
           </div>
         </div>
-        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
-          <span className='sm:text-2xl text-xl text-blue-500 bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><MdOutlineReviews /></span>
+        <div className='flex items-center gap-3 bg-white p-4 min-w-54 rounded-md border border-gray-200 cursor-pointer hover:scale-105 transition-all'>
+          <span className='sm:text-2xl text-xl text-[#3858e9] bg-indigo-50 sm:w-14 sm:h-14 w-12 h-12 flex items-center justify-center rounded-md'><MdOutlineReviews /></span>
           <div>
             <p className='sm:text-xl text-lg font-semibold'>{allReviews?.length}</p>
             <h6 style={{ fontFamily: 'Montserrat' }} className='text-gray-500 text-sm'>Reviews</h6>
@@ -151,9 +152,9 @@ const Dashboard = () => {
       <div>
         <div className='flex items-center gap-3 mb-4 mt-6'>
           <img src={dashboard_icon_4} alt="" />
-          <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Products</h6>
+          <h6 className='font-medium tracking-tight text-base'>Latest Products</h6>
         </div>
-        <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-[rgb(70,95,255)] text-white rounded-tr-lg rounded-tl-lg'>
+        <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-[#fff] text-[#2c3338] rounded-tr-lg rounded-tl-lg border border-gray-300'>
           <label style={{ fontFamily: "Montserrat" }}>Product</label>
           <label className='mx-auto max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Category</label>
           <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Price</label>
@@ -162,11 +163,11 @@ const Dashboard = () => {
         </div>
         {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
           {latestProducts.length > 0 ?
-            <div className='relative w-fulloverflow-x-auto scrollbar-hide bg-white'>
+            <div className='relative w-fulloverflow-x-auto scrollbar-hide bg-[#f6f7f7]'>
               <div className='w-full sm:text-[13px] text-xs'>
                 <div>
                   {latestProducts?.slice(length - 3).reverse().map((product, index) => (
-                    <div key={index} className='product_list border border-t-0 border-gray-200 px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-gray-800 sm:text-sm text-[13px]'>
+                    <div key={index} className='product_list border border-t-0 border-gray-300 px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-[#50575e] sm:text-sm text-[13px]'>
                       <div className='main_img flex items-center sm:gap-4 gap-3'>
                         <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                         <div className='flex flex-col'>
@@ -183,15 +184,15 @@ const Dashboard = () => {
                   ))}
                 </div>
               </div>
-            </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-white rounded-md w-full'>You don,t have any products</div>}
+            </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-[#f6f7f7] border border-gray-300 border-t-0 rounded-md w-full'>You don,t have any products</div>}
         </div>}
       </div>
       {/* blogs */}
       <div className='flex items-center gap-3 mb-4 mt-6'>
         <img src={dashboard_icon_4} alt="" />
-        <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Blogs</h6>
+        <h6 className='font-medium tracking-tight text-base'>Latest Blogs</h6>
       </div>
-      <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
+      <div className='blog_list_title text-xs uppercase sm:py-3 py-2 px-3 font-semibold grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 bg-[#fff] text-[#2c3338] border border-gray-300 rounded-tr-lg rounded-tl-lg'>
         <label className=' l:px-6' style={{ fontFamily: "Montserrat" }}>Blog</label>
         <label className=' l:px-6 hidden sm:block' style={{ fontFamily: "Montserrat" }}>Description</label>
         <label className=' max-lg:hidden mx-auto' style={{ fontFamily: "Montserrat" }}>Date</label>
@@ -200,11 +201,11 @@ const Dashboard = () => {
       {blogLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
         {latestBlogs.length > 0 ?
           <div className='w-full'>
-            <div className='relative w-full text-sm overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
+            <div className='relative w-full text-sm overflow-x-auto scrollbar-hide bg-[#f6f7f7]'>
               <div className='w-full sm:text-sm text-xs'>
                 <div>
                   {latestBlogs?.slice(length - 3).reverse().map((blog, index) => (
-                    <div key={index} className='blog_list text-gray-800 sm:text-sm text-[13px] border-b border-[#E5E7EB] px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
+                    <div key={index} className='blog_list text-[#50575e] sm:text-sm text-[13px] border border-t-0 border-gray-300 px-3 py-2.5 grid lg:grid-cols-[2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_1fr] grid-cols-[4fr_1fr] gap-2 items-center'>
                       <div className='flex items-center sm:gap-4 gap-3'>
                         <img className='main_image h-8 w-14' src={blog.image} alt="" />
                         <h6 style={{ fontFamily: 'Outfit' }}>{blog.title}</h6>
@@ -217,26 +218,36 @@ const Dashboard = () => {
                         }}></h6>
                       </div>
                       <h6 className='max-lg:hidden mx-auto text-gray-500 text-[13px]' style={{ fontFamily: 'Outfit' }}>{new Date(blog.created_at).toDateString()}</h6>
-                      <div className=' flex text-sm items-center sm:gap-2 gap-1.5 mx-auto'>
-                        <span onClick={() => { navigate(`/admin/updateblog/${blog?._id}`) }} className='lg:text-lg text-[16px] hover:scale-105 transition-all cursor-pointer'>
-                          <FaEdit />
-                        </span>
-                        {/* <img src={edit_icon} onClick={() => { navigate(`/admin/updateblog/${blog._id}`) }} alt="" className='md:h-[20px] md:w-[20px] h-5 W-5 hover:scale-110 transition-all cursor-pointer' /> */}
-                        <img src={cross_icon} onClick={() => deleteBlog(blog._id)} alt="" className='lg:h-[20px] lg:w-[20px] w-[16px] h-[16px] border border-red-400 rounded-full hover:scale-110 transition-all cursor-pointer' />
+
+                      <div className="flex justify-end gap-3 text-[15px] mx-auto">
+                        <button
+                          onClick={() => { navigate(`/admin/updateblog/${blog?._id}`) }}
+                          className="bg-blue-100 text-blue-600 p-2 rounded-lg hover:bg-blue-200 cursor-pointer"
+                        >
+                          <FiEdit />
+                        </button>
+
+                        <button
+                          onClick={() => deleteBlog(blog._id)}
+                          className="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 cursor-pointer"
+                        >
+                          <FiTrash2 />
+                        </button>
                       </div>
+
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-          </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-white rounded-md w-full'>You don,t have any blogs</div>}
+          </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-[#f6f7f7] rounded-md w-full'>You don,t have any blogs</div>}
       </div>}
       {/* Orders */}
       <div className='flex items-center gap-3 mb-4 mt-6'>
         <img src={dashboard_icon_4} alt="" />
-        <h6 className='font-medium tracking-tight text-gray-700 text-base'>Latest Orders</h6>
+        <h6 className='font-medium tracking-tight text-base'>Latest Orders</h6>
       </div>
-      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
+      <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#fff] text-[#2c3338] border border-gray-300 rounded-tr-lg rounded-tl-lg'>
         <label style={{ fontFamily: "Montserrat" }}>Order</label>
         <label className='max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Delivery</label>
         <label className='' style={{ fontFamily: "Montserrat" }}>Amount</label>
@@ -248,14 +259,14 @@ const Dashboard = () => {
           <div>
             <div className='w-full overflow-auto'>
               {orders?.map((order, index) => (
-                <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-gray-800">
+                <div key={index} className="bg-[#f6f7f7] grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-[#50575e]">
                   <div className="order_image_parent flex gap-2">
                     <img className="w-12 h-12 object-cover" src={parcel_icon} alt="product_image" />
                     <div className="flex flex-col justify-center">
                       <h6 className="font-medium text-sm">
                         {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
                       </h6>
-                      <div className='flex flex-col leading-none gap-1 text-gray-700 text-[13.2px] mt-1'>
+                      <div className='flex flex-col leading-none gap-1 text-[13.2px] mt-1'>
                         <h6 style={{ fontFamily: 'Outfit' }}>{order.size && "Size:"} {order.size && order.size}</h6>
                         <h6 style={{ fontFamily: 'Outfit' }}>{order.color && "Color:"} {order.color && order.color}</h6>
                         <h6 style={{ fontFamily: 'Outfit' }}>{order.footwear_size && "Size:"} {order.footwear_size && order.footwear_size}</h6>
@@ -265,19 +276,19 @@ const Dashboard = () => {
 
                   <div className="text-sm">
                     <h6 className='font-medium mb-1'>{JSON.parse(order.address).firstName} {JSON.parse(order.address).lastName}</h6>
-                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
-                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).email}</h6>
-                    <h6 className='text-xs text-gray-700'>{JSON.parse(order.address).phone}</h6>
+                    <h6 className='text-xs'>{JSON.parse(order.address).address}, {JSON.parse(order.address).city}, {JSON.parse(order.address).postal_code}</h6>
+                    <h6 className='text-xs'>{JSON.parse(order.address).email}</h6>
+                    <h6 className='text-xs'>{JSON.parse(order.address).phone}</h6>
                   </div>
 
                   <h6 className="font-medium" style={{ fontFamily: "Outfit" }}>{currency}. {(order?.total_amount).toLocaleString()}</h6>
 
-                  <div className="flex flex-col text-xs text-gray-700 font-medium">
+                  <div className="flex flex-col text-xs font-medium">
                     <h6>Method: {order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1).toLowerCase()}</h6>
                     <h6>Date: {new Date(order.created_at).toDateString()}</h6>
                     <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
                   </div>
-                  <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-400/80 outline-[#2563EB] w-fit text-gray-700 rounded-sm'>
+                  <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-200 outline-[#2563EB] w-fit rounded-sm bg-white'>
                     <option value="PLACED">Order Placed</option>
                     <option value="PACKING">Packing</option>
                     <option value="SHIPPED">Shipped</option>
@@ -287,7 +298,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-white rounded-md w-full'>You don,t have any orders</div>}
+          </div> : <div className='font-medium min-h-[100px] text-sm flex items-center justify-center text-center bg-[#f6f7f7] rounded-md w-full'>You don,t have any orders</div>}
       </div>}
     </div >
   )
