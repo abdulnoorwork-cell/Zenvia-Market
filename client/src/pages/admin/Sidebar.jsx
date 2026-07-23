@@ -63,7 +63,7 @@ const Sidebar = () => {
                 {/* <img src={list_icon} alt="" className='min-w-4 w-5' /> */}
                 <h6 className='hidden md:inline-block text-sm'>Reviews</h6>
             </NavLink>
-            <NavLink end={true} onClick={logout} className={({ isActive }) => `flex items-center gap-2 p-3 xl:min-w-52 md:min-w-48 cursor-pointer rounded-md ${isActive && 'bg-[rgb(236,243,255)] text-[rgb(70,95,255)]'}`}>
+            <NavLink end={true} onClick={logout} className={({ isActive }) => `flex items-center gap-2 pl-5 p-3 md:min-w-48 cursor-pointer ${isActive && 'bg-[#3858e9]'} `}>
                 <span className='text-xl'><BiLogOut /></span>
                 {/* <img src={list_icon} alt="" className='min-w-4 w-5' /> */}
                 <h6 className='hidden md:inline-block text-sm leading-none'>Logout</h6>
