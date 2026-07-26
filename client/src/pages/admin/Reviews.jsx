@@ -73,7 +73,7 @@ const Reviews = () => {
                         </div>
                         {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
                             {allReviews.length > 0 ?
-                                <div className='overflow-auto max-h-[75vh] scrollbar-hide relative sm:text-sm text-[13px]'>
+                                <div className='overflow-y-auto custom-scrollbar max-h-[75vh] relative sm:text-sm text-[13px]'>
                                     {allReviews?.reverse().map((review, index) => (
                                         <div key={index} className='border-b border-[#E5E7EB] sm:p-3 p-5 sm:grid flex flex-col text-center sm:text-start xl:grid-cols-[2fr_2fr_2fr_1fr_1fr_1fr] lg:grid-cols-[2fr_2fr_2fr_1fr_1fr] sm:grid-cols-[2fr_2fr_2fr_1fr] gap-2 items-center'>
                                             <div className='flex flex-col 2xl:flex-row max-sm:items-center 2xl:items-center 2xl:gap-3 gap-2'>

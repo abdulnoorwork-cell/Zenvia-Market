@@ -42,7 +42,7 @@ const Orders = () => {
         <div className="flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]">
             <div className='flex flex-col w-full'>
                 <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><RiBox3Line /></span>Orders List</h1>
-                <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
+                <div className='xl:grid hidden xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 gap-2 py-3 px-3 text-xs uppercase font-semibold bg-[#fff] text-[#2c3338] border border-gray-300 rounded-tr-lg rounded-tl-lg'>
                     <label style={{fontFamily:"Montserrat"}}>Order</label>
                     <label className='max-sm:hidden' style={{fontFamily:"Montserrat"}}>Delivery</label>
                     <label className='' style={{fontFamily:"Montserrat"}}>Amount</label>
@@ -51,11 +51,11 @@ const Orders = () => {
                 </div>
                 {orderLoading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
                     {adminOrders.length > 0 ?
-                        <div className='relative max-h-[75vh] overflow-x-auto shadow scrollbar-hide bg-white'>
+                        <div className='overflow-y-auto custom-scrollbar max-h-[75vh] relative sm:text-sm text-[13px] bg-[#f6f7f7] text-[#50575e]'>
                             {adminOrders?.map((order, index) => (
-                                <div key={index} className="bg-white grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 ">
+                                <div key={index} className="bg-[#f6f7f7] grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border border-t-0 border-gray-300 text-[#50575e]">
                                     <div className="order_image_parent flex gap-2">
-                                        <img className="w-12 h-12 object-cover" src={parcel_icon} alt="product_image" />
+                                        <img className="w-12 h-12 object-cover bg-white" src={parcel_icon} alt="product_image" />
                                         <div className="flex flex-col justify-center">
                                             <h6 className="font-medium text-sm">
                                                 {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
@@ -82,7 +82,7 @@ const Orders = () => {
                                         <h6>Date: {new Date(order.created_at).toDateString()}</h6>
                                         <h6>Payment: {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1).toLowerCase()}</h6>
                                     </div>
-                                    <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-400/80 outline-[#2563EB] w-fit text-gray-700 rounded-sm'>
+                                    <select value={order.order_status?.trim()} onChange={(event) => updateOrderStatus(event, order.order_id)} className='p-2 font-medium text-xs border border-gray-200 outline-[#2563EB] w-fit rounded-sm bg-white'>
                                         <option value="PLACED">Order Placed</option>
                                         <option value="PACKING">Packing</option>
                                         <option value="SHIPPED">Shipped</option>

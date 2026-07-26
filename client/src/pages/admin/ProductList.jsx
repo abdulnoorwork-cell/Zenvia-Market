@@ -37,9 +37,9 @@ const ProductList = () => {
     <div className='flex w-full justify-center px-4 py-8 md:px-8 lg:py-10 h-full min-h-[95vh]'>
       <div className='flex flex-col w-full'>
         <h1 className='font-semibold sm:text-[22px] text-xl flex items-center gap-2 mb-4' style={{ fontFamily: 'Montserrat' }}><span className='text-2xl text-[#2563EB]'><BsCartCheck /></span>Product List</h1>
-        <div className='w-full shadow bg-white'>
+        <div className='w-full'>
           <div className='w-full sm:text-sm text-xs'>
-            <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-[#2563EB] text-white rounded-tr-lg rounded-tl-lg'>
+            <div className='admin_products_label grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] gap-2 sm:py-3 py-2 px-3 text-xs uppercase font-semibold bg-[#fff] text-[#2c3338] rounded-tr-lg rounded-tl-lg border border-gray-300'>
               <label style={{ fontFamily: "Montserrat" }}>Product</label>
               <label className='mx-auto max-sm:hidden' style={{ fontFamily: "Montserrat" }}>Category</label>
               <label className='mx-auto' style={{ fontFamily: "Montserrat" }}>Price</label>
@@ -48,9 +48,9 @@ const ProductList = () => {
             </div>
             {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
               {products.length > 0 ?
-                <div className='overflow-auto max-h-[75vh] scrollbar-hide relative sm:text-sm text-[13px]'>
+                <div className='overflow-y-auto custom-scrollbar max-h-[75vh] relative sm:text-sm text-[13px] bg-[#f6f7f7] text-[#50575e]'>
                   {products?.reverse().map((product, index) => (
-                    <div key={index} className='product_list border-b border-[#E5E7EB] px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center'>
+                    <div key={index} className='product_list border border-t-0 border-gray-300 px-2 py-1.5 grid xl:grid-cols-[3fr_1fr_1fr_1fr_1fr] sm:grid-cols-[3fr_1fr_1fr_1fr] grid-cols-[3fr_1fr_1fr] sm:gap-2 gap-1.5 items-center text-[#50575e] sm:text-sm text-[13px]'>
                       <div className='main_img flex items-center sm:gap-4 gap-3'>
                         <img className='sm:h-14 h-10 w-14 object-contain' src={product?.images[0]} alt="" />
                         <div className='flex flex-col'>

@@ -163,7 +163,7 @@ const Dashboard = () => {
         </div>
         {loading ? <img src={loading_animation} alt="" className='mx-auto' /> : <div>
           {latestProducts.length > 0 ?
-            <div className='relative w-fulloverflow-x-auto scrollbar-hide bg-[#f6f7f7]'>
+            <div className='relative w-full overflow-y-auto scrollbar-hide bg-[#f6f7f7]'>
               <div className='w-full sm:text-[13px] text-xs'>
                 <div>
                   {latestProducts?.slice(length - 3).reverse().map((product, index) => (
@@ -259,9 +259,9 @@ const Dashboard = () => {
           <div>
             <div className='w-full overflow-auto'>
               {orders?.map((order, index) => (
-                <div key={index} className="bg-[#f6f7f7] grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border-b border-gray-300 text-[#50575e]">
+                <div key={index} className="bg-[#f6f7f7] grid xl:grid-cols-[2fr_2fr_1fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr] sm:grid-cols-2 items-center gap-4 py-4 px-3 border border-t-0 border-gray-300 text-[#50575e]">
                   <div className="order_image_parent flex gap-2">
-                    <img className="w-12 h-12 object-cover" src={parcel_icon} alt="product_image" />
+                    <img className="w-12 h-12 object-cover bg-white" src={parcel_icon} alt="product_image" />
                     <div className="flex flex-col justify-center">
                       <h6 className="font-medium text-sm">
                         {order?.name} <span className={`text-[#2563EB]`}>x{order?.quantity}</span>
